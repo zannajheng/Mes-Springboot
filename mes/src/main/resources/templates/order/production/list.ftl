@@ -7,6 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <#include "${request.contextPath}/common/common.ftl">
+    <link rel="stylesheet" href="${request.contextPath}/lib/gantt/css/style.css" media="all">
+
+    <style type="text/css">
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 13px;
+            padding: 0 0 50px 0;
+        }
+
+        .contain {
+            width: 800px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
 <div class="splayui-container">
@@ -34,7 +48,8 @@
         </form>
 
         <!--表格-->
-        <table class="layui-hide" id="js-record-table" lay-filter="js-record-table-filter"></table>
+<#--        <table class="layui-hide" id="js-record-table" lay-filter="js-record-table-filter"></table>-->
+        <div id="js-gantt" class="gantt"></div>
     </div>
 </div>
 
@@ -57,7 +72,61 @@
 </script>
 
 <!--js逻辑-->
+<script src="${request.contextPath}/lib/gantt/js/jquery.fn.gantt.js" charset="utf-8"></script>
+
 <script>
+        var ganttData = [];
+        // 获取数据
+        spUtil.ajax({
+            url: '${request.contextPath}/order/release/gantt/list',
+            async: false,
+            type: 'POST',
+            // 是否显示 loading
+            showLoading: true,
+            // 是否序列化参数
+            serializable: false,
+            // 参数
+            data: {
+            },
+            success: function (data) {
+                ganttData = data.data;
+            },
+            error: function () {
+            }
+        });
+
+        //初始化gantt
+        var $gantt = $("#js-gantt").gantt({
+            source: ganttData,
+            navigate: 'scroll',//buttons  scroll
+            scale: "days",// months  weeks days  hours
+            maxScale: "months",
+            minScale: "days",
+            waitText: "请稍后...",
+            itemsPerPage: 10,
+            tnTitle1: '物料编码',
+            tnTitle2: '计划/实际',
+            onItemClick: function (data) {
+                modifyPlan();
+            },
+            onAddClick: function (dt, rowId) {
+                console.log(dt)
+                console.log(rowId)
+                console.log("onAddClick");
+            },
+            onRender: function () {
+                console.log('onRender');
+            }
+        });
+
+        /**
+         * 修改
+         * @param
+         */
+        function modifyPlan(id) {
+            alert(id)
+        }
+
     layui.use(['form', 'table', 'spLayer', 'spTable'], function () {
         var form = layui.form,
             table = layui.table,

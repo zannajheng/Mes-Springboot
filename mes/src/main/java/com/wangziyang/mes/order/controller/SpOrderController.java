@@ -17,10 +17,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -119,5 +121,41 @@ public class SpOrderController extends BaseController {
     public Result deleteByTableNameId(SpMaterile req) throws Exception {
         iSpOrderService.removeById(req.getId());
         return Result.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/gantt/list", method = RequestMethod.POST, produces = "application/json")
+    public Result getListGantt(Map<String, Object> params) throws Exception {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            Map<String, Object> map = new HashMap<>(8);
+            map.put("id", "id" + (i + 1));
+            if (i % 2 == 0) {
+                map.put("name", "物料编码" + (i + 1));
+                map.put("desc", "计划：");
+            } else {
+                map.put("desc", "实际：");
+            }
+            map.put("cssClass", "redLabel");
+
+            List<Map<String, Object>> values = new ArrayList<>();
+            Map<String, Object> value = new HashMap<>(8);
+            value.put("from", "/Date(" + System.currentTimeMillis() + ")/");
+            value.put("to", "/Date(" + (System.currentTimeMillis() + 1000000000) + ")/");
+            value.put("label", "极板");
+            value.put("desc", "悬停悬停悬停悬停悬停...");
+            value.put("customClass", "ganttGreen");
+            if (i == 1) {
+                value.put("customClass", "ganttOrange");
+            }
+            if (i == 2) {
+                value.put("customClass", "ganttRed");
+            }
+            value.put("dataObj", "1");
+            values.add(value);
+            map.put("values", values);
+            result.add(map);
+        }
+        return Result.success(result);
     }
 }
