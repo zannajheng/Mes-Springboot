@@ -29,13 +29,13 @@
         <form id="js-search-form" class="layui-form" lay-filter="js-q-form-filter">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">物料编号</label>
+                    <label class="layui-form-label">订单编号</label>
                     <div class="layui-input-inline">
                         <input type="materiel" name="materiel" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">物料名称</label>
+                    <label class="layui-form-label">订单名称</label>
                     <div class="layui-input-inline">
                         <input type="materielDesc" name="materielDesc" autocomplete="off" class="layui-input">
                     </div>
@@ -59,9 +59,7 @@
         <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="deleteBatch"><i
                     class="layui-icon">&#xe640;</i>批量删除
         </button>
-        <@shiro.hasPermission name="user:add">
             <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
-        </@shiro.hasPermission>
     </div>
 </script>
 
@@ -81,8 +79,6 @@
             url: '${request.contextPath}/order/release/gantt/list',
             async: false,
             type: 'POST',
-            // 是否显示 loading
-            showLoading: true,
             // 是否序列化参数
             serializable: false,
             // 参数
