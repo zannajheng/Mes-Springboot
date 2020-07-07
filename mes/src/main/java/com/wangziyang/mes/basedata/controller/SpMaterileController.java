@@ -37,6 +37,7 @@ public class SpMaterileController extends BaseController {
 
     /**
      * 物料服务
+     * @date 2020-07-07
      */
     @Autowired
     private ISpMaterileService iSpMaterileService;
