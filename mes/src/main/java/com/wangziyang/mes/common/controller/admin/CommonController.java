@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CommonController {
 
     /**
-     * 公用 UI
+     * 公用前端UI
      * @param fileName
      * @return
      */
