@@ -210,9 +210,11 @@
 
 [![ISA](https://s1.ax1x.com/2020/05/14/YBPeVH.png "ISA自动化学会")](https://www.isa.org/)
 
-## QQ Group87652870
+## QQ Group87652870(已满500)
 [![QQ](https://img.shields.io/badge/QQ-87652870-green.svg?logo=tencent%20qq&logoColor=red)](https://jq.qq.com/?_wv=1027&k=55NGCxl)
 
+## QQ 二Group808898316
+[![QQ](https://img.shields.io/badge/QQ-808898316-green.svg?logo=tencent%20qq&logoColor=red)](http://qm.qq.com/cgi-bin/qm/qr?k=vjfiAHPYgOgO5XxeUFxNfxTlQom2wZFZ)
 ## 特别鸣谢
 <a href="https://gitee.com/iamsongpeng" target="_blank">**宋鹏同学**</a> 感谢提供前端技术支持！
 
