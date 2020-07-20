@@ -142,8 +142,8 @@ public class SpOrderController extends BaseController {
             Map<String, Object> value = new HashMap<>(8);
             value.put("from", "/Date(" + System.currentTimeMillis() + ")/");
             value.put("to", "/Date(" + (System.currentTimeMillis() + 1000000000) + ")/");
-            value.put("label", "极板");
-            value.put("desc", "悬停悬停悬停悬停悬停...");
+            value.put("label", "黑科除湿器");
+            value.put("desc", "我的甘特图...");
             value.put("customClass", "ganttGreen");
             if (i == 1) {
                 value.put("customClass", "ganttOrange");
