@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : rm-aliyunmes
+ Source Server         : aliyunmes
  Source Server Type    : MySQL
  Source Server Version : 80016
  Source Host           : rm-8vb0sazu4d9g0u290eo.mysql.zhangbei.rds.aliyuncs.com:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 30/03/2020 19:25:06
+ Date: 21/07/2020 08:56:18
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `sp_bom`;
 CREATE TABLE `sp_bom`  (
   `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键id',
   `bom_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'bom编号',
-  `materiel_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物料ID',
+  `materiel_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物料ID',
   `materiel_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物料描述',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `version_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '版本号',
@@ -36,7 +36,44 @@ CREATE TABLE `sp_bom`  (
   `update_time` datetime(0) NOT NULL COMMENT '最后更新时间',
   `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后更新人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'BOM主信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sp_bom
+-- ----------------------------
+INSERT INTO `sp_bom` VALUES ('1268447170115383298', 'bbbbb', 't002', 't002', '', '1', NULL, NULL, '0', '2020-06-04 15:39:07', 'admin', '2020-07-16 11:17:20', 'admin');
+INSERT INTO `sp_bom` VALUES ('1268811409925582850', '0001', '2019001', '电子元件', '', '1', NULL, NULL, '0', '2020-06-05 15:46:28', 'admin', '2020-07-16 13:30:08', 'admin');
+INSERT INTO `sp_bom` VALUES ('1270189758686146562', '测试', '123', '123', '', '1', NULL, NULL, '0', '2020-06-09 11:03:32', 'admin', '2020-07-04 15:32:47', 'admin');
+INSERT INTO `sp_bom` VALUES ('1272019534564536322', '打算', '123', '123', '', '1', NULL, NULL, '2', '2020-06-14 12:14:25', 'admin', '2020-07-09 15:10:38', 'admin');
+INSERT INTO `sp_bom` VALUES ('1272783744282112002', '阿斯顿发送到', 't002', 't002', '', '1', NULL, NULL, '0', '2020-06-16 14:51:06', 'admin', '2020-06-16 14:51:06', 'admin');
+INSERT INTO `sp_bom` VALUES ('1276415594372247554', '77', '123', '123', '', '1', NULL, NULL, '0', '2020-06-26 15:22:47', 'admin', '2020-07-08 15:30:46', 'admin');
+INSERT INTO `sp_bom` VALUES ('1276535719725346818', '001', '123', '123', '', '1', NULL, NULL, '0', '2020-06-26 23:20:07', 'admin', '2020-06-26 23:20:07', 'admin');
+INSERT INTO `sp_bom` VALUES ('1277125952237973506', 'A0001', 't002', 't002', '', '1', NULL, NULL, '0', '2020-06-28 14:25:30', 'admin', '2020-06-28 14:25:30', 'admin');
+INSERT INTO `sp_bom` VALUES ('1277599659653836802', 'Y001', 'Y001', 'Y001', '', '1', NULL, NULL, '0', '2020-06-29 21:47:50', 'admin', '2020-06-29 21:47:50', 'admin');
+INSERT INTO `sp_bom` VALUES ('1278528374608998401', 'dc001', 'Y001', 'Y001', '', '1', NULL, NULL, '0', '2020-07-02 11:18:13', 'admin', '2020-07-02 11:18:13', 'admin');
+INSERT INTO `sp_bom` VALUES ('1280124062753075202', '11111', '002-2918', '曲轴', '11111', '1', NULL, NULL, '0', '2020-07-06 20:58:55', 'admin', '2020-07-06 20:58:55', 'admin');
+INSERT INTO `sp_bom` VALUES ('1281490436289179649', '001', '002-2918', '曲轴', '', '1', NULL, NULL, '0', '2020-07-10 15:28:24', 'admin', '2020-07-10 15:28:24', 'admin');
+INSERT INTO `sp_bom` VALUES ('1283634934423203842', '333', '2019001', '电子元件', '', '1', NULL, NULL, '0', '2020-07-16 13:29:52', 'admin', '2020-07-16 13:29:52', 'admin');
+
+-- ----------------------------
+-- Table structure for sp_bom_item
+-- ----------------------------
+DROP TABLE IF EXISTS `sp_bom_item`;
+CREATE TABLE `sp_bom_item`  (
+  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键id',
+  `bom_head_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'bom编号',
+  `materiel_item_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '物料ID',
+  `materiel_item_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '物料描述',
+  `line_no` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '行号',
+  `item_num` decimal(10, 0) NULL DEFAULT 0 COMMENT '用量',
+  `item_unit` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '子项基本单位',
+  `oper_typer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '所属工序类型',
+  `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+  `create_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建人',
+  `update_time` datetime(0) NOT NULL COMMENT '最后更新时间',
+  `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'BOM子项表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sp_factroy
@@ -85,13 +122,16 @@ CREATE TABLE `sp_flow`  (
 -- ----------------------------
 -- Records of sp_flow
 -- ----------------------------
-INSERT INTO `sp_flow` VALUES ('1239827518405050369', '包装', '测试流程01', '测试工序->包装工序->集成测试工序', '2020-03-17 16:14:50', 'admin', '2020-03-30 16:09:19', 'admin');
-INSERT INTO `sp_flow` VALUES ('1242729866530643969', '分切', 'test', '装配工序->测试工序', '2020-03-25 16:27:44', 'admin', '2020-03-30 16:09:07', 'admin');
-INSERT INTO `sp_flow` VALUES ('1243400297826742273', '压延', '车轴流程', '装配工序->测试工序->包装工序->集成测试工序->清洗工序->入库工序', '2020-03-27 12:51:47', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow` VALUES ('1243474708005101570', '涂布', '2323', '测试工序->封胶工序->清洗工序', '2020-03-27 17:47:28', 'admin', '2020-03-30 16:09:46', 'admin');
-INSERT INTO `sp_flow` VALUES ('1243474862657478657', '纸管', '444', '装配工序->测试工序->包装工序->集成测试工序->焊接->封胶工序', '2020-03-27 17:48:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow` VALUES ('1244096889219162113', 'hhhh', 'hhh', '焊接->加酸工序->清洗工序->入库工序', '2020-03-29 10:59:47', 'admin', '2020-03-29 11:21:06', 'admin');
-INSERT INTO `sp_flow` VALUES ('1336868289380384', 'DC-ASY', '电池组装流程', '集成测试工序->焊接->封胶工序->加酸工序->清洗工序->入库工序', '2020-03-14 10:34:36', 'admin', '2020-03-28 14:31:48', 'admin');
+INSERT INTO `sp_flow` VALUES ('1274977236873883649', '666', '666', '装配工序->测试工序->集成测试工序->封胶工序->清洗工序->包装工序', '2020-06-22 16:07:16', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow` VALUES ('1275430361590116354', '002', '111', '装配工序->包装工序', '2020-06-23 22:07:49', 'admin', '2020-06-23 22:07:49', 'admin');
+INSERT INTO `sp_flow` VALUES ('1275430501520486401', '111', '222', '测试工序->焊接', '2020-06-23 22:08:23', 'admin', '2020-07-16 09:01:20', 'admin');
+INSERT INTO `sp_flow` VALUES ('1277125413169246210', 'asfds', 'sdfsd', '装配工序->测试工序->封胶工序', '2020-06-28 14:23:21', 'admin', '2020-07-20 22:08:39', 'admin');
+INSERT INTO `sp_flow` VALUES ('1277176874674663425', 'A01', 'A01', '装配工序->测试工序', '2020-06-28 17:47:50', 'admin', '2020-07-18 20:02:47', 'admin');
+INSERT INTO `sp_flow` VALUES ('1277600512544583681', 'A001', 'A001', '装配工序->测试工序->包装工序', '2020-06-29 21:51:14', 'admin', '2020-06-29 21:51:14', 'admin');
+INSERT INTO `sp_flow` VALUES ('1278145622063689729', '1212', '1212', '装配工序->包装工序', '2020-07-01 09:57:18', 'admin', '2020-07-01 09:57:18', 'admin');
+INSERT INTO `sp_flow` VALUES ('1278528234456330242', 'dc001', '斗车', '装配工序->测试工序->包装工序', '2020-07-02 11:17:40', 'admin', '2020-07-02 11:17:40', 'admin');
+INSERT INTO `sp_flow` VALUES ('1279942838902304770', '000005', '0005', '装配工序->包装工序', '2020-07-06 08:58:48', 'admin', '2020-07-06 08:59:11', 'admin');
+INSERT INTO `sp_flow` VALUES ('1285142116192968706', '1234', '12222', '装配工序->集成测试工序->封胶工序', '2020-07-20 17:18:52', 'admin', '2020-07-20 17:18:52', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_flow_oper_relation
@@ -120,36 +160,64 @@ CREATE TABLE `sp_flow_oper_relation`  (
 -- ----------------------------
 -- Records of sp_flow_oper_relation
 -- ----------------------------
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872001', '1336868289380384', 'DC-ASY', '', '', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', 1, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872002', '1336868289380384', 'DC-ASY', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', 2, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872003', '1336868289380384', 'DC-ASY', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', '1336868507484192', 'JS-01', 3, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872004', '1336868289380384', 'DC-ASY', '1336868452958240', 'FJ-01', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', 4, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872005', '1336868289380384', 'DC-ASY', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', 5, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1243787855823872006', '1336868289380384', 'DC-ASY', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', '', '', 6, NULL, '2020-03-28 14:31:48', 'admin', '2020-03-28 14:31:48', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244102251955593218', '1244096889219162113', 'hhhh', '', '', '1336868360683552', 'HJ-01', '1336868507484192', 'JS-01', 1, NULL, '2020-03-29 11:21:06', 'admin', '2020-03-29 11:21:06', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244102251955593219', '1244096889219162113', 'hhhh', '1336868360683552', 'HJ-01', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', 2, NULL, '2020-03-29 11:21:06', 'admin', '2020-03-29 11:21:06', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244102251955593220', '1244096889219162113', 'hhhh', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', 3, NULL, '2020-03-29 11:21:06', 'admin', '2020-03-29 11:21:06', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244102251955593221', '1244096889219162113', 'hhhh', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', '', '', 4, NULL, '2020-03-29 11:21:06', 'admin', '2020-03-29 11:21:06', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537124495269890', '1242729866530643969', '分切', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-03-30 16:09:08', 'admin', '2020-03-30 16:09:08', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537124495269891', '1242729866530643969', '分切', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '', '', 2, NULL, '2020-03-30 16:09:08', 'admin', '2020-03-30 16:09:08', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537174017417218', '1239827518405050369', '包装', '', '', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 1, NULL, '2020-03-30 16:09:19', 'admin', '2020-03-30 16:09:19', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537174017417219', '1239827518405050369', '包装', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 2, NULL, '2020-03-30 16:09:19', 'admin', '2020-03-30 16:09:19', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537174017417220', '1239827518405050369', '包装', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '', '', 3, NULL, '2020-03-30 16:09:19', 'admin', '2020-03-30 16:09:19', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415746', '1243400297826742273', '压延', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415747', '1243400297826742273', '压延', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415748', '1243400297826742273', '压延', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 3, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415749', '1243400297826742273', '压延', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '1336868562010144', 'QX-01', 4, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415750', '1243400297826742273', '压延', '1336864613072928', 'TST-01', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', 5, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537222176415751', '1243400297826742273', '压延', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', '', '', 6, NULL, '2020-03-30 16:09:31', 'admin', '2020-03-30 16:09:31', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537288081514497', '1243474708005101570', '涂布', '', '', '1336864537575456', 'TST-02', '1336868452958240', 'FJ-01', 1, NULL, '2020-03-30 16:09:47', 'admin', '2020-03-30 16:09:47', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537288081514498', '1243474708005101570', '涂布', '1336864537575456', 'TST-02', '1336868452958240', 'FJ-01', '1336868562010144', 'QX-01', 2, NULL, '2020-03-30 16:09:47', 'admin', '2020-03-30 16:09:47', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537288081514499', '1243474708005101570', '涂布', '1336868452958240', 'FJ-01', '1336868562010144', 'QX-01', '', '', 3, NULL, '2020-03-30 16:09:47', 'admin', '2020-03-30 16:09:47', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733378', '1243474862657478657', '纸管', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733379', '1243474862657478657', '纸管', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733380', '1243474862657478657', '纸管', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 3, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733381', '1243474862657478657', '纸管', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', 4, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733382', '1243474862657478657', '纸管', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', 5, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
-INSERT INTO `sp_flow_oper_relation` VALUES ('1244537364501733383', '1243474862657478657', '纸管', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', '', '', 6, NULL, '2020-03-30 16:10:05', 'admin', '2020-03-30 16:10:05', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267713369412186113', '1267713369349271553', '1111', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-06-02 15:03:15', 'admin', '2020-06-02 15:03:15', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267713369412186114', '1267713369349271553', '1111', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '', '', 2, NULL, '2020-06-02 15:03:15', 'admin', '2020-06-02 15:03:15', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267788592622841858', '1267788592555732994', '01', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-06-02 20:02:10', 'admin', '2020-06-02 20:02:10', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267788592622841859', '1267788592555732994', '01', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-06-02 20:02:10', 'admin', '2020-06-02 20:02:10', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267788592622841860', '1267788592555732994', '01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 3, NULL, '2020-06-02 20:02:10', 'admin', '2020-06-02 20:02:10', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267788592622841861', '1267788592555732994', '01', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '', '', 4, NULL, '2020-06-02 20:02:10', 'admin', '2020-06-02 20:02:10', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990052920864770', '1265284426327371778', '1', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-06-03 09:22:41', 'admin', '2020-06-03 09:22:41', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990052920864771', '1265284426327371778', '1', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336868507484192', 'JS-01', 2, NULL, '2020-06-03 09:22:41', 'admin', '2020-06-03 09:22:41', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990052920864772', '1265284426327371778', '1', '1336864537575456', 'TST-02', '1336868507484192', 'JS-01', '1336864575324192', 'APK-01', 3, NULL, '2020-06-03 09:22:41', 'admin', '2020-06-03 09:22:41', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990052920864773', '1265284426327371778', '1', '1336868507484192', 'JS-01', '1336864575324192', 'APK-01', '', '', 4, NULL, '2020-06-03 09:22:41', 'admin', '2020-06-03 09:22:41', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990103424479234', '1265589028092358657', '1111', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-06-03 09:22:53', 'admin', '2020-06-03 09:22:53', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990103424479235', '1265589028092358657', '1111', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '1337248255574048', 'RK-01', 2, NULL, '2020-06-03 09:22:53', 'admin', '2020-06-03 09:22:53', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990103424479236', '1265589028092358657', '1111', '1336864575324192', 'APK-01', '1337248255574048', 'RK-01', '1336868360683552', 'HJ-01', 3, NULL, '2020-06-03 09:22:53', 'admin', '2020-06-03 09:22:53', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1267990103424479237', '1265589028092358657', '1111', '1337248255574048', 'RK-01', '1336868360683552', 'HJ-01', '', '', 4, NULL, '2020-06-03 09:22:53', 'admin', '2020-06-03 09:22:53', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046402', '1268001010166771713', '22', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046403', '1268001010166771713', '22', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046404', '1268001010166771713', '22', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 3, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046405', '1268001010166771713', '22', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', 4, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046406', '1268001010166771713', '22', '1336864613072928', 'TST-01', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', 5, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046407', '1268001010166771713', '22', '1336868360683552', 'HJ-01', '1336868452958240', 'FJ-01', '1336868507484192', 'JS-01', 6, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046408', '1268001010166771713', '22', '1336868452958240', 'FJ-01', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', 7, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046409', '1268001010166771713', '22', '1336868507484192', 'JS-01', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', 8, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1268001010259046410', '1268001010166771713', '22', '1336868562010144', 'QX-01', '1337248255574048', 'RK-01', '', '', 9, NULL, '2020-06-03 10:06:14', 'admin', '2020-06-03 10:06:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270229560290684929', '1268552781134016513', '撒大声', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-06-09 13:41:42', 'admin', '2020-06-09 13:41:42', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270229560290684930', '1268552781134016513', '撒大声', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', 2, NULL, '2020-06-09 13:41:42', 'admin', '2020-06-09 13:41:42', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270229560290684931', '1268552781134016513', '撒大声', '1336864575324192', 'APK-01', '1336864613072928', 'TST-01', '', '', 3, NULL, '2020-06-09 13:41:42', 'admin', '2020-06-09 13:41:42', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270954114197729281', '1270954114151591937', '121', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-06-11 13:40:49', 'admin', '2020-06-11 13:40:49', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270954114197729282', '1270954114151591937', '121', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '', '', 2, NULL, '2020-06-11 13:40:49', 'admin', '2020-06-11 13:40:49', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270954292094939138', '1270954193277136898', '222222', '', '', '1336864537575456', 'TST-02', '1336868360683552', 'HJ-01', 1, NULL, '2020-06-11 13:41:31', 'admin', '2020-06-11 13:41:31', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1270954292094939139', '1270954193277136898', '222222', '1336864537575456', 'TST-02', '1336868360683552', 'HJ-01', '', '', 2, NULL, '2020-06-11 13:41:31', 'admin', '2020-06-11 13:41:31', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1275430361636253697', '1275430361590116354', '002', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-06-23 22:07:49', 'admin', '2020-06-23 22:07:49', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1275430361636253698', '1275430361590116354', '002', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '', '', 2, NULL, '2020-06-23 22:07:49', 'admin', '2020-06-23 22:07:49', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1277600512599109634', '1277600512544583681', 'A001', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-06-29 21:51:14', 'admin', '2020-06-29 21:51:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1277600512599109635', '1277600512544583681', 'A001', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-06-29 21:51:14', 'admin', '2020-06-29 21:51:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1277600512599109636', '1277600512544583681', 'A001', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '', '', 3, NULL, '2020-06-29 21:51:14', 'admin', '2020-06-29 21:51:14', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1278145622248239105', '1278145622063689729', '1212', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-07-01 09:57:18', 'admin', '2020-07-01 09:57:18', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1278145622248239106', '1278145622063689729', '1212', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '', '', 2, NULL, '2020-07-01 09:57:18', 'admin', '2020-07-01 09:57:18', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1278528234506661890', '1278528234456330242', 'dc001', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-07-02 11:17:40', 'admin', '2020-07-02 11:17:40', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1278528234506661891', '1278528234456330242', 'dc001', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', 2, NULL, '2020-07-02 11:17:40', 'admin', '2020-07-02 11:17:40', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1278528234506661892', '1278528234456330242', 'dc001', '1336864537575456', 'TST-02', '1336864575324192', 'APK-01', '', '', 3, NULL, '2020-07-02 11:17:40', 'admin', '2020-07-02 11:17:40', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1279942938785460225', '1279942838902304770', '000005', '', '', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', 1, NULL, '2020-07-06 08:59:11', 'admin', '2020-07-06 08:59:11', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1279942938785460226', '1279942838902304770', '000005', '1336864489340960', 'ASY-01', '1336864575324192', 'APK-01', '', '', 2, NULL, '2020-07-06 08:59:11', 'admin', '2020-07-06 08:59:11', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1283567357256773634', '1275430501520486401', '111', '', '', '1336864537575456', 'TST-02', '1336868360683552', 'HJ-01', 1, NULL, '2020-07-16 09:01:20', 'admin', '2020-07-16 09:01:20', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1283567357256773635', '1275430501520486401', '111', '1336864537575456', 'TST-02', '1336868360683552', 'HJ-01', '', '', 2, NULL, '2020-07-16 09:01:20', 'admin', '2020-07-16 09:01:20', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1284458592561508353', '1277176874674663425', 'A01', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-07-18 20:02:47', 'admin', '2020-07-18 20:02:47', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1284458592561508354', '1277176874674663425', 'A01', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '', '', 2, NULL, '2020-07-18 20:02:47', 'admin', '2020-07-18 20:02:47', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285142116356546562', '1285142116192968706', '1234', '', '', '1336864489340960', 'ASY-01', '1336864613072928', 'TST-01', 1, NULL, '2020-07-20 17:18:52', 'admin', '2020-07-20 17:18:52', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285142116385906690', '1285142116192968706', '1234', '1336864489340960', 'ASY-01', '1336864613072928', 'TST-01', '1336868452958240', 'FJ-01', 2, NULL, '2020-07-20 17:18:52', 'admin', '2020-07-20 17:18:52', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285142116385906691', '1285142116192968706', '1234', '1336864613072928', 'TST-01', '1336868452958240', 'FJ-01', '', '', 3, NULL, '2020-07-20 17:18:52', 'admin', '2020-07-20 17:18:52', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544705', '1274977236873883649', '666', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544706', '1274977236873883649', '666', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336864613072928', 'TST-01', 2, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544707', '1274977236873883649', '666', '1336864537575456', 'TST-02', '1336864613072928', 'TST-01', '1336868452958240', 'FJ-01', 3, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544708', '1274977236873883649', '666', '1336864613072928', 'TST-01', '1336868452958240', 'FJ-01', '1336868562010144', 'QX-01', 4, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544709', '1274977236873883649', '666', '1336868452958240', 'FJ-01', '1336868562010144', 'QX-01', '1336864575324192', 'APK-01', 5, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285195135865544710', '1274977236873883649', '666', '1336868562010144', 'QX-01', '1336864575324192', 'APK-01', '', '', 6, NULL, '2020-07-20 20:49:33', 'admin', '2020-07-20 20:49:33', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285215041575149569', '1277125413169246210', 'asfds', '', '', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', 1, NULL, '2020-07-20 22:08:39', 'admin', '2020-07-20 22:08:39', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285215041575149570', '1277125413169246210', 'asfds', '1336864489340960', 'ASY-01', '1336864537575456', 'TST-02', '1336868452958240', 'FJ-01', 2, NULL, '2020-07-20 22:08:39', 'admin', '2020-07-20 22:08:39', 'admin');
+INSERT INTO `sp_flow_oper_relation` VALUES ('1285215041575149571', '1277125413169246210', 'asfds', '1336864537575456', 'TST-02', '1336868452958240', 'FJ-01', '', '', 3, NULL, '2020-07-20 22:08:39', 'admin', '2020-07-20 22:08:39', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_line
@@ -170,9 +238,9 @@ CREATE TABLE `sp_line`  (
 -- ----------------------------
 -- Records of sp_line
 -- ----------------------------
-INSERT INTO `sp_line` VALUES ('1336867983196192', 'WZY-ASY-01', '装配线体01线', 'ASY', '2020-03-14 10:32:10', 'admin', '2020-03-14 10:32:10', 'admin');
+INSERT INTO `sp_line` VALUES ('1336867983196192', 'WZY-ASY-01', '装配线体01线', '从vv', '2020-03-14 10:32:10', 'admin', '2020-06-14 02:20:09', 'admin');
 INSERT INTO `sp_line` VALUES ('1336868041916448', 'WZY-TEST-01', '测试01线体', 'TST', '2020-03-14 10:32:38', 'admin', '2020-03-14 10:32:38', 'admin');
-INSERT INTO `sp_line` VALUES ('1336868662673440', 'WZY-DC-01', '电池组装01线', 'ASY', '2020-03-14 10:37:34', 'admin', '2020-03-14 10:37:34', 'admin');
+INSERT INTO `sp_line` VALUES ('1336868662673440', 'WZY-DC-01', '电池组装01线', 'ASY', '2020-03-14 10:37:34', 'admin', '2020-06-16 11:47:04', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_materile
@@ -195,12 +263,12 @@ CREATE TABLE `sp_materile`  (
   `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后更新人',
   `is_deleted` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '逻辑删除：1 表示删除，0 表示未删除，2 表示禁用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '基础物料表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sp_materile
 -- ----------------------------
-INSERT INTO `sp_materile` VALUES ('1242073775949996034', '100112', '电工胶带', '1', '1', 'FG', 'SSSD', '100*100*100', '1243400297826742273', '车轴流程', '2020-03-23 21:00:39', 'admin', '2020-03-27 15:28:17', 'admin', '0');
+INSERT INTO `sp_materile` VALUES ('1284051625900748801', '000001', '成品测试', '件', '产品1组', 'FG', '大', '8*8', '1279942838902304770', '0005', '2020-07-17 17:05:39', 'admin', '2020-07-21 08:32:19', 'admin', '0');
 
 -- ----------------------------
 -- Table structure for sp_oper
@@ -229,6 +297,29 @@ INSERT INTO `sp_oper` VALUES ('1336868452958240', 'FJ-01', '封胶工序', '2020
 INSERT INTO `sp_oper` VALUES ('1336868507484192', 'JS-01', '加酸工序', '2020-03-14 10:36:20', 'admin', '2020-03-14 10:36:20', 'admin');
 INSERT INTO `sp_oper` VALUES ('1336868562010144', 'QX-01', '清洗工序', '2020-03-14 10:36:46', 'admin', '2020-03-14 10:36:46', 'admin');
 INSERT INTO `sp_oper` VALUES ('1337248255574048', 'RK-01', '入库工序', '2020-03-16 12:54:18', 'admin', '2020-03-16 12:54:18', 'admin');
+
+-- ----------------------------
+-- Table structure for sp_order
+-- ----------------------------
+DROP TABLE IF EXISTS `sp_order`;
+CREATE TABLE `sp_order`  (
+  `id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键id',
+  `order_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工单编号',
+  `order_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工单描述',
+  `qty` int(255) NULL DEFAULT NULL COMMENT '工单数量',
+  `order_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单类型 P 量产 A验证 F返工 ',
+  `flow_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流程ID',
+  `materiel` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物料编码',
+  `materiel_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '物料描述',
+  `plan_start_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '计划开始时间',
+  `plan_end_time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '计划结束时间',
+  `statue` tinyint(255) NULL DEFAULT NULL COMMENT '1,创建 2 进行中，3订单结束，4订单终结',
+  `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+  `create_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建人',
+  `update_time` datetime(0) NOT NULL COMMENT '最后更新时间',
+  `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后更新人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sp_sys_department
@@ -265,14 +356,13 @@ CREATE TABLE `sp_sys_dict`  (
   `update_time` datetime(0) NOT NULL COMMENT '最后更新时间',
   `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '最后更新人',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_sp_sys_dict_name`(`name`) USING BTREE
+  INDEX `idx_sp_sys_dict_name`(`type`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统字典表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sp_sys_dict
 -- ----------------------------
-INSERT INTO `sp_sys_dict` VALUES ('1337615246688288', '原材料', 'material', 'material_type', '物料类型', 1, '\"\"', '0', '2020-03-18 13:30:53', 'admin', '2020-03-18 13:30:53', 'admin');
-INSERT INTO `sp_sys_dict` VALUES ('1337618042191904', '成品', 'FG', 'material_type', '物料类型', 2, '\"\"', '0', '2020-03-18 13:53:06', 'admin', '2020-03-23 21:01:46', 'admin');
+INSERT INTO `sp_sys_dict` VALUES ('1337618042191904', '成品', 'FG', 'material_type', '物料类型', 2, '\"\"', '0', '2020-03-18 13:53:06', 'admin', '2020-03-18 13:53:06', 'admin');
 INSERT INTO `sp_sys_dict` VALUES ('1337618163826720', '半成品', 'PG', 'material_type', '物料类型', 3, '\"\"', '0', '2020-03-18 13:54:04', 'admin', '2020-03-18 13:54:04', 'admin');
 INSERT INTO `sp_sys_dict` VALUES ('1337618837012512', '个', 'PCS', 'ORDER_UNIT', '生产单位', 1, '\"\"', '0', '2020-03-18 13:59:25', 'admin', '2020-03-18 13:59:41', 'admin');
 INSERT INTO `sp_sys_dict` VALUES ('1337618939772960', '箱', 'BOX', 'ORDER_UNIT', '生产单位', 2, '\"\"', '0', '2020-03-18 14:00:14', 'admin', '2020-03-18 14:00:14', 'admin');
@@ -314,14 +404,16 @@ INSERT INTO `sp_sys_menu` VALUES ('104', 'department', '部门管理', '/admin/s
 INSERT INTO `sp_sys_menu` VALUES ('105', 'basedata', '基础数据配置平台', '/basedata/manager/list-ui', '10', '3', 5, '0', 'user:add', 'fa fa-cog', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('106', 'basedatamanager', '基础数据维护', '/basedata/manager/item/list-ui', '10', '3', 6, '0', 'user:add', 'fa fa-database', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('12', 'order', '计划管理', '#', '1', '2', 4, '0', 'user:add', 'fa fa-calendar', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
-INSERT INTO `sp_sys_menu` VALUES ('121', 'orderRelease', '工单下达', ':;', '12', '3', 1, '0', 'user:add', 'fa fa-flag-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('121', 'orderRelease', '工单下达', '/order/release/list-ui', '12', '3', 1, '0', 'user:add', 'fa fa-flag-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('13', 'materiel', '物料管理', '#', '1', '2', 2, '0', 'user:add', 'fa fa-cubes', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('131', 'matdef', '物料维护', '/basedata/materile/list-ui', '13', '3', 1, '0', 'user:add', 'fa fa-microchip', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
-INSERT INTO `sp_sys_menu` VALUES ('14', 'Digitalplatform\n\n', '数字化平台', '#', '1', '2', 5, '0', 'user:add', 'fa fa-pie-chart', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('14', 'Digitalplatform\n\n', '数字化平台', '#', '1', '2', 6, '0', 'user:add', 'fa fa-pie-chart', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('141', 'plandg', '智慧大屏', '/digitization/plan/plan-ui', '14', '3', 1, '0', 'user:add', 'fa fa-desktop', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('15', 'ProcessManage', '工艺管理', '#', '1', '2', 3, '0', 'user:add', 'fa fa-wrench', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
-INSERT INTO `sp_sys_menu` VALUES ('151', 'f\r\nflowProcess', '工艺路线管理', '/basedata/flow/process/list-ui', '15', '3', 1, '0', 'user:add', 'fa fa-retweet', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
-INSERT INTO `sp_sys_menu` VALUES ('152', 'f\r\nbom', '工艺BOM管理', ':;', '15', '3', 2, '0', 'user:add', 'fa fa-file-text-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('151', 'flowProcess', '工艺路线管理', '/basedata/flow/process/list-ui', '15', '3', 1, '0', 'user:add', 'fa fa-retweet', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('152', 'bom', '工艺BOM管理', '/technology/bom/list-ui', '15', '3', 2, '0', 'user:add', 'fa fa-file-text-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('16', 'wip', '在制品管理', '#', '1', '2', 5, '0', 'user:add', 'fa fa-industry', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
+INSERT INTO `sp_sys_menu` VALUES ('161', 'generalSnProcess', 'SN通用过程采集', '/rrr', '16', '3', 1, '0', 'user:add', 'fa fa-product-hunt', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('2', 'component', 'OPC操作', '#', '0', '1', 1, '0', 'user:add', 'fa fa-lemon-o', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('3', 'other', '其他管理', '#', '0', '1', 1, '0', 'user:add', 'fa fa-slideshare', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 
@@ -348,7 +440,17 @@ CREATE TABLE `sp_sys_role`  (
 -- Records of sp_sys_role
 -- ----------------------------
 INSERT INTO `sp_sys_role` VALUES ('1185025876737396738', '超级管理员', 'admin', '超级管理员', '0', '2019-10-18 10:52:40', 'SongPeng', '2020-03-13 14:06:43', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1232532514523213826', '体验者', 'experience', '体验者', '0', '2020-02-26 13:07:05', 'admin', '2020-02-29 16:38:41', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1232532514523213826', '体验者123', 'experience', '体验者', '0', '2020-02-26 13:07:05', 'admin', '2020-06-03 15:05:59', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274963902774620161', '12', '12', '12', '0', '2020-06-22 15:14:17', 'admin', '2020-06-22 15:14:17', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274963930100510721', '1212', '1212', '1212', '0', '2020-06-22 15:14:23', 'admin', '2020-06-22 15:14:23', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274963986383876098', '1311', '121', '111', '0', '2020-06-22 15:14:37', 'admin', '2020-06-22 15:14:37', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274964058609790977', '12121212', '12121', '1212', '0', '2020-06-22 15:14:54', 'admin', '2020-06-22 15:14:54', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274964096777957377', '1313', '12121212', '121212', '0', '2020-06-22 15:15:03', 'admin', '2020-06-22 15:15:03', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274964138322538497', '331', '1222', '22', '0', '2020-06-22 15:15:13', 'admin', '2020-06-22 15:15:13', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274964176301961218', '1211', '1111', '1111', '0', '2020-06-22 15:15:22', 'admin', '2020-06-22 15:15:22', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1274964233344495618', '443', '333', '3', '0', '2020-06-22 15:15:36', 'admin', '2020-06-22 15:15:36', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1280124406522425346', '11', '11', '11', '0', '2020-07-06 21:00:17', 'admin', '2020-07-06 21:00:17', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('1281217564303929346', '2315', '4324', '42342', '0', '2020-07-09 21:24:06', 'admin', '2020-07-17 00:34:09', 'admin');
 INSERT INTO `sp_sys_role` VALUES ('1336542182244384', '王子杨', '123', '王子杨', '0', '2020-03-12 15:22:56', 'admin', '2020-03-12 15:22:56', 'admin');
 
 -- ----------------------------
@@ -418,8 +520,9 @@ CREATE TABLE `sp_sys_user`  (
 -- ----------------------------
 INSERT INTO `sp_sys_user` VALUES ('1184009088826392578', '宋鹏', 'iamsongpeng', '9d7281eeaebded0b091340cfa658a7e8', '', '', '13776337795', '', '1', NULL, '', '', '', '', '', '', '', '', '', '0', '2019-10-15 15:32:19', 'SongPeng', '2020-02-28 16:44:59', 'admin');
 INSERT INTO `sp_sys_user` VALUES ('1184010472443396098', '猴子', 'monkey', '9d7281eeaebded0b091340cfa658a7e8', '123', '', '137763377', '', '0', NULL, '', '', '', '', '', '', '', '', '', '0', '2019-10-15 15:37:52', 'SongPeng', '2020-02-26 15:03:32', 'admin');
-INSERT INTO `sp_sys_user` VALUES ('1184019107907227649', '超级管理员', 'admin', '9d7281eeaebded0b091340cfa658a7e8', '11', '', '13776337796', '44', '0', NULL, '55', '66', '77', '88', '99', '10', '11', '12', '13', '0', '2019-10-15 16:12:08', 'SongPeng', '2020-03-13 14:11:02', 'admin');
-INSERT INTO `sp_sys_user` VALUES ('1244536469953159170', 'tp001', 'tpadmin', 'c10becc47f8ac1780d82c1f9d4425c5b', '01', '', '13721747199', '0393-', '0', '1990-01-01 00:00:00', '', '', '', '', '', '', '', '', '', '0', '2020-03-30 16:06:31', 'admin', '2020-03-30 16:06:31', 'admin');
+INSERT INTO `sp_sys_user` VALUES ('1184019107907227649', '超级管理员', 'admin', '9d7281eeaebded0b091340cfa658a7e8', '11', '', '13776337796', '44', '0', NULL, '55', '66', '77', '88', '99', '10', '11', '12', '13', '0', '2019-10-15 16:12:08', 'SongPeng', '2020-03-24 11:08:22', 'admin');
+INSERT INTO `sp_sys_user` VALUES ('1266201180838801409', 'cassman', 'cassman.yang', '0302726d276d6b011d85404f2beb14a4', '90573703', 'cassman.yang@qq.com', '1111', '86195', '1', '2019-05-21 00:00:00', '#sd', '45+645+65+6511', 'swim', 'sad', 'dsa', 'fasd', 'daf', 'dsaf', 'daf', '0', '2020-05-29 10:54:21', 'admin', '2020-06-02 16:45:25', 'admin');
+INSERT INTO `sp_sys_user` VALUES ('1276512902757724162', '小明', 'xm', 'a7c3fcdeca8ce6d49d2680eecd5e7431', '1', '1@qq.com', '19298833438', '323232', '0', '1998-09-12 00:00:00', '1', '1', '12', '1', '1', '1', '1', '1', '1', '0', '2020-06-26 21:49:27', 'admin', '2020-07-07 14:00:52', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_sys_user_role
@@ -439,8 +542,9 @@ CREATE TABLE `sp_sys_user_role`  (
 -- ----------------------------
 -- Records of sp_sys_user_role
 -- ----------------------------
-INSERT INTO `sp_sys_user_role` VALUES ('1238346810863992834', '1184019107907227649', '1185025876737396738', '2020-03-13 14:11:02', 'admin', '2020-03-13 14:11:02', 'admin');
-INSERT INTO `sp_sys_user_role` VALUES ('1244536469990907905', '1244536469953159170', '1185025876737396738', '2020-03-30 16:06:31', 'admin', '2020-03-30 16:06:31', 'admin');
+INSERT INTO `sp_sys_user_role` VALUES ('1242287110472966146', '1184019107907227649', '1185025876737396738', '2020-03-24 11:08:22', 'admin', '2020-03-24 11:08:22', 'admin');
+INSERT INTO `sp_sys_user_role` VALUES ('1267739082731270146', '1266201180838801409', '1336542182244384', '2020-06-02 16:45:25', 'admin', '2020-06-02 16:45:25', 'admin');
+INSERT INTO `sp_sys_user_role` VALUES ('1280381244774002690', '1276512902757724162', '1232532514523213826', '2020-07-07 14:00:52', 'admin', '2020-07-07 14:00:52', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_table_manager
@@ -463,12 +567,7 @@ CREATE TABLE `sp_table_manager`  (
 -- ----------------------------
 -- Records of sp_table_manager
 -- ----------------------------
-INSERT INTO `sp_table_manager` VALUES ('1237284254149844993', 'sp_factroy', '工厂主数据', '2020-03-10 15:48:48', 'admin', '2020-03-22 14:45:29', 'admin', '0', '\"\"');
-INSERT INTO `sp_table_manager` VALUES ('1238646992247808001', 'sp_oper', '工序主数据', '2020-03-14 10:03:51', 'admin', '2020-03-14 10:30:11', 'admin', '0', '\"\"');
-INSERT INTO `sp_table_manager` VALUES ('1238649867422228482', 'sp_line', '线体主数据', '2020-03-14 10:15:16', 'admin', '2020-03-14 10:27:01', 'admin', '0', '\"\"');
-INSERT INTO `sp_table_manager` VALUES ('1238653752496971777', 'sp_flow', '流程主数据', '2020-03-14 10:30:42', 'admin', '2020-03-14 10:30:42', 'admin', '0', '\"\"');
-INSERT INTO `sp_table_manager` VALUES ('1238668511262871554', 'sp_work_shop', '车间主数据', '2020-03-14 11:29:21', 'admin', '2020-03-14 11:29:21', 'admin', '0', '\"\"');
-INSERT INTO `sp_table_manager` VALUES ('1240147444588183554', 'sp_sys_dict', '字典表', '2020-03-18 13:26:06', 'admin', '2020-03-18 13:54:15', 'admin', '0', '\"\"');
+INSERT INTO `sp_table_manager` VALUES ('1283020801696837633', 'sp_bom', '', '2020-07-14 20:49:31', 'admin', '2020-07-14 20:49:31', 'admin', '0', '\"\"');
 
 -- ----------------------------
 -- Table structure for sp_table_manager_item
@@ -491,22 +590,7 @@ CREATE TABLE `sp_table_manager_item`  (
 -- ----------------------------
 -- Records of sp_table_manager_item
 -- ----------------------------
-INSERT INTO `sp_table_manager_item` VALUES ('1238652822699466753', '1238649867422228482', 'line', '线体代号', 'Y', 1, '2020-03-14 10:27:01', 'admin', '2020-03-14 10:27:01', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238652822699466754', '1238649867422228482', 'line_desc', '线体描述', 'Y', 2, '2020-03-14 10:27:01', 'admin', '2020-03-14 10:27:01', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238652822699466755', '1238649867422228482', 'process_section', '流程工序段', 'Y', 3, '2020-03-14 10:27:01', 'admin', '2020-03-14 10:27:01', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238653621219450882', '1238646992247808001', 'oper', '工序代码', 'Y', 1, '2020-03-14 10:30:11', 'admin', '2020-03-14 10:30:11', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238653621227839489', '1238646992247808001', 'oper_desc', '工序描述', 'Y', 2, '2020-03-14 10:30:11', 'admin', '2020-03-14 10:30:11', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238653752530526209', '1238653752496971777', 'flow', '流程代号', 'Y', 1, '2020-03-14 10:30:42', 'admin', '2020-03-14 10:30:42', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238653752530526210', '1238653752496971777', 'flow_desc', '流程描述', 'Y', 2, '2020-03-14 10:30:42', 'admin', '2020-03-14 10:30:42', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238668511338369025', '1238668511262871554', 'work_shop', '车间代码', 'Y', 1, '2020-03-14 11:29:21', 'admin', '2020-03-14 11:29:21', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1238668511342563329', '1238668511262871554', 'work_shop_desc', '车间描述', 'Y', 2, '2020-03-14 11:29:21', 'admin', '2020-03-14 11:29:21', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1240154526934728705', '1240147444588183554', 'name', '名称', 'Y', 1, '2020-03-18 13:54:15', 'admin', '2020-03-18 13:54:15', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1240154526943117314', '1240147444588183554', 'value', '实际值', 'Y', 2, '2020-03-18 13:54:15', 'admin', '2020-03-18 13:54:15', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1240154526951505922', '1240147444588183554', 'type', '类型', 'Y', 3, '2020-03-18 13:54:15', 'admin', '2020-03-18 13:54:15', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1240154526951505923', '1240147444588183554', 'descr', '类型描述', 'Y', 4, '2020-03-18 13:54:15', 'admin', '2020-03-18 13:54:15', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1240154526951505924', '1240147444588183554', 'sort_num', '序号', 'Y', 5, '2020-03-18 13:54:15', 'admin', '2020-03-18 13:54:15', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1241616971763773441', '1237284254149844993', 'factory', '工厂编号', 'Y', 1, '2020-03-22 14:45:29', 'admin', '2020-03-22 14:45:29', 'admin');
-INSERT INTO `sp_table_manager_item` VALUES ('1241616971763773442', '1237284254149844993', 'factory_desc', '工厂描述', 'Y', 2, '2020-03-22 14:45:29', 'admin', '2020-03-22 14:45:29', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974978', '1283020801696837633', 'materiel_desc', '888', 'Y', 1, '2020-07-14 20:49:31', 'admin', '2020-07-14 20:49:31', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_work_shop
@@ -528,6 +612,5 @@ CREATE TABLE `sp_work_shop`  (
 -- ----------------------------
 INSERT INTO `sp_work_shop` VALUES ('1336875254022176', 'DC-车间1', '电池组装车间', '2020-03-14 11:29:57', 'admin', '2020-03-18 10:52:39', 'admin');
 INSERT INTO `sp_work_shop` VALUES ('1336875591663648', 'DC-JS01', '加酸车间', '2020-03-14 11:32:38', 'admin', '2020-03-14 11:32:38', 'admin');
-INSERT INTO `sp_work_shop` VALUES ('1338141122232352', 'ddd', 'cccc', '2020-03-21 11:10:10', 'admin', '2020-03-21 11:10:16', 'admin');
 
 SET FOREIGN_KEY_CHECKS = 1;
