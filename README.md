@@ -1,8 +1,8 @@
 # 黑科MES 本人重起了一套springboot 开源框架 代码标准规范化。
 
 ## 界面展示
-* 演示地址 
-* https://www.meswozuiniu.icu（新）
+* 演示地址（新）
+* https://www.meswozuiniu.icu
 用户名admin  密码123
 ![1](https://s1.ax1x.com/2020/03/18/8d4GQS.gif)
 
