@@ -127,7 +127,7 @@
 登录界面[MES]
 ![1.1](https://s2.ax1x.com/2020/03/06/3bQLqI.png)
 
-数字孪生仓库(代码近期开源)
+数字孪生仓库
 ![1.1.2](https://s1.ax1x.com/2020/07/21/U56OlF.png)
 
 数字化平台 echarts
