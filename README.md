@@ -1,5 +1,5 @@
-# 黑科MES 基于springboot框架 因为热爱这个行业，个人也想做一个MES。希望这套系统是MES领域黑科技
-
+# 章鱼师兄。真的智造！
+## 黑科更名为章鱼师兄
 ## 个人参与开发的MES项目
 * **杭州东方通信股份**  (三星SDS麦康平台)
 * **浙江大华技术股份**  (三星SDS麦康平台)
@@ -9,12 +9,8 @@
 * 演示地址（新）
 * https://www.meswozuiniu.icu
 用户名admin  密码123
-![1](https://s1.ax1x.com/2020/03/18/8d4GQS.gif)
-
-个人设计的MES系统功能架构图[还请各位大佬指点]，该项目的开发规划
-![1.1](https://s1.ax1x.com/2020/03/26/GSfGS1.png)
-
-
+章鱼师兄规划
+![1.1](https://s3.ax1x.com/2020/12/12/rV9p0s.png)
 <table style="text-align:center">
     <tr>
         <th bgcolor=#218868 ><font color=#0F0F0F >系统管理</font></th> 
