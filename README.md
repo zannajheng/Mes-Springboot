@@ -1,4 +1,4 @@
-# 章鱼师兄。真的智造！
+# ![1.0](https://s3.ax1x.com/2020/12/12/rViQNn.png)    章鱼师兄。真的智造！ 
 ## 黑科更名为章鱼师兄
 ## 个人参与开发的MES项目
 * **杭州东方通信股份**  (三星SDS麦康平台)
@@ -9,7 +9,9 @@
 * 演示地址（新）
 * https://www.meswozuiniu.icu
 用户名admin  密码123
-章鱼师兄规划
+
+
+## 章鱼师兄规划
 ![1.1](https://s3.ax1x.com/2020/12/12/rV9p0s.png)
 <table style="text-align:center">
     <tr>
