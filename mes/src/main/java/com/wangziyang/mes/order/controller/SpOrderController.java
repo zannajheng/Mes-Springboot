@@ -126,33 +126,28 @@ public class SpOrderController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/gantt/list", method = RequestMethod.POST, produces = "application/json")
     public Result getListGantt(Map<String, Object> params) throws Exception {
+        //刚特图总数据
         List<Map<String, Object>> result = new ArrayList<>();
+        //具体的订单信息
         for (int i = 0; i < 20; i++) {
             Map<String, Object> map = new HashMap<>(8);
-            map.put("id", "id" + (i + 1));
+            Map<String, Object> value = new HashMap<>(8);
+            List<Map<String, Object>> values = new ArrayList<>();
             if (i % 2 == 0) {
-                map.put("name", "物料编码" + (i + 1));
-                map.put("desc", "计划：");
+                map.put("id", "id" + (i + 1));
+                map.put("name", "除湿器一线：工单号" + (i + 1));
+                map.put("desc", "计划数量：");
+                value.put("from", "/Date(" + System.currentTimeMillis() + ")/");
+                value.put("to", "/Date(" + (System.currentTimeMillis() + 2000000000) + ")/");
+                value.put("label", "黑科除湿器");
+                value.put("desc", "完工进度100%");
+                value.put("customClass", "ganttGreen");
+                value.put("dataObj", "1");
+                values.add(value);
             } else {
-                map.put("desc", "实际：");
+                map.put("desc", "完工数量：0");
             }
             map.put("cssClass", "redLabel");
-
-            List<Map<String, Object>> values = new ArrayList<>();
-            Map<String, Object> value = new HashMap<>(8);
-            value.put("from", "/Date(" + System.currentTimeMillis() + ")/");
-            value.put("to", "/Date(" + (System.currentTimeMillis() + 1000000000) + ")/");
-            value.put("label", "黑科除湿器");
-            value.put("desc", "我的甘特图...");
-            value.put("customClass", "ganttGreen");
-            if (i == 1) {
-                value.put("customClass", "ganttOrange");
-            }
-            if (i == 2) {
-                value.put("customClass", "ganttRed");
-            }
-            value.put("dataObj", "1");
-            values.add(value);
             map.put("values", values);
             result.add(map);
         }

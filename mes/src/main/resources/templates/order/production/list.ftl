@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>系统角色列表</title>
+    <title>派工界面</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -99,7 +99,7 @@
             maxScale: "months",
             minScale: "days",
             waitText: "请稍后...",
-            itemsPerPage: 10,
+            itemsPerPage: 15,
             tnTitle1: '物料编码',
             tnTitle2: '计划/实际',
             onItemClick: function (data) {
