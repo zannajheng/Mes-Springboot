@@ -88,7 +88,7 @@
             maxScale: "months",
             minScale: "days",
             waitText: "请稍后...",
-            itemsPerPage: 15,
+            itemsPerPage: 14,
             tnTitle1: '物料编码',
             tnTitle2: '计划/实际',
             onItemClick: function (data) {
@@ -127,14 +127,15 @@
          * 搜索按钮事件
          */
         form.on('submit(js-search-filter)', function (data) {
-            tableIns.reload({
-                where: data.field,
-                page: {
-                    // 重新从第 1 页开始
-                    curr: 1
-                }
-            });
+            // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            return false;
+        });
 
+        /**
+         * 新增订单功能
+         */
+        form.on('submit(js-add-order)', function (data) {
+            modifyPlan();
             // 阻止表单跳转。如果需要表单跳转，去掉这段即可。
             return false;
         });
