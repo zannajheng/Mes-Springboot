@@ -1,5 +1,5 @@
 # summary
-Author: Wang Ziyang
+Author: Wang Ziyang.
 Welcome friends who want to develop together. . My front end is too weak and I fumble around by myself. Please also have a front-end player can do it together
 ## QQ Group87652870
 [![QQ](https://img.shields.io/badge/QQ-87652870-green.svg?logo=tencent%20qq&logoColor=red)](https://jq.qq.com/?_wv=1027&k=55NGCxl)
