@@ -7,7 +7,7 @@
 
 ## 界面展示
 * 演示地址（新）
-* https://www.meswozuiniu.icu
+* http://www.meswozuiniu.icu:8887
 用户名admin  密码123
 
 
