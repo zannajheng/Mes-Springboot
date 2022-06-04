@@ -219,14 +219,15 @@
 
 [![ISA](https://s1.ax1x.com/2020/05/14/YBPeVH.png "ISA自动化学会")](https://www.isa.org/)
 
-## QQ Group808898316
+## QQ Group808898316(此群已满)
 [![QQ](https://img.shields.io/badge/QQ-808898316-green.svg?logo=tencent%20qq&logoColor=red)](http://qm.qq.com/cgi-bin/qm/qr?k=vjfiAHPYgOgO5XxeUFxNfxTlQom2wZFZ)
 
 ## QQ Group87652870(此群已满)
 [![QQ](https://img.shields.io/badge/QQ-87652870-green.svg?logo=tencent%20qq&logoColor=red)](https://jq.qq.com/?_wv=1027&k=55NGCxl)
 
+## QQ Group595803231(请加此群)
+[![QQ](https://img.shields.io/badge/QQ-595803231-green.svg?logo=tencent%20qq&logoColor=red)]
 
 ## 特别鸣谢
-<a href="https://gitee.com/iamsongpeng" target="_blank">**宋鹏同学**</a> 感谢提供前端技术支持！
 
 [![MES-智能制造/MES-Springboot](https://gitee.com/wangziyangyang/MES-Springboot/widgets/widget_card.svg?colors=393222,ebdfc1,fffae5,d8ca9f,393222,a28b40)](https://gitee.com/wangziyangyang/MES-Springboot)
