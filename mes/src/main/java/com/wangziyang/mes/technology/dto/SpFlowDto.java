@@ -1,5 +1,6 @@
 package com.wangziyang.mes.technology.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wangziyang.mes.technology.entity.SpFlow;
 import com.wangziyang.mes.technology.vo.SpOperVo;
 
@@ -8,6 +9,7 @@ import java.util.List;
 /**
  * 流程DTO
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SpFlowDto extends SpFlow {
     /**
      * 流程与工序关系集合
