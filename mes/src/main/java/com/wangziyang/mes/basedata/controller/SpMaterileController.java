@@ -1,6 +1,7 @@
 package com.wangziyang.mes.basedata.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.basedata.entity.SpMaterile;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Objects;
+
 /**
  * <p>
  * 物料控制器
@@ -37,6 +40,7 @@ public class SpMaterileController extends BaseController {
 
     /**
      * 物料服务
+     *
      * @date 2020-07-07
      */
     @Autowired
@@ -113,8 +117,12 @@ public class SpMaterileController extends BaseController {
     @PostMapping("/add-or-update")
     @ResponseBody
     public Result addOrUpdate(SpMaterile record) {
-        SpFlow spflow = iSpFlowService.getById(record.getFlowId());
-        record.setFlowDesc(spflow.getFlowDesc());
+        if (StrUtil.isNotBlank(record.getFlowId())) {
+            SpFlow spflow = iSpFlowService.getById(record.getFlowId());
+            if (Objects.nonNull(spflow)) {
+                record.setFlowDesc(spflow.getFlowDesc());
+            }
+        }
         iSpMaterileService.saveOrUpdate(record);
         return Result.success();
     }
