@@ -15,7 +15,7 @@ layui.define(['table'], function (exports) {
                 limits: [10, 20, 50, 100],
                 limit: 10,
                 page: true,
-                height: 'full-' + ($('#js-search-form').height() + 40),
+                // 不设置默认height，让表格自动撑开内容，分页栏紧贴最后一行数据
                 request: {
                     pageName: 'current'
                     , limitName: 'size'

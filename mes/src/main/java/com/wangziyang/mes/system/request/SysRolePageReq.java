@@ -12,4 +12,29 @@ import com.wangziyang.mes.common.BasePageReq;
  */
 public class SysRolePageReq extends BasePageReq {
 
+    /**
+     * 角色名称模糊查询
+     */
+    private String nameLike;
+
+    /**
+     * 角色编码模糊查询
+     */
+    private String codeLike;
+
+    public String getNameLike() {
+        return nameLike;
+    }
+
+    public void setNameLike(String nameLike) {
+        this.nameLike = nameLike;
+    }
+
+    public String getCodeLike() {
+        return codeLike;
+    }
+
+    public void setCodeLike(String codeLike) {
+        this.codeLike = codeLike;
+    }
 }

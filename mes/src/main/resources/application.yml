@@ -2,7 +2,7 @@ server:
   session-timeout: 1800
 spring:
   profiles:
-    active: dev
+    active: pro
   cache:
     type: ehcache
     ehcache:

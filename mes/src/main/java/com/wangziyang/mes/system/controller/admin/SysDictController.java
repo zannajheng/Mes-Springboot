@@ -1,6 +1,7 @@
 package com.wangziyang.mes.system.controller.admin;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.common.BaseController;
 import com.wangziyang.mes.common.Result;
@@ -50,7 +51,15 @@ public class SysDictController extends BaseController {
     @PostMapping("/page")
     @ResponseBody
     public Result page(SysDictPageReq req) {
-        IPage result = sysDictService.page(req);
+        QueryWrapper<SysDict> qw = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(req.getNameLike())) {
+            qw.like("name", req.getNameLike());
+        }
+        if (StringUtils.isNotEmpty(req.getTypeLike())) {
+            qw.like("type", req.getTypeLike());
+        }
+        qw.orderByDesc("create_time");
+        IPage result = sysDictService.page(req, qw);
         return Result.success(result);
     }
 

@@ -1,4 +1,9 @@
-spring:
+﻿spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
   mvc:
     view:
       prefix: /templates/
@@ -8,18 +13,23 @@ spring:
     suffix: .ftl
     templateEncoding: UTF-8
     templateLoaderPath: classpath:/templates/
-    cache: true
+    cache: false
     expose-spring-macro-helpers: false
     request-context-attribute: request
     settings:
       classic_compatible: true
+      template_update_delay: 0
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.52.76:3306/sparchetype?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong
-    username: admin
+    url: "jdbc:mysql://localhost:3306/sparchetype?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true"
+    username: root
     password: 123456
     druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: "jdbc:mysql://localhost:3306/sparchetype?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Hongkong&allowPublicKeyRetrieval=true"
+      username: root
+      password: 123456
       initial-size: 8
       min-idle: 5
       max-active: 10
@@ -27,8 +37,22 @@ spring:
       transaction-query-timeout: 6000
       remove-abandoned-timeout: 1800
       filters: stat,config
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: ""        # 如果你没有 Redis 密码，留空即可
+    timeout: 2000
+  cache:
+    type: ehcache       # 强制使用 ehcache，避免启用 redis 缓存
 
 logging:
   level:
     root: info
     com.songpeng: info
+
+server:
+  session-timeout: 1800  # 单位：秒
+
+# ============================================================
+# ========== Redis / Cache / Session fallback 配置 ==========
+# ============================================================

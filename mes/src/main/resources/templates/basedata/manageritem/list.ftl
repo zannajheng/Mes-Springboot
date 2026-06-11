@@ -24,6 +24,14 @@
                             <div class="layui-input-inline">
                                 <input id="js-search-test" type="text" name="tableName" autocomplete="off"
                                        readonly="true" class="layui-input">
+                                <input type="hidden" id="js-table-name-id" name="tableNameId" value="">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">关键词</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keyword" autocomplete="off" placeholder="模糊搜索数据"
+                                       class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -92,6 +100,7 @@
         //左侧表格监听行单击事件 初始化右侧表明细
         table.on('row(js-table-name-filter)', function (obj) {
             $('#js-search-test').val(obj.data.tableName);
+            $('#js-table-name-id').val(obj.data.id);
             tableName = obj.data.tableName;
             tableNameId = obj.data.id;
             //初始化数据

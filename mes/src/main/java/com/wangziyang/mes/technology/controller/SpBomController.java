@@ -1,24 +1,28 @@
 package com.wangziyang.mes.technology.controller;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.common.BaseController;
 import com.wangziyang.mes.common.Result;
+import com.wangziyang.mes.technology.dto.SpBomDto;
 import com.wangziyang.mes.technology.entity.SpBom;
+import com.wangziyang.mes.technology.entity.SpBomItem;
 import com.wangziyang.mes.technology.request.SpBomReq;
+import com.wangziyang.mes.technology.service.ISpBomItemService;
 import com.wangziyang.mes.technology.service.ISpBomService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -36,6 +40,9 @@ public class SpBomController extends BaseController {
      */
     @Autowired
     private ISpBomService iSpBomService;
+
+    @Autowired
+    private ISpBomItemService iSpBomItemService;
 
     /**
      * 工艺BOM管理界面
@@ -65,6 +72,8 @@ public class SpBomController extends BaseController {
         if (StringUtils.isNotEmpty(spBom.getId())) {
             SpBom result = iSpBomService.getById(spBom.getId());
             model.addAttribute("result", result);
+            List<SpBomItem> bomItems = iSpBomItemService.listByBomId(spBom.getId());
+            model.addAttribute("bomItems", bomItems);
         }
 
         return "technology/bom/addOrUpdate";
@@ -84,7 +93,7 @@ public class SpBomController extends BaseController {
     public Result page(SpBomReq req) {
         QueryWrapper qw = new QueryWrapper();
         if (StringUtils.isNotEmpty(req.getMaterielCodeLike())) {
-            qw.likeRight("materiel_code",req.getMaterielCodeLike());
+            qw.like("materiel_code", req.getMaterielCodeLike());
         }
         IPage result = iSpBomService.page(req,qw);
         return Result.success(result);
@@ -99,9 +108,27 @@ public class SpBomController extends BaseController {
     @ApiOperation("工艺BOM修改、新增")
     @PostMapping("/add-or-update")
     @ResponseBody
-    public Result addOrUpdate(SpBom spBom) {
+    public Result addOrUpdate(@RequestBody SpBomDto record) {
+        SpBom spBom = new SpBom();
+        BeanUtils.copyProperties(record, spBom);
         iSpBomService.saveOrUpdate(spBom);
-        return Result.success();
+
+        List<SpBomItem> items = record.getSpBomItems();
+        if (CollectionUtil.isNotEmpty(items)) {
+            if (StringUtils.isNotEmpty(record.getId())) {
+                iSpBomItemService.remove(new QueryWrapper<SpBomItem>().eq("bom_head_id", record.getId()));
+                for (SpBomItem item : items) {
+                    item.setId(null);
+                    item.setBomHeadId(record.getId());
+                }
+            } else {
+                for (SpBomItem item : items) {
+                    item.setBomHeadId(spBom.getId());
+                }
+            }
+            iSpBomItemService.saveOrUpdateBatch(items);
+        }
+        return Result.success(spBom.getId());
     }
 
 

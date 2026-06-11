@@ -21,6 +21,16 @@ public class QueryTableNameDataReq extends BasePageReq {
     private String col;
 
     /**
+     * 关键词（用于模糊搜索数据内容）
+     */
+    private String keyword;
+
+    /**
+     * SQL WHERE条件（由keyword自动构建）
+     */
+    private String condition;
+
+    /**
      * 获取 表配置明细字段关联ID
      *
      * @return tableNameId 表配置明细字段关联ID
@@ -62,5 +72,21 @@ public class QueryTableNameDataReq extends BasePageReq {
 
     public void setCol(String col) {
         this.col = col;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }

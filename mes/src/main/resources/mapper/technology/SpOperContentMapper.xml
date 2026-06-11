@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangziyang.mes.technology.mapper.SpOperContentMapper">
+
+    <resultMap id="BaseResultMap" type="com.wangziyang.mes.technology.entity.SpOperContent">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="bom_oper_relation_id" property="bomOperRelationId" jdbcType="VARCHAR"/>
+        <result column="bom_id" property="bomId" jdbcType="VARCHAR"/>
+        <result column="bom_code" property="bomCode" jdbcType="VARCHAR"/>
+        <result column="bom_item_id" property="bomItemId" jdbcType="VARCHAR"/>
+        <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="oper_id" property="operId" jdbcType="VARCHAR"/>
+        <result column="oper" property="oper" jdbcType="VARCHAR"/>
+        <result column="oper_desc" property="operDesc" jdbcType="VARCHAR"/>
+        <result column="work_center" property="workCenter" jdbcType="VARCHAR"/>
+        <result column="work_center_desc" property="workCenterDesc" jdbcType="VARCHAR"/>
+        <result column="oper_time" property="operTime" jdbcType="DECIMAL"/>
+        <result column="produce_cycle" property="produceCycle" jdbcType="DECIMAL"/>
+        <result column="is_produce_plan" property="isProducePlan" jdbcType="VARCHAR"/>
+        <result column="work_center_type" property="workCenterType" jdbcType="VARCHAR"/>
+        <result column="oper_content" property="operContent" jdbcType="VARCHAR"/>
+        <result column="tech_requirement" property="techRequirement" jdbcType="VARCHAR"/>
+        <result column="oper_images" property="operImages" jdbcType="VARCHAR"/>
+        <result column="oper_requirement" property="operRequirement" jdbcType="VARCHAR"/>
+        <result column="is_need_inspect" property="isNeedInspect" jdbcType="VARCHAR"/>
+        <result column="inspect_images" property="inspectImages" jdbcType="VARCHAR"/>
+        <result column="attention" property="attention" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_username" property="createUsername" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_username" property="updateUsername" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByBomId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_content
+        WHERE bom_id = #{bomId}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByBomOperRelationId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_content
+        WHERE bom_oper_relation_id = #{bomOperRelationId}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByRelationId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_content
+        WHERE bom_oper_relation_id = #{bomOperRelationId}
+        ORDER BY create_time DESC
+        LIMIT 1
+    </select>
+
+</mapper>

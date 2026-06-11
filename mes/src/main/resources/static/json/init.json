@@ -121,6 +121,30 @@
         }
       ]
     },
+    "process": {
+      "title": "工艺管理",
+      "icon": "fa fa-cogs",
+      "child": [
+        {
+          "title": "工艺路线管理",
+          "href": "/basedata/flow/list-ui",
+          "icon": "fa fa-random",
+          "target": "_self"
+        },
+        {
+          "title": "工艺BOM管理",
+          "href": "/technology/bom/list-ui",
+          "icon": "fa fa-dropbox",
+          "target": "_self"
+        },
+        {
+          "title": "零部件定义",
+          "href": "/technology/part/list-ui",
+          "icon": "fa fa-th-large",
+          "target": "_self"
+        }
+      ]
+    },
     "other": {
       "title": "其它管理",
       "icon": "fa fa-slideshare",

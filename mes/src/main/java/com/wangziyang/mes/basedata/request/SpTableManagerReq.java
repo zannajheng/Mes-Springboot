@@ -8,4 +8,17 @@ import com.wangziyang.mes.common.BasePageReq;
  * @since 2020/03/15
  */
 public class SpTableManagerReq extends BasePageReq {
+
+    /**
+     * 表名称（用于模糊搜索）
+     */
+    private String tableName;
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
 }

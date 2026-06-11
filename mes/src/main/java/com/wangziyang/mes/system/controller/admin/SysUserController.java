@@ -53,10 +53,10 @@ public class SysUserController extends BaseController {
     public Result page(SysUserPageReq req) throws Exception {
         QueryWrapper qw = new QueryWrapper();
         if (StringUtils.isNotEmpty(req.getNameLike())) {
-            qw.likeRight("name", req.getNameLike());
+            qw.like("name", req.getNameLike());
         }
         if (StringUtils.isNotEmpty(req.getUsernameLike())) {
-            qw.likeRight("username", req.getUsernameLike());
+            qw.like("username", req.getUsernameLike());
         }
         qw.orderByDesc(req.getOrderBy());
         IPage page = sysUserService.page(req, qw);

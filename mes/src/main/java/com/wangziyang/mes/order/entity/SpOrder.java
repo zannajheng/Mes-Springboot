@@ -64,6 +64,11 @@ public class SpOrder extends BaseEntity {
      */
     private Integer statue;
 
+    /**
+     * 生产说明/备注
+     */
+    private String remark;
+
     public String getOrderCode() {
         return orderCode;
     }
@@ -133,6 +138,14 @@ public class SpOrder extends BaseEntity {
 
     public void setStatue(Integer statue) {
         this.statue = statue;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

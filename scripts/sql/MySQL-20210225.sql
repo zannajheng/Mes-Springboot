@@ -414,6 +414,7 @@ INSERT INTO `sp_sys_menu` VALUES ('141', 'plandg', '智慧大屏', '/digitizatio
 INSERT INTO `sp_sys_menu` VALUES ('15', 'ProcessManage', '工艺管理', '', '1', '2', 3, '0', 'user:add', 'fa fa-wrench', '', '2019-10-18 11:18:29', 'Wangziyang', '2021-02-21 15:01:47', 'admin');
 INSERT INTO `sp_sys_menu` VALUES ('151', 'flowProcess', '工艺路线管理', '/basedata/flow/process/list-ui', '15', '3', 1, '0', 'user:add', 'fa fa-retweet', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('152', 'bom', '工艺BOM管理', '/technology/bom/list-ui', '15', '3', 2, '0', 'user:add', 'fa fa-file-text-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
+INSERT INTO `sp_sys_menu` VALUES ('153', 'part', '零部件定义', '/technology/part/list-ui', '15', '3', 3, '0', 'user:add', 'fa fa-th-large', '', '2020-03-28 10:00:00', 'admin', '2020-03-28 10:00:00', 'admin');
 INSERT INTO `sp_sys_menu` VALUES ('16', 'wip', '在制品管理', '#', '1', '2', 5, '0', 'user:add', 'fa fa-industry', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('161', 'generalSnProcess', 'SN通用过程采集', '/rrr', '16', '3', 1, '0', 'user:add', 'fa fa-product-hunt', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('17', 'DigitalSimulation', '黑科数字孪生', '#', '1', '2', 7, '0', 'user:add', 'fa fa-ravelry', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
@@ -446,18 +447,13 @@ CREATE TABLE `sp_sys_role`  (
 -- Records of sp_sys_role
 -- ----------------------------
 INSERT INTO `sp_sys_role` VALUES ('1185025876737396738', '超级管理员', 'admin', '超级管理员', '0', '2019-10-18 10:52:40', 'SongPeng', '2020-03-13 14:06:43', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1232532514523213826', '体验者123', 'experience', '体验者', '0', '2020-02-26 13:07:05', 'admin', '2020-06-03 15:05:59', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274963902774620161', '12', '12', '12', '0', '2020-06-22 15:14:17', 'admin', '2020-06-22 15:14:17', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274963930100510721', '1212', '1212', '1212', '0', '2020-06-22 15:14:23', 'admin', '2020-06-22 15:14:23', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274963986383876098', '1311', '121', '111', '0', '2020-06-22 15:14:37', 'admin', '2020-06-22 15:14:37', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274964058609790977', '12121212', '12121', '1212', '0', '2020-06-22 15:14:54', 'admin', '2020-06-22 15:14:54', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274964096777957377', '1313', '12121212', '121212', '0', '2020-06-22 15:15:03', 'admin', '2020-06-22 15:15:03', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274964138322538497', '331', '1222', '22', '0', '2020-06-22 15:15:13', 'admin', '2020-06-22 15:15:13', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274964176301961218', '1211', '1111', '1111', '0', '2020-06-22 15:15:22', 'admin', '2020-06-22 15:15:22', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1274964233344495618', '443', '333', '3', '0', '2020-06-22 15:15:36', 'admin', '2020-06-22 15:15:36', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1280124406522425346', '11', '11', '11', '0', '2020-07-06 21:00:17', 'admin', '2020-07-06 21:00:17', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1281217564303929346', '2315', '4324', '42342', '0', '2020-07-09 21:24:06', 'admin', '2020-07-17 00:34:09', 'admin');
-INSERT INTO `sp_sys_role` VALUES ('1336542182244384', '王子杨', '123', '王子杨', '0', '2020-03-12 15:22:56', 'admin', '2020-03-12 15:22:56', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000001', '数据员', 'baseDataRole', '基础数据中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000002', '工艺员', 'technologyRole', '产品数据中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000003', '生产计划员', 'productionPlannerRole', '生产计划中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000004', '生产主管', 'productionManagerRole', '生产计划中心、设备管理中心、生产执行中心', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000005', '生产作业员', 'productionOperatorRole', '生产执行中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000006', '库房管理员', 'warehouseManagerRole', '库房管理中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role` VALUES ('2000000000000000007', '质量管理员', 'qualityManagerRole', '质量管理中心全部功能菜单', '0', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_sys_role_menu
@@ -484,6 +480,37 @@ INSERT INTO `sp_sys_role_menu` VALUES ('4', '1185025876737396738', '101', '2019-
 INSERT INTO `sp_sys_role_menu` VALUES ('5', '1185025876737396738', '102', '2019-10-28 14:51:44', 'admin', '2019-10-28 14:51:56', 'admin');
 INSERT INTO `sp_sys_role_menu` VALUES ('6', '1185025876737396738', '103', '2019-10-28 14:51:44', 'admin', '2019-10-28 14:51:56', 'admin');
 INSERT INTO `sp_sys_role_menu` VALUES ('7', '1185025876737396738', '104', '2019-10-28 14:51:44', 'admin', '2019-10-28 14:51:56', 'admin');
+-- 数据员(baseDataRole) - 基础数据模块
+INSERT INTO `sp_sys_role_menu` VALUES ('1001', '2000000000000000001', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('1002', '2000000000000000001', '10', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('1003', '2000000000000000001', '105', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('1004', '2000000000000000001', '106', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('1005', '2000000000000000001', '13', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('1006', '2000000000000000001', '131', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 工艺员(technologyRole) - 工艺管理模块
+INSERT INTO `sp_sys_role_menu` VALUES ('2001', '2000000000000000002', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2002', '2000000000000000002', '15', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2003', '2000000000000000002', '151', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2004', '2000000000000000002', '152', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2005', '2000000000000000002', '153', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 生产计划员(productionPlannerRole) - 计划管理模块
+INSERT INTO `sp_sys_role_menu` VALUES ('3001', '2000000000000000003', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('3002', '2000000000000000003', '12', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('3003', '2000000000000000003', '121', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 生产主管(productionManagerRole) - 计划管理+在制品管理
+INSERT INTO `sp_sys_role_menu` VALUES ('4001', '2000000000000000004', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('4002', '2000000000000000004', '12', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('4003', '2000000000000000004', '121', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('4004', '2000000000000000004', '16', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('4005', '2000000000000000004', '161', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 生产作业员(productionOperatorRole) - 在制品管理模块
+INSERT INTO `sp_sys_role_menu` VALUES ('5001', '2000000000000000005', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('5002', '2000000000000000005', '16', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('5003', '2000000000000000005', '161', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 库房管理员(warehouseManagerRole) - 仅有首页(暂无库房管理模块)
+INSERT INTO `sp_sys_role_menu` VALUES ('6001', '2000000000000000006', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- 质量管理员(qualityManagerRole) - 仅有首页(暂无质量管理模块)
+INSERT INTO `sp_sys_role_menu` VALUES ('7001', '2000000000000000007', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_sys_user
@@ -549,8 +576,6 @@ CREATE TABLE `sp_sys_user_role`  (
 -- Records of sp_sys_user_role
 -- ----------------------------
 INSERT INTO `sp_sys_user_role` VALUES ('1242287110472966146', '1184019107907227649', '1185025876737396738', '2020-03-24 11:08:22', 'admin', '2020-03-24 11:08:22', 'admin');
-INSERT INTO `sp_sys_user_role` VALUES ('1267739082731270146', '1266201180838801409', '1336542182244384', '2020-06-02 16:45:25', 'admin', '2020-06-02 16:45:25', 'admin');
-INSERT INTO `sp_sys_user_role` VALUES ('1280381244774002690', '1276512902757724162', '1232532514523213826', '2020-07-07 14:00:52', 'admin', '2020-07-07 14:00:52', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_table_manager
@@ -574,6 +599,10 @@ CREATE TABLE `sp_table_manager`  (
 -- Records of sp_table_manager
 -- ----------------------------
 INSERT INTO `sp_table_manager` VALUES ('1283020801696837633', 'sp_bom', '', '2020-07-14 20:49:31', 'admin', '2020-07-14 20:49:31', 'admin', '0', '\"\"');
+INSERT INTO `sp_table_manager` VALUES ('1283020801696837634', 'sp_factroy', '工厂', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin', '0', '\"\"');
+INSERT INTO `sp_table_manager` VALUES ('1283020801696837635', 'sp_work_shop', '工作车间', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin', '0', '\"\"');
+INSERT INTO `sp_table_manager` VALUES ('1283020801696837636', 'sp_line', '线体', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin', '0', '\"\"');
+INSERT INTO `sp_table_manager` VALUES ('1283020801696837637', 'sp_oper', '工序定义', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin', '0', '\"\"');
 
 -- ----------------------------
 -- Table structure for sp_table_manager_item
@@ -597,6 +626,19 @@ CREATE TABLE `sp_table_manager_item`  (
 -- Records of sp_table_manager_item
 -- ----------------------------
 INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974978', '1283020801696837633', 'materiel_desc', '888', 'Y', 1, '2020-07-14 20:49:31', 'admin', '2020-07-14 20:49:31', 'admin');
+-- sp_factroy
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974979', '1283020801696837634', 'factory', '工厂', 'N', 1, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974980', '1283020801696837634', 'factory_desc', '工厂描述', 'N', 2, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- sp_work_shop
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974981', '1283020801696837635', 'work_shop', '车间', 'N', 1, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974982', '1283020801696837635', 'work_shop_desc', '车间描述', 'N', 2, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- sp_line
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974983', '1283020801696837636', 'line', '线体', 'Y', 1, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974984', '1283020801696837636', 'line_desc', '线体描述', 'N', 2, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974985', '1283020801696837636', 'process_section', '工序段代号', 'N', 3, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+-- sp_oper
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974986', '1283020801696837637', 'oper', '工序', 'Y', 1, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_table_manager_item` VALUES ('1283020801742974987', '1283020801696837637', 'oper_desc', '工序描述', 'N', 2, '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 
 -- ----------------------------
 -- Table structure for sp_work_shop
@@ -618,5 +660,23 @@ CREATE TABLE `sp_work_shop`  (
 -- ----------------------------
 INSERT INTO `sp_work_shop` VALUES ('1336875254022176', 'DC-车间1', '电池组装车间', '2020-03-14 11:29:57', 'admin', '2020-03-18 10:52:39', 'admin');
 INSERT INTO `sp_work_shop` VALUES ('1336875591663648', 'DC-JS01', '加酸车间', '2020-03-14 11:32:38', 'admin', '2020-03-14 11:32:38', 'admin');
+
+-- ----------------------------
+-- Table structure for sp_part
+-- ----------------------------
+DROP TABLE IF EXISTS `sp_part`;
+CREATE TABLE `sp_part`  (
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键id',
+  `part_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '零部件编号',
+  `part_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '零部件名称',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注信息',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '正常' COMMENT '状态',
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
+  `create_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建人',
+  `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `update_username` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '更新人',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_part_no`(`part_no`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '零部件表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

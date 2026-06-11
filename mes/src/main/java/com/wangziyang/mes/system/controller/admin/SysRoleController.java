@@ -41,6 +41,12 @@ public class SysRoleController extends BaseController {
     @ResponseBody
     public Result page(SysRolePageReq req) {
         QueryWrapper qw = new QueryWrapper();
+        if (StringUtils.isNotEmpty(req.getNameLike())) {
+            qw.like("name", req.getNameLike());
+        }
+        if (StringUtils.isNotEmpty(req.getCodeLike())) {
+            qw.like("code", req.getCodeLike());
+        }
         qw.orderByDesc(req.getOrderBy());
         IPage result = sysRoleService.page(req, qw);
         return Result.success(result);

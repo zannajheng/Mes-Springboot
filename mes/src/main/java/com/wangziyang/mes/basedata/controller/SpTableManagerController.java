@@ -2,6 +2,7 @@ package com.wangziyang.mes.basedata.controller;
 
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.basedata.dto.SpTableManagerDto;
 import com.wangziyang.mes.basedata.entity.SpTableManager;
@@ -92,7 +93,12 @@ public class SpTableManagerController extends BaseController {
     @PostMapping("/page")
     @ResponseBody
     public Result page(SpTableManagerReq req) {
-        IPage result = iSpTableManagerService.page(req);
+        QueryWrapper<SpTableManager> qw = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(req.getTableName())) {
+            qw.like("table_name", req.getTableName());
+        }
+        qw.orderByDesc(req.getOrderBy());
+        IPage result = iSpTableManagerService.page(req, qw);
         return Result.success(result);
     }
 

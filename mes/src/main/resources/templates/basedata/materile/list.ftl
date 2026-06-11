@@ -17,13 +17,13 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">物料编号</label>
                     <div class="layui-input-inline">
-                        <input type="materiel" name="materiel" autocomplete="off" class="layui-input">
+                        <input type="text" name="materielLike" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">物料名称</label>
                     <div class="layui-input-inline">
-                        <input type="materielDesc" name="materielDesc" autocomplete="off" class="layui-input">
+                        <input type="text" name="materielDescLike" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">

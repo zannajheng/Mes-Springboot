@@ -46,6 +46,17 @@ public class TableNameDataServiceImpl implements TableNameDataService {
     @Override
     public IPage<Map<String, String>> queryTableNameDataList(QueryTableNameDataReq page) throws Exception {
         page.setCol(buildCol(page.getTableNameId()));
+        // 构建模糊搜索条件
+        if (StringUtils.isNotEmpty(page.getKeyword())) {
+            String[] cols = page.getCol().split(",");
+            StringBuilder whereBuilder = new StringBuilder();
+            for (String col : cols) {
+                whereBuilder.append(" OR ").append(col).append(" LIKE '%").append(page.getKeyword()).append("%'");
+            }
+            page.setCondition(whereBuilder.substring(4));
+        } else {
+            page.setCondition("");
+        }
         page.setRecords(queryTableNameDataMapper.queryTableNameDataList(page));
         return page;
     }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangziyang.mes.technology.mapper.SpOperMaterialListMapper">
+
+    <resultMap id="BaseResultMap" type="com.wangziyang.mes.technology.entity.SpOperMaterialList">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="oper_content_id" property="operContentId" jdbcType="VARCHAR"/>
+        <result column="bom_oper_relation_id" property="bomOperRelationId" jdbcType="VARCHAR"/>
+        <result column="materiel_code" property="materielCode" jdbcType="VARCHAR"/>
+        <result column="materiel_name" property="materielName" jdbcType="VARCHAR"/>
+        <result column="materiel_spec" property="materielSpec" jdbcType="VARCHAR"/>
+        <result column="materiel_type" property="materielType" jdbcType="VARCHAR"/>
+        <result column="require_qty" property="requireQty" jdbcType="DECIMAL"/>
+        <result column="sort_num" property="sortNum" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_username" property="createUsername" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_username" property="updateUsername" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByOperContentId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_material_list
+        WHERE oper_content_id = #{operContentId}
+        ORDER BY sort_num ASC, create_time ASC
+    </select>
+
+    <select id="selectByBomOperRelationId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_material_list
+        WHERE bom_oper_relation_id = #{bomOperRelationId}
+        ORDER BY sort_num ASC, create_time ASC
+    </select>
+
+</mapper>

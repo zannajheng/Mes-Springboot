@@ -30,13 +30,13 @@ public class ShiroConfig {
     //缓存方式
     public static String CACHE_TYPE_REDIS = "redis";
 
-    @Value("${spring.redis.host}")
+    @Value("${spring.redis.host:127.0.0.1}")
     private String host;
-    @Value("${spring.redis.password}")
+    @Value("${spring.redis.password:}")
     private String password;
-    @Value("${spring.redis.port}")
+    @Value("${spring.redis.port:6379}")
     private int port;
-    @Value("${spring.redis.timeout}")
+    @Value("${spring.redis.timeout:2000}")
     private int timeout;
 
     @Value("${spring.cache.type}")

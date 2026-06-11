@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangziyang.mes.technology.mapper.SpOperTechDocMapper">
+
+    <resultMap id="BaseResultMap" type="com.wangziyang.mes.technology.entity.SpOperTechDoc">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="oper_content_id" property="operContentId" jdbcType="VARCHAR"/>
+        <result column="bom_oper_relation_id" property="bomOperRelationId" jdbcType="VARCHAR"/>
+        <result column="doc_desc" property="docDesc" jdbcType="VARCHAR"/>
+        <result column="doc_images" property="docImages" jdbcType="VARCHAR"/>
+        <result column="doc_files" property="docFiles" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_username" property="createUsername" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_username" property="updateUsername" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByOperContentId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_tech_doc
+        WHERE oper_content_id = #{operContentId}
+        ORDER BY create_time ASC
+    </select>
+
+    <select id="selectByBomOperRelationId" resultMap="BaseResultMap">
+        SELECT * FROM sp_oper_tech_doc
+        WHERE bom_oper_relation_id = #{bomOperRelationId}
+        ORDER BY create_time ASC
+    </select>
+
+</mapper>

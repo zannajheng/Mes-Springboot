@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 工序服务类
  * </p>
  *
  * @author WangZiYang
@@ -13,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISpOperService extends IService<SpOper> {
 
+    /**
+     * 生成工序编号（格式：GX0000001）
+     * @return 工序编号
+     */
+    String generateOperNo();
 }

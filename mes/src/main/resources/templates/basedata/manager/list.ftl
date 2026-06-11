@@ -66,17 +66,17 @@
                     type: 'checkbox'
                 }, {
 
-                    field: 'tableName', title: '表名称', width: 120
+                    field: 'tableName', title: '表名称', minWidth: 120
                 }, {
-                    field: 'tableDesc', title: '业务描述', width: 130
+                    field: 'tableDesc', title: '业务描述', minWidth: 130
                 }, {
-                    field: 'createUsername', title: '创建用户', width: 130
+                    field: 'createUsername', title: '创建用户', minWidth: 130
                 }, {
-                    field: 'createTime', title: '创建时间', width: 160
+                    field: 'createTime', title: '创建时间', minWidth: 160
                 }, {
-                    field: 'updateUsername', title: '更改用户', width: 130
+                    field: 'updateUsername', title: '更改用户', minWidth: 130
                 }, {
-                    field: 'updateTime', title: '更改时间', width: 160
+                    field: 'updateTime', title: '更改时间', minWidth: 160
                 }, {
                     field: 'isDeleted', title: '状态', width: 90, templet: function (records) {
                         return spConfig.isDeletedDict[records.isDeleted];

@@ -15,15 +15,15 @@
         <form id="js-search-form" class="layui-form" lay-filter="js-q-form-filter">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">姓名</label>
+                    <label class="layui-form-label">标签名</label>
                     <div class="layui-input-inline">
                         <input type="text" name="nameLike" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">用户名</label>
+                    <label class="layui-form-label">类别</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="usernameLike" autocomplete="off" class="layui-input">
+                        <input type="text" name="typeLike" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">

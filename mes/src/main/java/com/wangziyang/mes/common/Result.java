@@ -38,6 +38,14 @@ public class Result<T> extends HashMap<String, Object> {
         return restResult(data, 1, msg);
     }
 
+    public static <T> Result<T> fail(String msg) {
+        return failure(msg);
+    }
+
+    public static <T> Result<T> fail(T data, String msg) {
+        return failure(data, msg);
+    }
+
     private static <T> Result<T> restResult(T data, int code, String msg) {
         Result<T> apiResult = new Result<>();
         apiResult.put("code", code);

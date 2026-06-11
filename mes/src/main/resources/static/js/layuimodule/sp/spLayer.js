@@ -52,7 +52,7 @@ layui.define(['layer'], function (exports) {
             };
 
             var config = $.extend({}, defaultConfig, param, {
-                content: param.content + '?' + spUtil.parseParam(param.spWhere)
+                content: param.content + (param.spWhere ? '?' + spUtil.parseParam(param.spWhere) : '')
             });
 
             return layer.open(config);

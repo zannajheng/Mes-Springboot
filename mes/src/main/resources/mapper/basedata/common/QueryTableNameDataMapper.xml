@@ -5,6 +5,9 @@
     <!--基础数据通用查询-->
     <select id="queryTableNameDataList" resultType="java.util.Map">
         SELECT id,${col} FROM ${tableName}
+        <where>
+            ${condition}
+        </where>
     </select>
 
     <!--基础数据通用查询-->

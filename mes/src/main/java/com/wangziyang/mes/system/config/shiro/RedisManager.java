@@ -1,6 +1,5 @@
 package com.wangziyang.mes.system.config.shiro;
 
-import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -12,10 +11,8 @@ import java.util.Set;
  */
 public class RedisManager {
 
-    @Value("${spring.redis.host}")
     private String host = "127.0.0.1";
 
-    @Value("${spring.redis.port}")
     private int port = 6379;
 
     /**
@@ -26,10 +23,8 @@ public class RedisManager {
 	/**
 	 * timeout for jedis try to connect to redis server, not expire time! In milliseconds
 	 */
-	@Value("${spring.redis.timeout}")
     private int timeout = 0;
 
-    @Value("${spring.redis.password}")
     private String password = "";
 
     private static JedisPool jedisPool = null;

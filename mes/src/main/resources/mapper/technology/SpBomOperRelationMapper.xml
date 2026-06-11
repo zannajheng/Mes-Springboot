@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangziyang.mes.technology.mapper.SpBomOperRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.wangziyang.mes.technology.entity.SpBomOperRelation">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="bom_id" property="bomId" jdbcType="VARCHAR"/>
+        <result column="bom_code" property="bomCode" jdbcType="VARCHAR"/>
+        <result column="materiel_desc" property="materielDesc" jdbcType="VARCHAR"/>
+        <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="node_level" property="nodeLevel" jdbcType="INTEGER"/>
+        <result column="bom_item_id" property="bomItemId" jdbcType="VARCHAR"/>
+        <result column="oper_id" property="operId" jdbcType="VARCHAR"/>
+        <result column="oper" property="oper" jdbcType="VARCHAR"/>
+        <result column="oper_desc" property="operDesc" jdbcType="VARCHAR"/>
+        <result column="work_center" property="workCenter" jdbcType="VARCHAR"/>
+        <result column="work_center_desc" property="workCenterDesc" jdbcType="VARCHAR"/>
+        <result column="oper_time" property="operTime" jdbcType="DECIMAL"/>
+        <result column="produce_cycle" property="produceCycle" jdbcType="DECIMAL"/>
+        <result column="sort_num" property="sortNum" jdbcType="INTEGER"/>
+        <result column="is_locked" property="isLocked" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_username" property="createUsername" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="update_username" property="updateUsername" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, bom_id, bom_code, materiel_desc, node_name, node_level, bom_item_id, oper_id, oper,
+        oper_desc, work_center, work_center_desc, oper_time, produce_cycle, sort_num, is_locked,
+        create_time, create_username, update_time, update_username
+    </sql>
+
+    <select id="selectByBomId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sp_bom_oper_relation
+        WHERE bom_id = #{bomId}
+        ORDER BY sort_num ASC
+    </select>
+
+    <select id="selectByBomCode" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sp_bom_oper_relation
+        WHERE bom_code = #{bomCode}
+        ORDER BY sort_num ASC
+    </select>
+
+    <delete id="deleteByBomId">
+        DELETE FROM sp_bom_oper_relation
+        WHERE bom_id = #{bomId}
+    </delete>
+
+</mapper>
