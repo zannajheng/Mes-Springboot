@@ -20,17 +20,9 @@
                 <form id="js-search-form" class="layui-form" lay-filter="js-q-form-filter">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">表名称</label>
-                            <div class="layui-input-inline">
-                                <input id="js-search-test" type="text" name="tableName" autocomplete="off"
-                                       readonly="true" class="layui-input">
-                                <input type="hidden" id="js-table-name-id" name="tableNameId" value="">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
                             <label class="layui-form-label">关键词</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="keyword" autocomplete="off" placeholder="模糊搜索数据"
+                                <input type="text" name="keyword" autocomplete="off" placeholder=""
                                        class="layui-input">
                             </div>
                         </div>
@@ -99,8 +91,6 @@
 
         //左侧表格监听行单击事件 初始化右侧表明细
         table.on('row(js-table-name-filter)', function (obj) {
-            $('#js-search-test').val(obj.data.tableName);
-            $('#js-table-name-id').val(obj.data.id);
             tableName = obj.data.tableName;
             tableNameId = obj.data.id;
             //初始化数据
@@ -172,8 +162,11 @@
          * 搜索按钮事件
          */
         form.on('submit(js-search-filter)', function (data) {
+            var where = data.field;
+            where.tableNameId = tableNameId;
+            where.tableName = tableName;
             tableIns.reload({
-                where: data.field,
+                where: where,
                 page: {
                     // 重新从第 1 页开始
                     curr: 1

@@ -65,7 +65,7 @@ public class SysDepartmentController extends BaseController {
     public String addOrUpdateUI(Model model, SysDict record) {
         if (StringUtils.isNotEmpty(record.getId())) {
             SysDepartment sysDepartment = sysDepartmentService.getById(record.getId());
-            model.addAttribute("department", sysDepartment);
+            model.addAttribute("result", sysDepartment);
         }
         return "admin/system/department/addOrUpdate";
     }
@@ -73,7 +73,19 @@ public class SysDepartmentController extends BaseController {
     @PostMapping("/add-or-update")
     @ResponseBody
     public Result addOrUpdate(SysDepartment record) {
+        if (StringUtils.isEmpty(record.getParentId())) {
+            record.setParentId("0");
+        }
         sysDepartmentService.saveOrUpdate(record);
         return Result.success(record.getId());
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public Result delete(String id) {
+        if (StringUtils.isNotEmpty(id)) {
+            sysDepartmentService.removeById(id);
+        }
+        return Result.success();
     }
 }

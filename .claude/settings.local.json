@@ -62,7 +62,23 @@
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT * FROM sp_table_manager WHERE table_name = 'sp_bom';\" 2>/dev/null)",
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" --default-character-set=utf8mb4 -u root -p123456 sparchetype -e \"UPDATE sp_table_manager SET table_desc = 'BOM清单' WHERE table_name = 'sp_bom'; SELECT id, table_name, table_desc FROM sp_table_manager WHERE table_name = 'sp_bom';\")",
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" --default-character-set=utf8mb4 -u root -p123456 sparchetype -e \"\n-- Verify sp_bom description\nSELECT id, table_name, table_desc FROM sp_table_manager WHERE table_name = 'sp_bom';\n\n-- Show all registered tables\nSELECT id, table_name, table_desc, is_deleted FROM sp_table_manager ORDER BY id;\n\n-- Count total tables registered\nSELECT COUNT\\(*\\) as total_tables FROM sp_table_manager WHERE is_deleted = 0;\n\")",
-      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" --default-character-set=utf8mb4 -u root -p123456 sparchetype -e \"\n-- Verify LIKE query works as expected for the 基础数据配置平台 search\nSELECT table_name, table_desc FROM sp_table_manager WHERE table_name LIKE '%bom%';\n\n-- Test the keyword search \\(simulates 基础数据维护 search within data table\\)\nSELECT id, materiel_code, materiel_desc FROM sp_materile WHERE materiel_code LIKE '%MC%' OR materiel_desc LIKE '%MC%';\n\")"
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" --default-character-set=utf8mb4 -u root -p123456 sparchetype -e \"\n-- Verify LIKE query works as expected for the 基础数据配置平台 search\nSELECT table_name, table_desc FROM sp_table_manager WHERE table_name LIKE '%bom%';\n\n-- Test the keyword search \\(simulates 基础数据维护 search within data table\\)\nSELECT id, materiel_code, materiel_desc FROM sp_materile WHERE materiel_code LIKE '%MC%' OR materiel_desc LIKE '%MC%';\n\")",
+      "Bash(gh auth:*)",
+      "Bash(git credential-manager:*)",
+      "Bash(git credential-manager-core:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(python3:*)",
+      "Bash(python -c \"import docx; print\\(''python-docx available''\\)\")",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Read(//tmp/**)",
+      "ExecuteExtraTool",
+      "Bash(wmic process:*)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"DESC sp_sys_menu;\" 2>/dev/null)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time = '0000-00-00 00:00:00' OR update_time = '0000-00-00 00:00:00';\" 2>/dev/null)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time = '0000-00-00 00:00:00' OR create_time IS NULL OR update_time = '0000-00-00 00:00:00' OR create_time = 0;\" 2>&1)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time IS NULL OR create_time = '0000-00-00 00:00:00' OR YEAR\\(create_time\\) = 0 OR update_time IS NULL OR update_time = '0000-00-00 00:00:00' OR YEAR\\(update_time\\) = 0;\" 2>/dev/null)"
     ]
   }
 }

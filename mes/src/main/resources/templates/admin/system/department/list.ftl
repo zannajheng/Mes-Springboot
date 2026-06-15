@@ -62,45 +62,15 @@
                 [{
                     type: 'checkbox'
                 }, {
-                    field: 'name', title: '姓名', minWidth: 120
+                    field: 'name', title: '部门名称', minWidth: 120
                 }, {
-                    field: 'username', title: '用户名', minWidth: 130
+                    field: 'sortNum', title: '排序', width: 80
                 }, {
-                    field: 'password', title: '密码', width: 90
-                }, {
-                    field: 'deptId', title: '部门id', width: 90
-                }, {
-                    field: 'email', title: '邮箱', minWidth: 90
-                }, {
-                    field: 'mobile', title: '手机号', minWidth: 120
-                }, {
-                    field: 'tel', title: '固定电话', minWidth: 120
-                }, {
-                    field: 'sex', title: '性别', width: 60
-                }, {
-                    field: 'birthday', title: '出生年月日', minWidth: 120
-                }, {
-                    field: 'picId', title: '图片id', width: 90
-                }, {
-                    field: 'idCard', title: '身份证', minWidth: 120
-                }, {
-                    field: 'hobby', title: '爱好', minWidth: 90
-                }, {
-                    field: 'province', title: '省份', minWidth: 90
-                }, {
-                    field: 'city', title: '城市', minWidth: 90
-                }, {
-                    field: 'district', title: '区县', minWidth: 90
-                }, {
-                    field: 'street', title: '街道', minWidth: 90
-                }, {
-                    field: 'streetNumber', title: '门牌号', minWidth: 90
-                }, {
-                    field: 'descr', title: '描述', minWidth: 90
-                }, {
-                    field: 'deleted', title: '状态', width: 90, templet: function (d) {
-                        return spConfig.isDeletedDict[d.deleted];
+                    field: 'isDeleted', title: '状态', width: 90, templet: function (d) {
+                        return spConfig.isDeletedDict[d.isDeleted];
                     }
+                }, {
+                    field: 'createTime', title: '创建时间', minWidth: 160
                 }, {
                     fixed: 'right', field: 'operate', title: '操作', toolbar: '#js-record-table-toolbar-right', unresize: true, width: 150
                 }]
@@ -145,7 +115,19 @@
                     data = checkStatus.data;
                 if (data.length > 0) {
                     layer.confirm('确认要删除吗？', function (index) {
-
+                        var ids = [];
+                        layui.each(data, function (i, item) {
+                            ids.push(item.id);
+                        });
+                        spUtil.ajax({
+                            url: '${request.contextPath}/admin/sys/department/delete',
+                            type: 'POST',
+                            data: {id: ids.join(',')},
+                            success: function (result) {
+                                tableIns.reload();
+                                layer.close(index);
+                            }
+                        });
                     });
                 } else {
                     layer.msg("请先选择需要删除的数据！");
@@ -182,8 +164,15 @@
             // 删除
             if (obj.event === 'delete') {
                 layer.confirm('确认要删除吗？', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    spUtil.ajax({
+                        url: '${request.contextPath}/admin/sys/department/delete',
+                        type: 'POST',
+                        data: {id: data.id},
+                        success: function (result) {
+                            obj.del();
+                            layer.close(index);
+                        }
+                    });
                 });
             }
         });

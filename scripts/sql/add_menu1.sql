@@ -1,0 +1,1 @@
+INSERT INTO sp_sys_menu (id, code, name, url, parent_id, grade, sort_num, type, permission, icon, descr) VALUES ('material_demand_plan', 'material_demand_plan', 'wu_liao_xu_qiu_ji_hua', '/plan/material-demand/list-ui', '12', '2', 1, '1', 'material:demand:view', 'fa fa-th-large', 'Material demand plan detail');

@@ -15,7 +15,7 @@
             <div class="layui-row">
                 <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
                     <div class="layui-form-item">
-                        <label for="js-name" class="layui-form-label sp-required">姓名
+                        <label for="js-name" class="layui-form-label sp-required">部门名称
                         </label>
                         <div class="layui-input-inline">
                             <input type="text" id="js-name" name="name" lay-verify="required" autocomplete="off" class="layui-input" value="${result.name}">
@@ -23,18 +23,18 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-descr" class="layui-form-label sp-required">描述</label>
+                        <label class="layui-form-label sp-required">排序</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="js-descr" name="descr" lay-verify="" autocomplete="off" class="layui-input" value="${result.descr}">
+                            <input type="number" name="sortNum" lay-verify="required" autocomplete="off" class="layui-input" value="${result.sortNum!0}">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label for="js-is-deleted" class="layui-form-label sp-required">状态</label>
                         <div class="layui-input-block" id="js-is-deleted">
-                            <input type="radio" name="deleted" value="0" title="正常" <#if result.deleted == "0" || !(result??)>checked</#if>>
-                            <input type="radio" name="deleted" value="1" title="已删除" <#if result.deleted == "1">checked</#if>>
-                            <input type="radio" name="deleted" value="2" title="已禁用" <#if result.deleted == "2">checked</#if>>
+                            <input type="radio" name="isDeleted" value="0" title="正常" <#if result.isDeleted == "0" || !(result??)>checked</#if>>
+                            <input type="radio" name="isDeleted" value="1" title="已删除" <#if result.isDeleted == "1">checked</#if>>
+                            <input type="radio" name="isDeleted" value="2" title="已禁用" <#if result.isDeleted == "2">checked</#if>>
                         </div>
                     </div>
                 </div>
@@ -53,16 +53,6 @@
     layui.use(['form', 'util'], function () {
         var form = layui.form,
             util = layui.util;
-
-        //失去焦点时判断值为空不验证，一旦填写必须验证
-        $('input[name="email"]').blur(function () {
-            //这里是失去焦点时的事件
-            if ($('input[name="email"]').val()) {
-                $('input[name="email"]').attr('lay-verify', 'email');
-            } else {
-                $('input[name="email"]').removeAttr('lay-verify');
-            }
-        });
 
         //监听提交
         form.on('submit(js-submit-filter)', function (data) {
