@@ -415,6 +415,10 @@ INSERT INTO `sp_sys_menu` VALUES ('15', 'ProcessManage', '工艺管理', '', '1'
 INSERT INTO `sp_sys_menu` VALUES ('151', 'flowProcess', '工艺路线管理', '/basedata/flow/process/list-ui', '15', '3', 1, '0', 'user:add', 'fa fa-retweet', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('152', 'bom', '工艺BOM管理', '/technology/bom/list-ui', '15', '3', 2, '0', 'user:add', 'fa fa-file-text-o', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
 INSERT INTO `sp_sys_menu` VALUES ('153', 'part', '零部件定义', '/technology/part/list-ui', '15', '3', 3, '0', 'user:add', 'fa fa-th-large', '', '2020-03-28 10:00:00', 'admin', '2020-03-28 10:00:00', 'admin');
+INSERT INTO `sp_sys_menu` VALUES ('154', 'flow', '工序信息定义', '/technology/flow/list-ui', '15', '3', 4, '0', 'user:add', 'fa fa-th-large', '', '2020-03-28 10:00:00', 'admin', '2020-03-28 10:00:00', 'admin');
+INSERT INTO `sp_sys_menu` VALUES ('155', 'flowOperRelation', '工艺流程管理', '/technology/flow-oper-relation/list-ui', '15', '3', 5, '0', 'user:add', 'fa fa-th-large', '', '2020-03-28 10:00:00', 'admin', '2020-03-28 10:00:00', 'admin');
+INSERT INTO `sp_sys_menu` VALUES ('156', 'operContent', '工艺内容编制', '/technology/oper-content/list-ui', '15', '3', 6, '0', 'user:add', 'fa fa-th-large', '', '2024-01-01 00:00:00', 'admin', '2024-01-01 00:00:00', 'admin');
+INSERT INTO `sp_sys_menu` VALUES ('157', 'techProcessQuery', '产品工艺查询', '/technology/process-query/list-ui', '15', '3', 7, '0', 'user:add', 'fa fa-th-large', '产品工艺查询管理', '2024-01-01 00:00:00', 'admin', '2024-01-01 00:00:00', 'admin');
 INSERT INTO `sp_sys_menu` VALUES ('16', 'wip', '在制品管理', '#', '1', '2', 5, '0', 'user:add', 'fa fa-industry', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('161', 'generalSnProcess', 'SN通用过程采集', '/rrr', '16', '3', 1, '0', 'user:add', 'fa fa-product-hunt', '', '2019-10-18 11:18:29', 'SongPeng', '2019-10-18 11:18:29', 'SongPeng');
 INSERT INTO `sp_sys_menu` VALUES ('17', 'DigitalSimulation', '黑科数字孪生', '#', '1', '2', 7, '0', 'user:add', 'fa fa-ravelry', '', '2019-10-18 11:18:29', 'Wangziyang', '2019-10-18 11:18:29', 'Wangziyang');
@@ -493,6 +497,10 @@ INSERT INTO `sp_sys_role_menu` VALUES ('2002', '2000000000000000002', '15', '202
 INSERT INTO `sp_sys_role_menu` VALUES ('2003', '2000000000000000002', '151', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 INSERT INTO `sp_sys_role_menu` VALUES ('2004', '2000000000000000002', '152', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 INSERT INTO `sp_sys_role_menu` VALUES ('2005', '2000000000000000002', '153', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2006', '2000000000000000002', '154', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2007', '2000000000000000002', '155', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2008', '2000000000000000002', '156', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
+INSERT INTO `sp_sys_role_menu` VALUES ('2009', '2000000000000000002', '157', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 -- 生产计划员(productionPlannerRole) - 计划管理模块
 INSERT INTO `sp_sys_role_menu` VALUES ('3001', '2000000000000000003', '1', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
 INSERT INTO `sp_sys_role_menu` VALUES ('3002', '2000000000000000003', '12', '2026-06-04 00:00:00', 'admin', '2026-06-04 00:00:00', 'admin');
