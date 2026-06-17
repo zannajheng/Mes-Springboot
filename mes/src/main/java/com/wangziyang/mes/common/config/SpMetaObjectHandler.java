@@ -1,6 +1,7 @@
 package com.wangziyang.mes.common.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.wangziyang.mes.system.dto.SysUserDTO;
 import com.wangziyang.mes.system.entity.SysUser;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.shiro.SecurityUtils;
@@ -33,14 +34,30 @@ public class SpMetaObjectHandler implements MetaObjectHandler {
     }
 
     private void setInsertData(MetaObject metaObject) {
-        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        this.setInsertFieldValByName("createUsername", sysUser.getUsername(), metaObject);
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        String username = "system";
+        if (principal instanceof SysUser) {
+            username = ((SysUser) principal).getUsername();
+        } else if (principal instanceof SysUserDTO) {
+            username = ((SysUserDTO) principal).getUsername();
+        } else if (principal instanceof String) {
+            username = (String) principal;
+        }
+        this.setInsertFieldValByName("createUsername", username, metaObject);
         this.setInsertFieldValByName("createTime", LocalDateTime.now(), metaObject);
     }
 
     private void setUpdateData(MetaObject metaObject) {
-        SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        this.setUpdateFieldValByName("updateUsername", sysUser.getUsername(), metaObject);
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        String username = "system";
+        if (principal instanceof SysUser) {
+            username = ((SysUser) principal).getUsername();
+        } else if (principal instanceof SysUserDTO) {
+            username = ((SysUserDTO) principal).getUsername();
+        } else if (principal instanceof String) {
+            username = (String) principal;
+        }
+        this.setUpdateFieldValByName("updateUsername", username, metaObject);
         this.setUpdateFieldValByName("updateTime", LocalDateTime.now(), metaObject);
     }
 }

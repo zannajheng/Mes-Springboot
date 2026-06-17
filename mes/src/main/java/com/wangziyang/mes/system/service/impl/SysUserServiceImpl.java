@@ -76,6 +76,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUserDTO getUserAndRoleAndMenuByUsername(String username) throws Exception {
         SysUserDTO result = sysUserMapper.selectUserAndRoleByUsername(username);
+        if (result == null) {
+            return null;
+        }
         if (CollectionUtils.isNotEmpty(result.getSysRoleDTOs())) {
             for (SysRoleDTO rDto : result.getSysRoleDTOs()) {
                 List<SysMenuDTO> menus = sysMenuService.listByRoleId(rDto.getId());

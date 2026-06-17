@@ -78,7 +78,9 @@
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"DESC sp_sys_menu;\" 2>/dev/null)",
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time = '0000-00-00 00:00:00' OR update_time = '0000-00-00 00:00:00';\" 2>/dev/null)",
       "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time = '0000-00-00 00:00:00' OR create_time IS NULL OR update_time = '0000-00-00 00:00:00' OR create_time = 0;\" 2>&1)",
-      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time IS NULL OR create_time = '0000-00-00 00:00:00' OR YEAR\\(create_time\\) = 0 OR update_time IS NULL OR update_time = '0000-00-00 00:00:00' OR YEAR\\(update_time\\) = 0;\" 2>/dev/null)"
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql\" -u root -p123456 -D sparchetype --default-character-set=utf8mb4 -e \"SELECT id, name, create_time, update_time FROM sp_sys_menu WHERE create_time IS NULL OR create_time = '0000-00-00 00:00:00' OR YEAR\\(create_time\\) = 0 OR update_time IS NULL OR update_time = '0000-00-00 00:00:00' OR YEAR\\(update_time\\) = 0;\" 2>/dev/null)",
+      "Bash(grep -o \"\"technology/bom/list.ftl\"\"[^}]*} C:/Users/Zanna/.claude/projects/D--Desktop-MES-Springboot/bbd299dd-f3c7-4d21-8de3-b41ed1d34cb5.jsonl)",
+      "Bash(find D:DesktopMES-Springbootmessrcmainresources -name *.html -o -name *.js -o -name *.json)"
     ]
   }
 }

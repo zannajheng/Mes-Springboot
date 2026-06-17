@@ -38,9 +38,16 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        SysUserDTO user = (SysUserDTO) principalCollection.getPrimaryPrincipal();
+        String username = (String) principalCollection.getPrimaryPrincipal();
+        SysUserDTO user = null;
+        try {
+            user = sysUserService.getUserAndRoleAndMenuByUsername(username);
+        } catch (Exception e) {
+            logger.error("获取用户角色菜单异常", e);
+            return null;
+        }
         Set<String> perms = new HashSet<>();
-        if (CollectionUtils.isNotEmpty(user.getSysRoleDTOs())) {
+        if (user != null && CollectionUtils.isNotEmpty(user.getSysRoleDTOs())) {
             for (SysRoleDTO sr : user.getSysRoleDTOs()) {
                 if (CollectionUtils.isEmpty(sr.getSysMenuDtos())) {
                     continue;
@@ -81,6 +88,6 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         // TODO 根据用户名（唯一不可变）作为密码加盐，当然也可以自定义加盐方式，如增加数据库字段等
         ByteSource byteSource = ByteSource.Util.bytes(username);
-        return new SimpleAuthenticationInfo(user, user.getPassword(), byteSource, getName());
+        return new SimpleAuthenticationInfo(username, user.getPassword(), byteSource, getName());
     }
 }

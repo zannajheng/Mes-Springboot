@@ -27,7 +27,7 @@ import java.util.*;
 @Configuration
 public class ShiroConfig {
 
-    //缓存方式
+    // 缓存方式
     public static String CACHE_TYPE_REDIS = "redis";
 
     @Value("${spring.redis.host:127.0.0.1}")
@@ -79,6 +79,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/register/**", "anon");
         filterChainDefinitionMap.put("/verification/code", "anon");
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/image/**", "anon");
@@ -99,11 +100,11 @@ public class ShiroConfig {
 
         Map<String, Filter> filters = new HashMap<>(2);
         Filter loginFilter = new SpLoginFormFilter();
-        //此处使用自定义的拦截器,autho默认使用FormAuthenticationFilter拦截器
+        // 此处使用自定义的拦截器,autho默认使用FormAuthenticationFilter拦截器
         filters.put("authc", loginFilter);
         shiroFilterFactoryBean.setFilters(filters);
         // TODO 测试期间暂时打开
-        //filterChainDefinitionMap.put("/**", "anon");
+        // filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -111,7 +112,7 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        //设置realm.
+        // 设置realm.
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
         if (CACHE_TYPE_REDIS.equals(cacheType)) {
@@ -149,7 +150,7 @@ public class ShiroConfig {
         redisManager.setPort(port);
         // 配置缓存过期时间
         redisManager.setExpire(1800);
-        //redisManager.setTimeout(1800);
+        // redisManager.setTimeout(1800);
         redisManager.setPassword(password);
         return redisManager;
     }

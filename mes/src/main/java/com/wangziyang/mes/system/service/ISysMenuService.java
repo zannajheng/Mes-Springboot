@@ -36,6 +36,15 @@ public interface ISysMenuService extends IService<SysMenu> {
      */
     Map<String, Object> listIndexMenuTree() throws Exception;
 
+    /**
+     * 根据角色ID列表过滤系统首页初始化菜单树数据
+     *
+     * @param roleIds 角色ID列表，非空时按角色过滤菜单；为空则返回全部菜单
+     * @return 系统首页初始化菜单树数据
+     * @throws Exception 异常
+     */
+    Map<String, Object> listIndexMenuTree(List<String> roleIds) throws Exception;
+
 
     /**
      * 用户搜索系统首页初始化菜单树数据
@@ -44,6 +53,16 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @throws Exception 异常
      */
     Map<String, Object> listIndexMenuSearchTree(String menuName) throws Exception;
+
+    /**
+     * 用户搜索系统首页初始化菜单树数据（根据角色过滤）
+     *
+     * @param menuName 菜单名字
+     * @param roleIds  角色ID列表，非空时按角色过滤菜单
+     * @return 菜单树数据
+     * @throws Exception 异常
+     */
+    Map<String, Object> listIndexMenuSearchTree(String menuName, List<String> roleIds) throws Exception;
 
 
     /**

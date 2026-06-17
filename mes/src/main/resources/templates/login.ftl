@@ -105,10 +105,92 @@
             height: 36px;
             width: 100%;
         }
+
+        .layui-btn-blue {
+            background-color: #1E9FFF;
+            border-color: #1E9FFF;
+            color: #fff;
+        }
+
+        .layui-btn-blue:hover {
+            background-color: #40AAFF;
+            border-color: #40AAFF;
+        }
     </style>
 </head>
 <body>
 <div class="stars"></div>
+<div id="registerForm" style="display:none;">
+    <form class="layui-form" action="" style="padding:20px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input type="text" id="reg-name" name="name" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" id="reg-username" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" id="reg-password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-inline">
+                <select id="reg-deptId" name="deptId" lay-verify="required" lay-search>
+                    <option value="">请选择部门</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" id="reg-email" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机号</label>
+            <div class="layui-input-inline">
+                <input type="text" id="reg-mobile" name="mobile" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">固定电话</label>
+            <div class="layui-input-inline">
+                <input type="text" id="reg-tel" name="tel" placeholder="请输入固定电话" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="sex" value="1" title="男" checked>
+                <input type="radio" name="sex" value="0" title="女">
+                <input type="radio" name="sex" value="2" title="其他">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">出生日期</label>
+            <div class="layui-input-inline">
+                <input type="date" id="reg-birthday" name="birthday" placeholder="请选择出生日期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="reg-upload-btn">上传头像</button>
+                <input type="hidden" id="reg-picId" name="picId">
+                <img id="reg-upload-preview" style="display:none;width:50px;height:50px;border-radius:50%;vertical-align:middle;margin-left:10px;">
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
@@ -140,14 +222,18 @@
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
                 </div>
+                <div class="layui-form-item">
+                    <button type="button" class="layui-btn layui-btn-fluid layui-btn-blue" id="registerBtn">注 册</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
 <script>
-    layui.use(['form', 'layer'], function () {
+    layui.use(['form', 'layer', 'upload'], function () {
         var form = layui.form,
-            layer = layui.layer;
+            layer = layui.layer,
+            upload = layui.upload;
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
@@ -175,6 +261,75 @@
             });
             return false;
         });
+
+        $.get('${request.contextPath}/register/departments', function (res) {
+            if (res.code === 0) {
+                var html = '<option value="">请选择部门</option>';
+                $.each(res.data, function (i, dept) {
+                    html += '<option value="' + dept.id + '">' + dept.name + '</option>';
+                });
+                $('#reg-deptId').html(html);
+                form.render('select');
+            }
+        });
+
+        upload.render({
+            elem: '#reg-upload-btn',
+            url: '${request.contextPath}/upload',
+            accept: 'images',
+            size: 2048,
+            done: function (res) {
+                if (res.code === 0) {
+                    $('#reg-picId').val(res.data.src);
+                    $('#reg-upload-preview').attr('src', res.data.src).show();
+                } else {
+                    layer.alert(res.msg || '上传失败', {icon: 2});
+                }
+            }
+        });
+
+        $('#registerBtn').click(function () {
+            layer.open({
+                type: 1,
+                title: '用户注册',
+                area: ['500px', '700px'],
+                content: $('#registerForm'),
+                btn: ['提交', '重置'],
+                yes: function(index, layero) {
+                    var formData = {};
+                    $('#registerForm input, #registerForm select').each(function() {
+                        formData[$(this).attr('name')] = $(this).val();
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: "${request.contextPath}/register",
+                        data: formData,
+                        success: function (result) {
+                            if (result.code === 0) {
+                                layer.close(index);
+                                $('#registerForm input[type="text"], #registerForm input[type="password"], #registerForm input[type="date"]').val('');
+                                $('#registerForm select').val('');
+                                $('#reg-upload-preview').hide();
+                                form.render('select');
+                                layer.alert('注册成功，请登录', {icon: 1});
+                            } else {
+                                layer.alert(result.msg, {icon: 2});
+                            }
+                        },
+                        error: function (e) {
+                            layer.alert('注册失败，请重试！', {icon: 2});
+                        }
+                    });
+                },
+                btn2: function(index, layero) {
+                    $('#registerForm input[type="text"], #registerForm input[type="password"], #registerForm input[type="date"]').val('');
+                    $('#registerForm select').val('');
+                    $('#reg-upload-preview').hide();
+                    form.render('select');
+                }
+            });
+        });
+
         /**
          * 获取图形验证码
          */

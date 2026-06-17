@@ -1,11 +1,9 @@
 package com.wangziyang.mes.basedata.controller;
 
-
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.basedata.entity.SpMaterile;
-import com.wangziyang.mes.basedata.entity.SpTableManager;
 import com.wangziyang.mes.basedata.request.spMaterileReq;
 import com.wangziyang.mes.basedata.service.ISpMaterileService;
 import com.wangziyang.mes.common.BaseController;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Objects;
+import java.util.List;
 
 /**
  * <p>
@@ -58,12 +57,11 @@ public class SpMaterileController extends BaseController {
      * @return 物料管理界面
      */
     @ApiOperation("物料管理界面UI")
-    @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "模型", defaultValue = "模型")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "model", value = "模型", defaultValue = "模型") })
     @GetMapping("/list-ui")
     public String listUI(Model model) {
         return "basedata/materile/list";
     }
-
 
     /**
      * 物料管理修改界面
@@ -74,14 +72,13 @@ public class SpMaterileController extends BaseController {
      */
     @ApiOperation("物料管理修改界面")
     @GetMapping("/add-or-update-ui")
-    public String addOrUpdateUI(Model model, SpTableManager record) {
+    public String addOrUpdateUI(Model model, SpMaterile record) {
         if (StringUtils.isNotEmpty(record.getId())) {
-            SpMaterile SpMaterile = iSpMaterileService.getById(record.getId());
-            model.addAttribute("result", SpMaterile);
+            SpMaterile spMaterile = iSpMaterileService.getById(record.getId());
+            model.addAttribute("result", spMaterile);
         }
         return "basedata/materile/addOrUpdate";
     }
-
 
     /**
      * 物料管理界面分页查询
@@ -90,20 +87,24 @@ public class SpMaterileController extends BaseController {
      * @return Result 执行结果
      */
     @ApiOperation("物料管理界面分页查询")
-    @ApiImplicitParams({@ApiImplicitParam(name = "req", value = "请求参数", defaultValue = "请求参数")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "req", value = "请求参数", defaultValue = "请求参数") })
     @PostMapping("/page")
     @ResponseBody
     public Result page(spMaterileReq req) {
-        QueryWrapper queryWrapper =new QueryWrapper();
-        if (StringUtils.isNotEmpty(req.getMaterielLike()))
-        {
-            queryWrapper.like("materiel",req.getMaterielLike());
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (StringUtils.isNotEmpty(req.getMaterielLike())) {
+            queryWrapper.like("materiel", req.getMaterielLike());
         }
-        if (StringUtils.isNotEmpty(req.getMaterielDescLike()))
-        {
-            queryWrapper.like("materiel_desc",req.getMaterielDescLike());
+        if (StringUtils.isNotEmpty(req.getMaterielDescLike())) {
+            queryWrapper.like("materiel_desc", req.getMaterielDescLike());
         }
-        IPage result = iSpMaterileService.page(req,queryWrapper);
+        if (StringUtils.isNotEmpty(req.getMatType())) {
+            queryWrapper.eq("mat_type", req.getMatType());
+        }
+        if (StringUtils.isNotEmpty(req.getMaterielSource())) {
+            queryWrapper.eq("materiel_source", req.getMaterielSource());
+        }
+        IPage result = iSpMaterileService.page(req, queryWrapper);
         return Result.success(result);
     }
 
@@ -113,6 +114,30 @@ public class SpMaterileController extends BaseController {
      * @param record 物料实体类
      * @return 执行结果
      */
+    @ApiOperation("生成物料编码")
+    @GetMapping("/generate-materiel-code")
+    @ResponseBody
+    public Result generateMaterielCode() {
+        QueryWrapper<SpMaterile> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("materiel");
+        queryWrapper.orderByDesc("materiel");
+        queryWrapper.last("LIMIT 1");
+        List<SpMaterile> list = iSpMaterileService.list(queryWrapper);
+        String newCode = "M000001";
+        if (list != null && !list.isEmpty()) {
+            String lastCode = list.get(0).getMateriel();
+            if (lastCode != null && lastCode.startsWith("M")) {
+                try {
+                    int num = Integer.parseInt(lastCode.substring(1));
+                    newCode = "M" + String.format("%06d", num + 1);
+                } catch (NumberFormatException e) {
+                    newCode = "M000001";
+                }
+            }
+        }
+        return Result.success(newCode);
+    }
+
     @ApiOperation("物料管理修改、新增")
     @PostMapping("/add-or-update")
     @ResponseBody
@@ -123,10 +148,15 @@ public class SpMaterileController extends BaseController {
                 record.setFlowDesc(spflow.getFlowDesc());
             }
         }
+        if (StrUtil.isBlank(record.getMateriel())) {
+            return Result.fail("物料编码不能为空");
+        }
+        if (record.getDemandLeadTime() != null && record.getDemandLeadTime() < 1) {
+            return Result.fail("物料需求提前期不可为0，至少为1天");
+        }
         iSpMaterileService.saveOrUpdate(record);
         return Result.success();
     }
-
 
     /**
      * 删除物料信息
@@ -135,7 +165,7 @@ public class SpMaterileController extends BaseController {
      * @return Result 执行结果
      */
     @ApiOperation("删除物料信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "req", value = "物料实体", defaultValue = "物料实体")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "req", value = "物料实体", defaultValue = "物料实体") })
     @PostMapping("/delete")
     @ResponseBody
     public Result deleteByTableNameId(SpMaterile req) throws Exception {

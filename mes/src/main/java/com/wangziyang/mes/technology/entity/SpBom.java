@@ -48,6 +48,16 @@ public class SpBom extends BaseEntity {
     private String state;
 
     /**
+     * 有效性（1：有效，0：无效）
+     */
+    private String isValid;
+
+    /**
+     * 定版标识（1：已定版，0：未定版）
+     */
+    private String isFixed;
+
+    /**
      * 工厂
      */
     private String factory;
@@ -115,6 +125,22 @@ public class SpBom extends BaseEntity {
     }
 
 
+    public String getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
+    }
+
+    public String getIsFixed() {
+        return isFixed;
+    }
+
+    public void setIsFixed(String isFixed) {
+        this.isFixed = isFixed;
+    }
+
     @Override
     public String toString() {
         return "SpBom{" +
@@ -124,6 +150,8 @@ public class SpBom extends BaseEntity {
                 ", remark=" + remark +
                 ", versionNumber=" + versionNumber +
                 ", state=" + state +
+                ", isValid=" + isValid +
+                ", isFixed=" + isFixed +
                 ", factory=" + factory +
                 "}";
     }

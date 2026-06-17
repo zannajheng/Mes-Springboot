@@ -61,6 +61,15 @@ public class SysDepartmentController extends BaseController {
         return Result.success(result);
     }
 
+    @ApiOperation("系统部门信息列表")
+    @GetMapping("/list")
+    @ResponseBody
+    public Result list() {
+        QueryWrapper<SysDepartment> qw = new QueryWrapper<>();
+        qw.orderByAsc("sort_num");
+        return Result.success(sysDepartmentService.list(qw));
+    }
+
     @GetMapping("/add-or-update-ui")
     public String addOrUpdateUI(Model model, SysDict record) {
         if (StringUtils.isNotEmpty(record.getId())) {

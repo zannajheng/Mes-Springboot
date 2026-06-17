@@ -48,11 +48,16 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-dept-id" class="layui-form-label sp-required">
-                            部门id
-                        </label>
+                        <label for="js-dept-id" class="layui-form-label sp-required">部门</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="js-dept-id" name="deptId" lay-verify="" autocomplete="off" class="layui-input" value="${result.deptId}">
+                            <select id="js-dept-id" name="deptId" lay-verify="" lay-filter="js-dept-filter">
+                                <option value="">请选择部门</option>
+                                <#if departments??>
+                                <#list departments as dept>
+                                    <option value="${dept.id}" <#if result?? && result.deptId == dept.id>selected</#if>>${dept.name}</option>
+                                </#list>
+                                </#if>
+                            </select>
                         </div>
                     </div>
 
@@ -103,72 +108,16 @@
                 </div>
                 <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
                     <div class="layui-form-item">
-                        <label for="js-pic-id" class="layui-form-label sp-required">
-                            图片id
-                        </label>
+                        <label for="js-pic-id" class="layui-form-label">头像</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="js-pic-id" name="picId" lay-verify="" autocomplete="off" class="layui-input" value="${result.picId}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-id-card" class="layui-form-label sp-required">
-                            身份证
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-id-card" name="idCard" lay-verify="" autocomplete="off" class="layui-input" value="${result.idCard}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-hobby" class="layui-form-label sp-required">
-                            爱好
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-hobby" name="hobby" lay-verify="" autocomplete="off" class="layui-input" value="${result.hobby}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-province" class="layui-form-label sp-required">
-                            省份
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-province" name="province" lay-verify="" autocomplete="off" class="layui-input" value="${result.province}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-city" class="layui-form-label sp-required">城市</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-city" name="city" lay-verify="" autocomplete="off" class="layui-input" value="${result.city}">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="js-district" class="layui-form-label sp-required">区县</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-district" name="district" lay-verify="" autocomplete="off" class="layui-input" value="${result.district}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-street" class="layui-form-label sp-required">街道</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-street" name="street" lay-verify="" autocomplete="off" class="layui-input" value="${result.street}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-street-number" class="layui-form-label sp-required">门牌号</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-street-number" name="streetNumber" lay-verify="" autocomplete="off" class="layui-input" value="${result.streetNumber}">
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label for="js-descr" class="layui-form-label sp-required">描述</label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="js-descr" name="descr" lay-verify="" autocomplete="off" class="layui-input" value="${result.descr}">
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn" id="js-upload-btn">上传图片</button>
+                                <div class="layui-upload-list">
+                                    <img class="layui-upload-img" id="js-upload-preview" <#if result.picId?? && result.picId != "">src="${request.contextPath}/admin/sys/user/avatar/${result.picId}"</#if>>
+                                    <input type="hidden" id="js-pic-id" name="picId" value="${result.picId}">
+                                    <p id="js-upload-text"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -203,14 +152,22 @@
         </form>
     </div>
 </div>
+<style>
+    .layui-upload-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 2px solid #e6e6e6;
+        object-fit: cover;
+    }
+</style>
 <script>
-    layui.use(['form', 'util'], function () {
+    layui.use(['form', 'util', 'upload'], function () {
         var form = layui.form,
-            util = layui.util;
+            util = layui.util,
+            upload = layui.upload;
 
-        //失去焦点时判断值为空不验证，一旦填写必须验证
         $('input[name="email"]').blur(function () {
-            //这里是失去焦点时的事件
             if ($('input[name="email"]').val()) {
                 $('input[name="email"]').attr('lay-verify', 'email');
             } else {
@@ -218,10 +175,32 @@
             }
         });
 
-        //监听提交
-        form.on('submit(js-submit-filter)', function (data) {
-            //return false;
+        upload.render({
+            elem: '#js-upload-btn',
+            url: '${request.contextPath}/admin/sys/user/upload-avatar',
+            accept: 'images',
+            size: 2048,
+            before: function (obj) {
+                obj.preview(function (index, file, result) {
+                    $('#js-upload-preview').attr('src', result);
+                });
+            },
+            done: function (res) {
+                if (res.code === 0) {
+                    $('#js-pic-id').val(res.data);
+                    $('#js-upload-text').text('上传成功');
+                } else {
+                    $('#js-upload-text').text(res.msg);
+                }
+            },
+            error: function () {
+                $('#js-upload-text').text('上传失败');
+            }
+        });
 
+        form.render();
+
+        form.on('submit(js-submit-filter)', function (data) {
             spUtil.submitForm({
                 url: "${request.contextPath}/admin/sys/user/add-or-update",
                 data: data.field

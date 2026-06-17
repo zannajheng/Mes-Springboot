@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Controller("adminSysRoleController")
-@RequestMapping("/admin/sys/role")
-public class SysRoleController extends BaseController {
+@Controller("adminSysPermissionController")
+@RequestMapping("/admin/sys/permission")
+public class SysPermissionController extends BaseController {
 
     @Autowired
     private ISysRoleService sysRoleService;
@@ -35,7 +35,7 @@ public class SysRoleController extends BaseController {
 
     @GetMapping("/list-ui")
     public String listUI(Model model) {
-        return "admin/system/role/list";
+        return "admin/system/permission/list";
     }
 
     @PostMapping("/page")
@@ -62,7 +62,7 @@ public class SysRoleController extends BaseController {
             SysRole result = sysRoleService.getById(record.getId());
             model.addAttribute("result", result);
         }
-        return "admin/system/role/addOrUpdate";
+        return "admin/system/permission/addOrUpdate";
     }
 
     @PostMapping("/add-or-update")
@@ -81,7 +81,7 @@ public class SysRoleController extends BaseController {
             return "error/403";
         }
         model.addAttribute("roleId", roleId);
-        return "admin/system/role/authMenu";
+        return "admin/system/permission/authMenu";
     }
 
     @GetMapping("/menu-ids")
@@ -123,26 +123,6 @@ public class SysRoleController extends BaseController {
         qw.eq("role_id", id);
         sysRoleMenuService.remove(qw);
 
-        return Result.success();
-    }
-
-    @PostMapping("/delete-batch")
-    @ResponseBody
-    @Transactional(rollbackFor = Exception.class)
-    public Result deleteBatch(String ids) {
-        if (!isAdmin()) {
-            return Result.failure("只有admin角色才能执行此操作");
-        }
-        if (StringUtils.isNotEmpty(ids)) {
-            List<String> idList = Arrays.asList(ids.split(","));
-            for (String id : idList) {
-                sysRoleService.removeById(id);
-
-                QueryWrapper<SysRoleMenu> qw = new QueryWrapper<>();
-                qw.eq("role_id", id);
-                sysRoleMenuService.remove(qw);
-            }
-        }
         return Result.success();
     }
 }

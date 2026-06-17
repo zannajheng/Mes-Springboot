@@ -3,6 +3,7 @@ package com.wangziyang.mes.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wangziyang.mes.system.dto.SysMenuDTO;
 import com.wangziyang.mes.system.entity.SysMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +34,13 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @throws Exception 异常
      */
     List<SysMenu> listBySearchByName(String menuName) throws Exception;
+
+    /**
+     * 根据多个角色id查询菜单列表（去重）
+     *
+     * @param roleIds 角色ID列表
+     * @return 菜单列表
+     * @throws Exception 异常
+     */
+    List<SysMenu> listByRoleIds(@Param("roleIds") List<String> roleIds) throws Exception;
 }

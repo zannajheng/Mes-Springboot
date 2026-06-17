@@ -56,6 +56,14 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 
+<script type="text/html" id="isSystemRoleTpl">
+    {{# if(d.isSystemRole === '1'){ }}
+    <span class="layui-badge layui-bg-blue">是</span>
+    {{# } else { }}
+    <span class="layui-badge">否</span>
+    {{# } }}
+</script>
+
 <!--js逻辑-->
 <script>
     layui.use(['form', 'table', 'spLayer', 'spTable'], function () {
@@ -71,13 +79,25 @@
                 [{
                     type: 'checkbox'
                 }, {
-                    field: 'name', title: '角色名称'
+                    field: 'name', title: '角色名称', width: 100
                 }, {
-                    field: 'code', title: '角色编码'
+                    field: 'code', title: '角色编码', width: 130
                 }, {
-                    field: 'descr', title: '角色描述'
+                    field: 'sortNum', title: '排序号', width: 80
                 }, {
-                    field: 'deleted', title: '状态', templet: function (d) {
+                    field: 'isSystemRole', title: '系统角色', width: 90, templet: '#isSystemRoleTpl'
+                }, {
+                    field: 'userType', title: '用户类型', width: 90
+                }, {
+                    field: 'dataScope', title: '数据范围', width: 100
+                }, {
+                    field: 'businessScope', title: '业务范围', width: 100
+                }, {
+                    field: 'updateTime', title: '更新时间', width: 160
+                }, {
+                    field: 'descr', title: '备注信息'
+                }, {
+                    field: 'deleted', title: '状态', width: 80, templet: function (d) {
                         return spConfig.isDeletedDict[d.deleted];
                     }
                 }, {
@@ -140,7 +160,7 @@
             if (obj.event === 'add') {
                 var index = spLayer.open({
                     title: '添加',
-                    area: ['90%', '90%'],
+                    area: ['700px', '500px'],
                     content: '${request.contextPath}/admin/sys/role/add-or-update-ui'
                 });
             }
@@ -156,8 +176,7 @@
             if (obj.event === 'edit') {
                 spLayer.open({
                     title: '编辑',
-                    area: ['800px', '400px'],
-                    // 请求url参数
+                    area: ['700px', '500px'],
                     spWhere: {id: data.id},
                     content: '${request.contextPath}/admin/sys/role/add-or-update-ui'
                 });

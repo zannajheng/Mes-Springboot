@@ -3,6 +3,10 @@ package com.wangziyang.mes.system.controller.client;
 import com.wangziyang.mes.common.Result;
 import com.wangziyang.mes.common.util.RandomVerificationCodeUtil;
 import com.wangziyang.mes.system.config.shiro.SpUsernamePasswordToken;
+import com.wangziyang.mes.system.entity.SysDepartment;
+import com.wangziyang.mes.system.entity.SysUser;
+import com.wangziyang.mes.system.service.ISysDepartmentService;
+import com.wangziyang.mes.system.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -10,6 +14,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author SongPeng
@@ -28,16 +34,22 @@ public class SysLoginController {
 
     Logger logger = LoggerFactory.getLogger(SysLoginController.class);
 
-	/**
-	 * 首页默认
-	 *
-	 * @param model
-	 * @return
-	 */
-	@GetMapping({"/", ""})
-	public String welcomeUI(Model model) {
-		return "redirect:/admin/index";
-	}
+    @Autowired
+    private ISysUserService sysUserService;
+
+    @Autowired
+    private ISysDepartmentService departmentService;
+
+    /**
+     * 首页默认
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping({ "/", "" })
+    public String welcomeUI(Model model) {
+        return "redirect:/admin/index";
+    }
 
     /**
      * 生成验证码
@@ -72,8 +84,9 @@ public class SysLoginController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result login(String username, String password, String captcha, String rememberMe, HttpServletRequest request) {
-        //从session中获取随机数
+    public Result login(String username, String password, String captcha, String rememberMe,
+            HttpServletRequest request) {
+        // 从session中获取随机数
         String random = (String) request.getSession().getAttribute(RandomVerificationCodeUtil.RANDOM_CODE_KEY);
         if (StringUtils.isBlank(captcha)) {
             return Result.failure("请输入验证码");
@@ -111,6 +124,71 @@ public class SysLoginController {
             logger.error("用户或密码错误", e);
             return Result.failure("用户或密码错误");
         }
+    }
+
+    /**
+     * 用户注册
+     */
+    @PostMapping("/register")
+    @ResponseBody
+    public Result register(SysUser user) {
+        if (StringUtils.isBlank(user.getUsername())) {
+            return Result.failure("用户名不能为空");
+        }
+        if (StringUtils.isBlank(user.getPassword())) {
+            return Result.failure("密码不能为空");
+        }
+        if (StringUtils.isBlank(user.getName())) {
+            return Result.failure("姓名不能为空");
+        }
+
+        try {
+            SysUser existingUser = sysUserService.lambdaQuery().eq(SysUser::getUsername, user.getUsername()).one();
+            if (existingUser != null) {
+                return Result.failure("用户名已存在");
+            }
+
+            user.setDeleted("0");
+
+            if (StringUtils.isBlank(user.getBirthday())) {
+                user.setBirthday(null);
+            }
+            if (StringUtils.isBlank(user.getEmail())) {
+                user.setEmail("");
+            }
+            if (StringUtils.isBlank(user.getMobile())) {
+                user.setMobile("");
+            }
+            if (StringUtils.isBlank(user.getTel())) {
+                user.setTel("");
+            }
+            if (StringUtils.isBlank(user.getDeptId())) {
+                user.setDeptId("");
+            }
+            if (StringUtils.isBlank(user.getSex())) {
+                user.setSex("");
+            }
+
+            String encryptPwd = new Md5Hash(user.getPassword(), user.getUsername(), 3).toString();
+            user.setPassword(encryptPwd);
+            user.setDeleted("1");
+            sysUserService.save(user);
+
+            return Result.success();
+        } catch (Exception e) {
+            logger.error("注册失败", e);
+            return Result.failure("注册失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取部门列表（用于注册页面下拉选择）
+     */
+    @GetMapping("/register/departments")
+    @ResponseBody
+    public Result getDepartments() {
+        List<SysDepartment> list = departmentService.list();
+        return Result.success(list);
     }
 
     /**

@@ -46,7 +46,10 @@
                 <a href="javascript:;" data-clear="清理" class="splayui-clear"><i class="fa fa-trash-o"></i></a>
             </li>
             <li class="layui-nav-item splayui-setting">
-                <a href="javascript:;">admin</a>
+                <a href="javascript:;">
+                    <img id="js-user-avatar" src="" class="layui-nav-img" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:8px;">
+                    <span id="js-user-name">admin</span>
+                </a>
                 <dl class="layui-nav-child">
                     <dd>
                         <a href="javascript:;" data-iframe-tab="page/user-setting.html" data-title="基本资料"
@@ -111,6 +114,24 @@
             layer = layui.layer,
             spLayui = layui.spLayui,
             form = layui.form;
+
+        spUtil.ajax({
+            url: '${request.contextPath}/admin/sys/user/current',
+            type: 'GET',
+            success: function (data) {
+                var user = data.data;
+                if (user) {
+                    $('#js-user-name').text(user.name || user.username);
+                    if (user.picId) {
+                        $('#js-user-avatar').attr('src', '${request.contextPath}/admin/sys/user/avatar/' + user.picId);
+                    } else {
+                        var initial = user.name ? user.name.charAt(0) : (user.username ? user.username.charAt(0) : '?');
+                        $('#js-user-avatar').attr('src', 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="%23e6e6e6"/><text x="18" y="24" font-size="18" text-anchor="middle" fill="%23999999">' + initial + '</text></svg>'));
+                    }
+                }
+            },
+            errNoTip: true
+        });
 
         spLayui.init('${request.contextPath}/admin/list/index/menu/tree');
         /**

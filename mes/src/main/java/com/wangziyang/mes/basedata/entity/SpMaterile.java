@@ -59,11 +59,40 @@ public class SpMaterile extends BaseEntity {
     private String model;
 
     /**
+     * 物料来源（自制/外购）
+     */
+    @TableField(value = "materiel_source")
+    private String materielSource;
+
+    /**
+     * 材质
+     */
+    @TableField(value = "material")
+    private String material;
+
+    /**
+     * 物料需求提前期(天)
+     */
+    @TableField(value = "demand_lead_time")
+    private Integer demandLeadTime;
+
+    /**
+     * 安全库存
+     */
+    @TableField(value = "safety_stock")
+    private Integer safetyStock;
+
+    /**
+     * 备注信息
+     */
+    @TableField(value = "remark")
+    private String remark;
+
+    /**
      * 状态(00:删除;01:正常;02:禁用)
      */
     @TableField(value = "is_deleted")
     private String deleted;
-
 
     @Override
     public String toString() {
@@ -186,7 +215,6 @@ public class SpMaterile extends BaseEntity {
         this.size = size;
     }
 
-
     /**
      * 获取 状态(00:删除;01:正常;02:禁用)
      *
@@ -257,5 +285,95 @@ public class SpMaterile extends BaseEntity {
      */
     public void setFlowDesc(String flowDesc) {
         this.flowDesc = flowDesc;
+    }
+
+    /**
+     * 获取 物料来源（自制/外购）
+     *
+     * @return materielSource 物料来源（自制/外购）
+     */
+    public String getMaterielSource() {
+        return this.materielSource;
+    }
+
+    /**
+     * 设置 物料来源（自制/外购）
+     *
+     * @param materielSource 物料来源（自制/外购）
+     */
+    public void setMaterielSource(String materielSource) {
+        this.materielSource = materielSource;
+    }
+
+    /**
+     * 获取 材质
+     *
+     * @return material 材质
+     */
+    public String getMaterial() {
+        return this.material;
+    }
+
+    /**
+     * 设置 材质
+     *
+     * @param material 材质
+     */
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    /**
+     * 获取 物料需求提前期(天)
+     *
+     * @return demandLeadTime 物料需求提前期(天)
+     */
+    public Integer getDemandLeadTime() {
+        return this.demandLeadTime;
+    }
+
+    /**
+     * 设置 物料需求提前期(天)
+     *
+     * @param demandLeadTime 物料需求提前期(天)
+     */
+    public void setDemandLeadTime(Integer demandLeadTime) {
+        this.demandLeadTime = demandLeadTime;
+    }
+
+    /**
+     * 获取 安全库存
+     *
+     * @return safetyStock 安全库存
+     */
+    public Integer getSafetyStock() {
+        return this.safetyStock;
+    }
+
+    /**
+     * 设置 安全库存
+     *
+     * @param safetyStock 安全库存
+     */
+    public void setSafetyStock(Integer safetyStock) {
+        this.safetyStock = safetyStock;
+    }
+
+    /**
+     * 获取 备注信息
+     *
+     * @return remark 备注信息
+     */
+    public String getRemark() {
+        return this.remark;
+    }
+
+    /**
+     * 设置 备注信息
+     *
+     * @param remark 备注信息
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

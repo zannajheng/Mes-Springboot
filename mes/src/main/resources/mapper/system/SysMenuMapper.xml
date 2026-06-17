@@ -29,6 +29,17 @@
         WHERE t.id = ssrm.menu_id
     </select>
 
+    <!--根据多个角色id查询菜单列表（去重）-->
+    <select id="listByRoleIds" resultMap="resultMap">
+        SELECT DISTINCT t.* FROM sp_sys_menu t
+        LEFT JOIN sp_sys_role_menu ssrm ON t.id = ssrm.menu_id
+        WHERE ssrm.role_id IN
+        <foreach collection="roleIds" item="roleId" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+        ORDER BY t.sort_num
+    </select>
+
     <!--根据输入菜单模糊匹配-->
     <select id="listBySearchByName" parameterType="java.lang.String" resultMap="resultMap">
         SELECT * FROM

@@ -53,6 +53,21 @@ public class SpBomItem extends BaseEntity {
      */
     private String operTyper;
 
+    /**
+     * 节点类型（1：零部件，2：物料）
+     */
+    private String nodeType;
+
+    /**
+     * 节点层级（0：产品，1：半成品，2：单元，3：物料）
+     */
+    private Integer nodeLevel;
+
+    /**
+     * 节点编号（系统自动生成）
+     */
+    private String nodeCode;
+
     public String getBomHeadId() {
         return bomHeadId;
     }
@@ -109,6 +124,30 @@ public class SpBomItem extends BaseEntity {
         this.operTyper = operTyper;
     }
 
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public void setNodeType(String nodeType) {
+        this.nodeType = nodeType;
+    }
+
+    public Integer getNodeLevel() {
+        return nodeLevel;
+    }
+
+    public void setNodeLevel(Integer nodeLevel) {
+        this.nodeLevel = nodeLevel;
+    }
+
+    public String getNodeCode() {
+        return nodeCode;
+    }
+
+    public void setNodeCode(String nodeCode) {
+        this.nodeCode = nodeCode;
+    }
+
     @Override
     public String toString() {
         return "SpBomItem{" +
@@ -119,6 +158,9 @@ public class SpBomItem extends BaseEntity {
                 ", itemNum=" + itemNum +
                 ", itemUnit=" + itemUnit +
                 ", operTyper=" + operTyper +
+                ", nodeType=" + nodeType +
+                ", nodeLevel=" + nodeLevel +
+                ", nodeCode=" + nodeCode +
                 "}";
     }
 }

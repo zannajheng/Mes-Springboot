@@ -79,7 +79,7 @@ spUtil.ajax = function (options) {
 
         if (options.error) {
             options.error();
-        } else {
+        } else if (!options.errNoTip) {
             layer.alert('操作失败，请重试！', {
                 icon: 2
             });
