@@ -32,11 +32,17 @@ public class SysRole extends BaseEntity {
      */
     private String descr;
 
-    /**
-     * 状态(00:删除;01:正常;02:禁用)
-     */
+	/**
+	 * 状态(00:删除;01:正常;02:禁用)
+	 */
 	@TableField(value = "is_deleted")
     private String deleted;
+
+	/**
+	 * 授权菜单数量(非数据库字段，用于列表页显示)
+	 */
+	@TableField(exist = false)
+	private Integer menuAuthCount;
 
 	public String getName() {
 		return name;
@@ -68,5 +74,13 @@ public class SysRole extends BaseEntity {
 
 	public void setDeleted(String deleted) {
 		this.deleted = deleted;
+	}
+
+	public Integer getMenuAuthCount() {
+		return menuAuthCount;
+	}
+
+	public void setMenuAuthCount(Integer menuAuthCount) {
+		this.menuAuthCount = menuAuthCount;
 	}
 }

@@ -36,9 +36,11 @@
     </div>
 </div>
 
+<#if isAdmin>
 <script type="text/html" id="js-record-table-toolbar-right">
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="authMenu"><i class="layui-icon">&#xe672;</i>授权菜单</a>
 </script>
+</#if>
 
 <script>
     layui.use(['form', 'table', 'spLayer', 'spTable'], function () {
@@ -57,19 +59,45 @@
                 }, {
                     field: 'descr', title: '描述', minWidth: 200
                 }, {
-                    field: 'menuAuthCount', title: '已授权菜单', width: 120
-                }, {
+                    field: 'menuAuthCount', title: '是否授权', width: 100, templet: function (d) {
+                        return (d.menuAuthCount && d.menuAuthCount > 0) ? '是' : '否';
+                    }
+                },
+                <#if isAdmin>
+                {
                     fixed: 'right',
                     field: 'operate',
                     title: '操作',
                     toolbar: '#js-record-table-toolbar-right',
                     unresize: true,
                     width: 130
-                }]
+                }
+                </#if>
+                ]
             ],
             done: function (res, curr, count) {
+                // admin 不可给自己授权，从表格中移除
+                $('#js-record-table').next('.layui-table-box')
+                    .find('.layui-table-body tr').each(function () {
+                        var $codeCell = $(this).children('td').eq(1);
+                        if ($codeCell.length && $.trim($codeCell.text()) === 'admin') {
+                            $(this).remove();
+                        }
+                    });
             }
         });
+
+        // 暴露表格刷新函数，供 iframe 授权成功后调用
+        window.reloadTable = function () {
+            var where = {};
+            var formData = form.val('js-q-form-filter');
+            if (formData) {
+                where = formData;
+            }
+            tableIns.reload({
+                where: where
+            });
+        };
 
         $(function () {
             form.render();
@@ -90,15 +118,19 @@
 
             if (obj.event === 'authMenu') {
                 $('body').css('overflow', 'hidden');
-                spLayer.open({
+                var authLayerIndex = spLayer.open({
                     title: '授权菜单 - ' + data.name,
                     area: ['550px', '610px'],
-                    spWhere: {roleId: data.id},
+                    spWhere: {roleId: data.id, _t: new Date().getTime()},
                     content: '${request.contextPath}/admin/sys/permission/auth-menu-ui',
                     btn: ['确定', '取消'],
                     yes: function(index, layero) {
                         var iframeWin = layero.find('iframe')[0].contentWindow;
-                        if (iframeWin && iframeWin.saveMenuAuth) {
+                        // 将当前 layer 索引传入 iframe，用于精确关闭
+                        iframeWin.parentLayerIndex = authLayerIndex || index;
+                        if (iframeWin && iframeWin.$ && iframeWin.$('#js-submit').length) {
+                            iframeWin.$('#js-submit').click();
+                        } else if (iframeWin && iframeWin.saveMenuAuth) {
                             iframeWin.saveMenuAuth();
                         } else {
                             parent.layer.close(index);

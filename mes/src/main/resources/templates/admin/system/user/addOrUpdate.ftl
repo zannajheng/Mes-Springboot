@@ -50,7 +50,7 @@
                     <div class="layui-form-item">
                         <label for="js-dept-id" class="layui-form-label sp-required">部门</label>
                         <div class="layui-input-inline">
-                            <select id="js-dept-id" name="deptId" lay-verify="" lay-filter="js-dept-filter">
+                            <select id="js-dept-id" name="deptId" lay-verify="required" lay-filter="js-dept-filter">
                                 <option value="">请选择部门</option>
                                 <#if departments??>
                                 <#list departments as dept>
@@ -62,27 +62,21 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-email" class="layui-form-label sp-required">
-                            邮箱
-                        </label>
-                        <!--校验规则动态添加，根据鼠标焦点进行-->
+                        <label for="js-email" class="layui-form-label sp-required">邮箱</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="js-email" name="email" lay-verify="" autocomplete="off" class="layui-input" value="${result.email}">
+                            <input type="text" id="js-email" name="email" lay-verify="required|email" autocomplete="off" class="layui-input" value="${result.email}">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-mobile" class="layui-form-label sp-required">手机号
-                        </label>
+                        <label for="js-mobile" class="layui-form-label sp-required">手机号</label>
                         <div class="layui-input-inline">
                             <input type="text" id="js-mobile" name="mobile" lay-verify="required|number" autocomplete="off" class="layui-input" value="${result.mobile}">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-tel" class="layui-form-label sp-required">
-                            固定电话
-                        </label>
+                        <label for="js-tel" class="layui-form-label">固定电话</label>
                         <div class="layui-input-inline">
                             <input type="text" id="js-tel" name="tel" lay-verify="" autocomplete="off" class="layui-input" value="${result.tel}">
                         </div>
@@ -91,18 +85,16 @@
                     <div class="layui-form-item">
                         <label for="js-sex" class="layui-form-label sp-required">性别</label>
                         <div class="layui-input-block" id="js-sex">
-                            <input type="radio" name="sex" value="0" title="女" <#if result.sex == "0" || !(result??)>checked</#if>>
+                            <input type="radio" name="sex" value="0" title="女" <#if result.sex == "0">checked</#if>>
                             <input type="radio" name="sex" value="1" title="男" <#if result.sex == "1">checked</#if>>
                             <input type="radio" name="sex" value="2" title="其他" <#if result.sex == "2">checked</#if>>
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-birthday" class="layui-form-label sp-required">
-                            出生年月日
-                        </label>
+                        <label for="js-birthday" class="layui-form-label sp-required">出生年月日</label>
                         <div class="layui-input-inline">
-                            <input type="text" id="js-birthday" name="birthday" lay-verify="" autocomplete="off" class="layui-input" value="${result.birthday}">
+                            <input type="text" id="js-birthday" name="birthday" lay-verify="required" autocomplete="off" class="layui-input" value="${result.birthday}">
                         </div>
                     </div>
                 </div>
@@ -131,6 +123,7 @@
                     </div>
                 </div>
 
+                <#if isAdmin>
                 <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
                     <div class="layui-form-item" pane="">
                         <label class="layui-form-label">分配权限</label>
@@ -141,6 +134,7 @@
                         </div>
                     </div>
                 </div>
+                </#if>
 
                 <div class="layui-form-item layui-hide">
                     <div class="layui-input-block">
@@ -162,17 +156,15 @@
     }
 </style>
 <script>
-    layui.use(['form', 'util', 'upload'], function () {
+    layui.use(['form', 'util', 'upload', 'laydate'], function () {
         var form = layui.form,
             util = layui.util,
-            upload = layui.upload;
+            upload = layui.upload,
+            laydate = layui.laydate;
 
-        $('input[name="email"]').blur(function () {
-            if ($('input[name="email"]').val()) {
-                $('input[name="email"]').attr('lay-verify', 'email');
-            } else {
-                $('input[name="email"]').removeAttr('lay-verify');
-            }
+        laydate.render({
+            elem: '#js-birthday',
+            format: 'yyyy-MM-dd'
         });
 
         upload.render({

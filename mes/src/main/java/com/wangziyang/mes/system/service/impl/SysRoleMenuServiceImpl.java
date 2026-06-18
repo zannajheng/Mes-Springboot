@@ -28,13 +28,18 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
         logger.info("删除旧授权记录, 删除数量={}", deleteCount);
 
         if (menuIds != null && !menuIds.isEmpty()) {
+            int insertCount = 0;
             for (String menuId : menuIds) {
+                if (org.apache.commons.lang3.StringUtils.isBlank(menuId)) {
+                    continue;
+                }
                 SysRoleMenu rm = new SysRoleMenu();
                 rm.setRoleId(roleId);
                 rm.setMenuId(menuId);
                 baseMapper.insert(rm);
+                insertCount++;
             }
-            logger.info("插入新授权记录, 插入数量={}", menuIds.size());
+            logger.info("插入新授权记录, 插入数量={}", insertCount);
         }
         
         // 查询验证

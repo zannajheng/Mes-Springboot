@@ -41,26 +41,26 @@
                         </div>
 
                         <div class="layui-form-item">
-                            <label class="layui-form-label">部门</label>
+                            <label class="layui-form-label sp-required">部门</label>
                             <div class="layui-input-inline">
-                                <select id="js-dept-id" name="deptId" lay-verify="" class="layui-input">
+                                <select id="js-dept-id" name="deptId" lay-verify="required" class="layui-input">
                                     <option value="">请选择部门</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
-                            <label for="js-email" class="layui-form-label">邮箱</label>
+                            <label for="js-email" class="layui-form-label sp-required">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="js-email" name="email" lay-verify="" autocomplete="off"
+                                <input type="text" id="js-email" name="email" lay-verify="required|email" autocomplete="off"
                                     class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item">
-                            <label for="js-mobile" class="layui-form-label">手机号</label>
+                            <label for="js-mobile" class="layui-form-label sp-required">手机号</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="js-mobile" name="mobile" lay-verify="number" autocomplete="off"
+                                <input type="text" id="js-mobile" name="mobile" lay-verify="required|number" autocomplete="off"
                                     class="layui-input">
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="layui-form-item">
-                            <label for="js-sex" class="layui-form-label">性别</label>
+                            <label for="js-sex" class="layui-form-label sp-required">性别</label>
                             <div class="layui-input-block" id="js-sex">
                                 <input type="radio" name="sex" value="0" title="女">
                                 <input type="radio" name="sex" value="1" title="男">
@@ -83,9 +83,9 @@
                         </div>
 
                         <div class="layui-form-item">
-                            <label for="js-birthday" class="layui-form-label">出生年月日</label>
+                            <label for="js-birthday" class="layui-form-label sp-required">出生年月日</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="js-birthday" name="birthday" lay-verify="" autocomplete="off"
+                                <input type="text" id="js-birthday" name="birthday" lay-verify="required" autocomplete="off"
                                     class="layui-input">
                             </div>
                         </div>
@@ -140,13 +140,7 @@
                 format: 'yyyy-MM-dd'
             });
 
-            $('input[name="email"]').blur(function () {
-                if ($('input[name="email"]').val()) {
-                    $('input[name="email"]').attr('lay-verify', 'email');
-                } else {
-                    $('input[name="email"]').removeAttr('lay-verify');
-                }
-            });
+
 
             upload.render({
                 elem: '#js-upload-btn',
@@ -171,7 +165,7 @@
                 }
             });
 
-            // 加载部门列表
+            // 加载部门列表，完成后再加载用户信息
             spUtil.ajax({
                 url: '/admin/sys/department/list',
                 type: 'GET',
@@ -183,40 +177,50 @@
                         });
                         form.render('select');
                     }
-                }
-            });
 
-            // 加载当前用户信息
-            spUtil.ajax({
-                url: '/admin/sys/user/current',
-                type: 'GET',
-                errNoTip: true,
-                success: function (data) {
-                    if (!data || !data.data) {
-                        console.error('获取用户信息失败:', data);
-                        return;
-                    }
-                    var user = data.data;
-                    $('#js-id').val(user.id);
-                    $('#js-name').val(user.name);
-                    $('#js-username').val(user.username);
-                    $('#js-dept-id').val(user.deptId);
-                    $('#js-email').val(user.email);
-                    $('#js-mobile').val(user.mobile);
-                    $('#js-tel').val(user.tel);
-                    $('#js-birthday').val(user.birthday);
-                    $('#js-pic-id').val(user.picId);
+                    // 部门列表渲染完成后再加载当前用户信息
+                    spUtil.ajax({
+                        url: '/admin/sys/user/current',
+                        type: 'GET',
+                        errNoTip: true,
+                        success: function (data) {
+                            if (!data || !data.data) {
+                                console.error('获取用户信息失败:', data);
+                                return;
+                            }
+                            var user = data.data;
+                            $('#js-id').val(user.id);
+                            $('#js-name').val(user.name || '');
+                            $('#js-username').val(user.username || '');
+                            $('#js-email').val(user.email || '');
+                            $('#js-mobile').val(user.mobile || '');
+                            $('#js-tel').val(user.tel || '');
+                            $('#js-pic-id').val(user.picId || '');
 
-                    if (user.picId) {
-                        $('#js-upload-preview').attr('src', '/admin/sys/user/avatar/' + user.picId);
-                    }
+                            // 处理生日格式 yyyy-MM-dd HH:mm:ss -> yyyy-MM-dd
+                            var birthday = user.birthday || '';
+                            if (birthday && birthday.length > 10) {
+                                birthday = birthday.substring(0, 10);
+                            }
+                            $('#js-birthday').val(birthday);
 
-                    if (user.sex) {
-                        $('input[name="sex"][value="' + user.sex + '"]').prop('checked', true);
-                    } else {
-                        $('input[name="sex"][value="1"]').prop('checked', true);
-                    }
-                    form.render();
+                            // 处理头像
+                            if (user.picId) {
+                                $('#js-upload-preview').attr('src', '/admin/sys/user/avatar/' + user.picId);
+                            }
+
+                            // 处理性别，空值不默认选中任何选项
+                            $('input[name="sex"]').prop('checked', false);
+                            if (user.sex === '0' || user.sex === '1' || user.sex === '2') {
+                                $('input[name="sex"][value="' + user.sex + '"]').prop('checked', true);
+                            }
+
+                            // 处理部门，部门列表已渲染完成，设置值后重新渲染
+                            $('#js-dept-id').val(user.deptId || '');
+                            form.render('select');
+                            form.render('radio');
+                        }
+                    });
                 }
             });
 

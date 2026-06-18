@@ -8,9 +8,11 @@ import com.wangziyang.mes.system.dto.SysRoleDTO;
 import com.wangziyang.mes.system.dto.SysUserDTO;
 import com.wangziyang.mes.system.entity.SysDepartment;
 import com.wangziyang.mes.system.entity.SysUser;
+import com.wangziyang.mes.system.entity.SysUserRole;
 import com.wangziyang.mes.system.request.SysUserPageReq;
-import com.wangziyang.mes.system.service.ISysDepartmentService;
 import com.wangziyang.mes.system.service.ISysRoleService;
+import com.wangziyang.mes.system.service.ISysDepartmentService;
+import com.wangziyang.mes.system.service.ISysUserRoleService;
 import com.wangziyang.mes.system.service.ISysUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,6 +59,9 @@ public class SysUserController extends BaseController {
     @Autowired
     private ISysDepartmentService sysDepartmentService;
 
+    @Autowired
+    private ISysUserRoleService sysUserRoleService;
+
     @GetMapping("/list-ui")
     public String listUI(Model model) {
         return "admin/system/user/list";
@@ -71,7 +77,7 @@ public class SysUserController extends BaseController {
         if (StringUtils.isNotEmpty(req.getUsernameLike())) {
             qw.like("username", req.getUsernameLike());
         }
-        qw.ne("is_deleted", "1");
+        // 用户管理列表展示全部状态（正常、已删除、已禁用）的用户，方便统一管理
         qw.orderByDesc(req.getOrderBy());
         IPage<SysUser> page = sysUserService.page(req, qw);
         List<SysUser> records = page.getRecords();
@@ -97,12 +103,39 @@ public class SysUserController extends BaseController {
         List<SysRoleDTO> sysRoles = sysRoleService.listByUserId(record.getId());
         model.addAttribute("sysRoles", sysRoles);
         model.addAttribute("departments", sysDepartmentService.list());
+        model.addAttribute("isAdmin", isAdmin());
         return "admin/system/user/addOrUpdate";
     }
 
     @PostMapping("/add-or-update")
     @ResponseBody
     public Result addOrUpdate(SysUserDTO record) throws Exception {
+        if (StringUtils.isBlank(record.getName())) {
+            return Result.failure("姓名不能为空");
+        }
+        if (StringUtils.isBlank(record.getUsername())) {
+            return Result.failure("用户名不能为空");
+        }
+        if (StringUtils.isBlank(record.getDeptId())) {
+            return Result.failure("部门不能为空");
+        }
+        if (StringUtils.isBlank(record.getEmail())) {
+            return Result.failure("邮箱不能为空");
+        }
+        if (StringUtils.isBlank(record.getMobile())) {
+            return Result.failure("手机号不能为空");
+        }
+        if (StringUtils.isBlank(record.getSex())) {
+            return Result.failure("性别不能为空");
+        }
+        if (StringUtils.isBlank(record.getBirthday())) {
+            return Result.failure("出生年月日不能为空");
+        }
+
+        // 只有 admin 才能分配角色
+        if (!isAdmin()) {
+            record.setSysRoleIds(null);
+        }
         if (StringUtils.isEmpty(record.getId())) {
             sysUserService.save(record);
         } else {
@@ -112,15 +145,33 @@ public class SysUserController extends BaseController {
     }
 
     /**
-     * 删除用户（逻辑删除）
+     * 删除用户（物理删除，同时清理用户角色关联）
      */
     @PostMapping("/delete")
     @ResponseBody
     public Result delete(String id) {
-        SysUser user = sysUserService.getById(id);
-        if (user != null) {
-            user.setDeleted("1");
-            sysUserService.updateById(user);
+        if (StringUtils.isNotEmpty(id)) {
+            QueryWrapper<SysUserRole> qw = new QueryWrapper<>();
+            qw.eq("user_id", id);
+            sysUserRoleService.remove(qw);
+            sysUserService.removeById(id);
+        }
+        return Result.success();
+    }
+
+    /**
+     * 批量删除用户（物理删除，同时清理用户角色关联）
+     */
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(@RequestParam("ids") String ids) {
+        if (StringUtils.isNotEmpty(ids)) {
+            String[] idArray = ids.split(",");
+            List<String> idList = Arrays.asList(idArray);
+            QueryWrapper<SysUserRole> qw = new QueryWrapper<>();
+            qw.in("user_id", idList);
+            sysUserRoleService.remove(qw);
+            sysUserService.removeByIds(idList);
         }
         return Result.success();
     }
@@ -138,16 +189,50 @@ public class SysUserController extends BaseController {
         } else if (principal instanceof SysUser) {
             username = ((SysUser) principal).getUsername();
         }
-        SysUserDTO user = null;
-        if (username != null) {
-            user = sysUserService.getUserAndRoleAndMenuByUsername(username);
+        if (username == null) {
+            return Result.success(null);
         }
+        SysUser sysUser = sysUserService.lambdaQuery().eq(SysUser::getUsername, username).one();
+        if (sysUser == null) {
+            return Result.success(null);
+        }
+        SysUserDTO user = new SysUserDTO();
+        user.setId(sysUser.getId());
+        user.setName(sysUser.getName());
+        user.setUsername(sysUser.getUsername());
+        user.setPassword(sysUser.getPassword());
+        user.setDeptId(sysUser.getDeptId());
+        user.setEmail(sysUser.getEmail());
+        user.setMobile(sysUser.getMobile());
+        user.setTel(sysUser.getTel());
+        user.setSex(sysUser.getSex());
+        user.setBirthday(sysUser.getBirthday());
+        user.setPicId(sysUser.getPicId());
+        user.setDeleted(sysUser.getDeleted());
         return Result.success(user);
     }
 
     @PostMapping("/update-profile")
     @ResponseBody
     public Result updateProfile(SysUserDTO record) throws Exception {
+        if (StringUtils.isBlank(record.getName())) {
+            return Result.failure("姓名不能为空");
+        }
+        if (StringUtils.isBlank(record.getDeptId())) {
+            return Result.failure("部门不能为空");
+        }
+        if (StringUtils.isBlank(record.getEmail())) {
+            return Result.failure("邮箱不能为空");
+        }
+        if (StringUtils.isBlank(record.getMobile())) {
+            return Result.failure("手机号不能为空");
+        }
+        if (StringUtils.isBlank(record.getSex())) {
+            return Result.failure("性别不能为空");
+        }
+        if (StringUtils.isBlank(record.getBirthday())) {
+            return Result.failure("出生年月日不能为空");
+        }
         sysUserService.updateById(record);
         return Result.success();
     }

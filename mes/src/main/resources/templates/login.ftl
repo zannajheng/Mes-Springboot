@@ -116,6 +116,17 @@
             background-color: #40AAFF;
             border-color: #40AAFF;
         }
+
+        #registerForm .layui-form-item .sp-required:after {
+            content: "*";
+            color: red;
+            position: absolute;
+            margin-left: 4px;
+            font-weight: bold;
+            line-height: 1.8em;
+            top: 6px;
+            right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -123,25 +134,25 @@
 <div id="registerForm" style="display:none;">
     <form class="layui-form" action="" style="padding:20px;">
         <div class="layui-form-item">
-            <label class="layui-form-label">姓名</label>
+            <label class="layui-form-label sp-required">姓名</label>
             <div class="layui-input-inline">
                 <input type="text" id="reg-name" name="name" lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
+            <label class="layui-form-label sp-required">用户名</label>
             <div class="layui-input-inline">
                 <input type="text" id="reg-username" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
+            <label class="layui-form-label sp-required">密码</label>
             <div class="layui-input-inline">
                 <input type="password" id="reg-password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">部门</label>
+            <label class="layui-form-label sp-required">部门</label>
             <div class="layui-input-inline">
                 <select id="reg-deptId" name="deptId" lay-verify="required" lay-search>
                     <option value="">请选择部门</option>
@@ -149,15 +160,15 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
+            <label class="layui-form-label sp-required">邮箱</label>
             <div class="layui-input-inline">
-                <input type="text" id="reg-email" name="email" lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                <input type="text" id="reg-email" name="email" lay-verify="required|email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">手机号</label>
+            <label class="layui-form-label sp-required">手机号</label>
             <div class="layui-input-inline">
-                <input type="text" id="reg-mobile" name="mobile" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                <input type="text" id="reg-mobile" name="mobile" lay-verify="required|number" placeholder="请输入手机号" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -167,7 +178,7 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">性别</label>
+            <label class="layui-form-label sp-required">性别</label>
             <div class="layui-input-inline">
                 <input type="radio" name="sex" value="1" title="男" checked>
                 <input type="radio" name="sex" value="0" title="女">
@@ -175,9 +186,9 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">出生日期</label>
+            <label class="layui-form-label sp-required">出生年月日</label>
             <div class="layui-input-inline">
-                <input type="date" id="reg-birthday" name="birthday" placeholder="请选择出生日期" autocomplete="off" class="layui-input">
+                <input type="text" id="reg-birthday" name="birthday" lay-verify="required" placeholder="请选择出生年月日" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -230,10 +241,16 @@
     </div>
 </div>
 <script>
-    layui.use(['form', 'layer', 'upload'], function () {
+    layui.use(['form', 'layer', 'upload', 'laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
-            upload = layui.upload;
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#reg-birthday',
+            format: 'yyyy-MM-dd'
+        });
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
@@ -275,13 +292,13 @@
 
         upload.render({
             elem: '#reg-upload-btn',
-            url: '${request.contextPath}/upload',
+            url: '${request.contextPath}/admin/sys/user/upload-avatar',
             accept: 'images',
             size: 2048,
             done: function (res) {
                 if (res.code === 0) {
-                    $('#reg-picId').val(res.data.src);
-                    $('#reg-upload-preview').attr('src', res.data.src).show();
+                    $('#reg-picId').val(res.data);
+                    $('#reg-upload-preview').attr('src', '${request.contextPath}/admin/sys/user/avatar/' + res.data).show();
                 } else {
                     layer.alert(res.msg || '上传失败', {icon: 2});
                 }
@@ -296,10 +313,35 @@
                 content: $('#registerForm'),
                 btn: ['提交', '重置'],
                 yes: function(index, layero) {
+                    // 触发表单校验
+                    var isValid = true;
+                    var sexChecked = $('#registerForm input[name="sex"]:checked').val();
+                    if (!sexChecked) {
+                        layer.alert('请选择性别', {icon: 2});
+                        return false;
+                    }
                     var formData = {};
                     $('#registerForm input, #registerForm select').each(function() {
-                        formData[$(this).attr('name')] = $(this).val();
+                        var name = $(this).attr('name');
+                        if (!name) {
+                            return;
+                        }
+                        if ($(this).attr('type') === 'radio') {
+                            if ($(this).is(':checked')) {
+                                formData[name] = $(this).val();
+                            }
+                        } else if ($(this).attr('type') === 'file') {
+                            // 忽略文件输入
+                        } else {
+                            formData[name] = $(this).val();
+                        }
                     });
+                    // 校验必填项
+                    if (!formData.name || !formData.username || !formData.password || !formData.deptId ||
+                        !formData.email || !formData.mobile || !formData.sex || !formData.birthday) {
+                        layer.alert('请填写所有必填项', {icon: 2});
+                        return false;
+                    }
                     $.ajax({
                         type: "POST",
                         url: "${request.contextPath}/register",
@@ -307,10 +349,13 @@
                         success: function (result) {
                             if (result.code === 0) {
                                 layer.close(index);
-                                $('#registerForm input[type="text"], #registerForm input[type="password"], #registerForm input[type="date"]').val('');
+                                $('#registerForm input[type="text"], #registerForm input[type="password"]').val('');
                                 $('#registerForm select').val('');
+                                $('#registerForm input[name="sex"]').prop('checked', false);
+                                $('#registerForm input[name="sex"][value="1"]').prop('checked', true);
+                                $('#reg-picId').val('');
                                 $('#reg-upload-preview').hide();
-                                form.render('select');
+                                form.render();
                                 layer.alert('注册成功，请登录', {icon: 1});
                             } else {
                                 layer.alert(result.msg, {icon: 2});
@@ -322,10 +367,13 @@
                     });
                 },
                 btn2: function(index, layero) {
-                    $('#registerForm input[type="text"], #registerForm input[type="password"], #registerForm input[type="date"]').val('');
+                    $('#registerForm input[type="text"], #registerForm input[type="password"]').val('');
                     $('#registerForm select').val('');
+                    $('#registerForm input[name="sex"]').prop('checked', false);
+                    $('#registerForm input[name="sex"][value="1"]').prop('checked', true);
+                    $('#reg-picId').val('');
                     $('#reg-upload-preview').hide();
-                    form.render('select');
+                    form.render();
                 }
             });
         });

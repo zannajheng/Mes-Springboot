@@ -92,7 +92,7 @@ public class SysLoginController {
             return Result.failure("请输入验证码");
         }
 
-        if (!random.equals(captcha)) {
+        if (StringUtils.isBlank(random) || !random.equalsIgnoreCase(captcha)) {
             return Result.failure("请输入正确的验证码");
         }
 
@@ -132,14 +132,29 @@ public class SysLoginController {
     @PostMapping("/register")
     @ResponseBody
     public Result register(SysUser user) {
+        if (StringUtils.isBlank(user.getName())) {
+            return Result.failure("姓名不能为空");
+        }
         if (StringUtils.isBlank(user.getUsername())) {
             return Result.failure("用户名不能为空");
         }
         if (StringUtils.isBlank(user.getPassword())) {
             return Result.failure("密码不能为空");
         }
-        if (StringUtils.isBlank(user.getName())) {
-            return Result.failure("姓名不能为空");
+        if (StringUtils.isBlank(user.getDeptId())) {
+            return Result.failure("部门不能为空");
+        }
+        if (StringUtils.isBlank(user.getEmail())) {
+            return Result.failure("邮箱不能为空");
+        }
+        if (StringUtils.isBlank(user.getMobile())) {
+            return Result.failure("手机号不能为空");
+        }
+        if (StringUtils.isBlank(user.getSex())) {
+            return Result.failure("性别不能为空");
+        }
+        if (StringUtils.isBlank(user.getBirthday())) {
+            return Result.failure("出生日期不能为空");
         }
 
         try {
@@ -152,6 +167,8 @@ public class SysLoginController {
 
             if (StringUtils.isBlank(user.getBirthday())) {
                 user.setBirthday(null);
+            } else if (user.getBirthday().length() == 10) {
+                user.setBirthday(user.getBirthday() + " 00:00:00");
             }
             if (StringUtils.isBlank(user.getEmail())) {
                 user.setEmail("");
@@ -166,12 +183,11 @@ public class SysLoginController {
                 user.setDeptId("");
             }
             if (StringUtils.isBlank(user.getSex())) {
-                user.setSex("");
+                user.setSex("2");
             }
 
             String encryptPwd = new Md5Hash(user.getPassword(), user.getUsername(), 3).toString();
             user.setPassword(encryptPwd);
-            user.setDeleted("1");
             sysUserService.save(user);
 
             return Result.success();

@@ -91,6 +91,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/upload/**", "anon");
         filterChainDefinitionMap.put("/files/**", "anon");
+        filterChainDefinitionMap.put("/admin/sys/user/upload-avatar", "anon");
+        filterChainDefinitionMap.put("/admin/sys/user/avatar/**", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         filterChainDefinitionMap.put("/client/**", "anon");
         filterChainDefinitionMap.put("/", "authc");
