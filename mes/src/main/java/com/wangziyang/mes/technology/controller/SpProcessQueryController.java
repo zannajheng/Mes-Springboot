@@ -1,5 +1,6 @@
 package com.wangziyang.mes.technology.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wangziyang.mes.common.BaseController;
 import com.wangziyang.mes.common.Result;
 import com.wangziyang.mes.technology.entity.*;
@@ -39,7 +40,9 @@ public class SpProcessQueryController extends BaseController {
 
     @GetMapping("/list-ui")
     public String listUi(Model model) {
-        List<SpBom> bomList = iSpBomService.list();
+        QueryWrapper<SpBom> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
+        List<SpBom> bomList = iSpBomService.list(qw);
         model.addAttribute("bomList", bomList);
         return "technology/processquery/list";
     }
@@ -92,7 +95,8 @@ public class SpProcessQueryController extends BaseController {
                     node.setOperDesc(operDesc);
 
                     for (SpOperContent content : contents) {
-                        if (content.getBomOperRelationId() != null && content.getBomOperRelationId().equals(relation.getId())) {
+                        if (content.getBomOperRelationId() != null
+                                && content.getBomOperRelationId().equals(relation.getId())) {
                             hasContent = true;
                             node.setContentStatus(content.getStatus());
                             break;
@@ -156,29 +160,100 @@ public class SpProcessQueryController extends BaseController {
         private String contentStatus;
         private List<TreeNode> children;
 
-        public String getId() { return id; }
-        public void setId(String id) { this.id = id; }
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getCode() { return code; }
-        public void setCode(String code) { this.code = code; }
-        public Integer getLevel() { return level; }
-        public void setLevel(Integer level) { this.level = level; }
-        public String getBomItemId() { return bomItemId; }
-        public void setBomItemId(String bomItemId) { this.bomItemId = bomItemId; }
-        public String getRelationId() { return relationId; }
-        public void setRelationId(String relationId) { this.relationId = relationId; }
-        public String getOper() { return oper; }
-        public void setOper(String oper) { this.oper = oper; }
-        public String getOperDesc() { return operDesc; }
-        public void setOperDesc(String operDesc) { this.operDesc = operDesc; }
-        public boolean isHasRelation() { return hasRelation; }
-        public void setHasRelation(boolean hasRelation) { this.hasRelation = hasRelation; }
-        public boolean isHasContent() { return hasContent; }
-        public void setHasContent(boolean hasContent) { this.hasContent = hasContent; }
-        public String getContentStatus() { return contentStatus; }
-        public void setContentStatus(String contentStatus) { this.contentStatus = contentStatus; }
-        public List<TreeNode> getChildren() { return children; }
-        public void setChildren(List<TreeNode> children) { this.children = children; }
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public Integer getLevel() {
+            return level;
+        }
+
+        public void setLevel(Integer level) {
+            this.level = level;
+        }
+
+        public String getBomItemId() {
+            return bomItemId;
+        }
+
+        public void setBomItemId(String bomItemId) {
+            this.bomItemId = bomItemId;
+        }
+
+        public String getRelationId() {
+            return relationId;
+        }
+
+        public void setRelationId(String relationId) {
+            this.relationId = relationId;
+        }
+
+        public String getOper() {
+            return oper;
+        }
+
+        public void setOper(String oper) {
+            this.oper = oper;
+        }
+
+        public String getOperDesc() {
+            return operDesc;
+        }
+
+        public void setOperDesc(String operDesc) {
+            this.operDesc = operDesc;
+        }
+
+        public boolean isHasRelation() {
+            return hasRelation;
+        }
+
+        public void setHasRelation(boolean hasRelation) {
+            this.hasRelation = hasRelation;
+        }
+
+        public boolean isHasContent() {
+            return hasContent;
+        }
+
+        public void setHasContent(boolean hasContent) {
+            this.hasContent = hasContent;
+        }
+
+        public String getContentStatus() {
+            return contentStatus;
+        }
+
+        public void setContentStatus(String contentStatus) {
+            this.contentStatus = contentStatus;
+        }
+
+        public List<TreeNode> getChildren() {
+            return children;
+        }
+
+        public void setChildren(List<TreeNode> children) {
+            this.children = children;
+        }
     }
 }

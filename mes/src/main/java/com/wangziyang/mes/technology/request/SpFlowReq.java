@@ -1,10 +1,32 @@
 package com.wangziyang.mes.technology.request;
 
-import com.wangziyang.mes.common.BasePageReq;
-/**
- * 流程分页对象
- * @author wangziyang
- * @since 2020/03/15
- */
-public class SpFlowReq extends BasePageReq {
+public class SpFlowReq {
+
+    private Long current = 1L;
+    private Long size = 10L;
+    private String flowLike;
+
+    public Long getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Long current) {
+        this.current = current;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public String getFlowLike() {
+        return flowLike;
+    }
+
+    public void setFlowLike(String flowLike) {
+        this.flowLike = flowLike;
+    }
 }

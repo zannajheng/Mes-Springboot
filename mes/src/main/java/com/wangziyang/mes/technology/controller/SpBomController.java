@@ -92,6 +92,7 @@ public class SpBomController extends BaseController {
     @ResponseBody
     public Result page(SpBomReq req) {
         QueryWrapper qw = new QueryWrapper();
+        qw.eq("is_deleted", "0");
         if (StringUtils.isNotEmpty(req.getMaterielCodeLike())) {
             qw.like("materiel_code", req.getMaterielCodeLike());
         }
@@ -144,6 +145,22 @@ public class SpBomController extends BaseController {
     @ResponseBody
     public Result deleteByTableNameId(SpBom spBom) throws Exception {
         iSpBomService.removeById(spBom.getId());
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除工艺BOM")
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(String ids) throws Exception {
+        if (StringUtils.isNotEmpty(ids)) {
+            for (String id : ids.split(",")) {
+                SpBom spBom = iSpBomService.getById(id);
+                if (spBom != null) {
+                    spBom.setDeleted("1");
+                    iSpBomService.updateById(spBom);
+                }
+            }
+        }
         return Result.success();
     }
 

@@ -60,7 +60,9 @@ public class SpOperContentController extends BaseController {
 
     @GetMapping("/list-ui")
     public String listUi(Model model) {
-        List<SpBom> bomList = iSpBomService.list();
+        QueryWrapper<SpBom> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
+        List<SpBom> bomList = iSpBomService.list(qw);
         model.addAttribute("bomList", bomList);
         return "technology/opercontent/list";
     }
@@ -114,8 +116,8 @@ public class SpOperContentController extends BaseController {
     @PostMapping("/page")
     @ResponseBody
     public Result page(@RequestParam(value = "bomId", required = false) String bomId,
-                       @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer pageSize) {
+            @RequestParam(value = "page", defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "limit", defaultValue = "10") Integer pageSize) {
         Page<SpOperContent> page = new Page<>(pageNum, pageSize);
         QueryWrapper<SpOperContent> wrapper = new QueryWrapper<>();
         if (bomId != null && !bomId.isEmpty()) {
@@ -322,7 +324,8 @@ public class SpOperContentController extends BaseController {
 
     @ApiOperation("导出备料清单")
     @GetMapping("/material/export")
-    public ResponseEntity<byte[]> exportMaterial(@RequestParam("bomOperRelationId") String bomOperRelationId) throws Exception {
+    public ResponseEntity<byte[]> exportMaterial(@RequestParam("bomOperRelationId") String bomOperRelationId)
+            throws Exception {
         List<SpOperMaterialList> list = iSpOperMaterialListService.listByBomOperRelationId(bomOperRelationId);
 
         List<Map<String, Object>> rows = new ArrayList<>();
@@ -334,7 +337,8 @@ public class SpOperContentController extends BaseController {
             row.put("物料名称", mat.getMaterielName());
             row.put("物料规格", mat.getMaterielSpec());
             row.put("物料类型", mat.getMaterielType());
-            row.put("需求数量", mat.getRequireQty() != null ? mat.getRequireQty().stripTrailingZeros().toPlainString() : "1");
+            row.put("需求数量",
+                    mat.getRequireQty() != null ? mat.getRequireQty().stripTrailingZeros().toPlainString() : "1");
             rows.add(row);
         }
 
@@ -349,7 +353,8 @@ public class SpOperContentController extends BaseController {
 
         byte[] bytes = baos.toByteArray();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        headers.setContentType(
+                MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + URLEncoder.encode("备料清单.xlsx", "UTF-8"));
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }

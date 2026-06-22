@@ -54,6 +54,7 @@
 <!--行操作模板-->
 <script type="text/html" id="js-record-table-toolbar-right">
     <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="resetPassword"><i class="layui-icon layui-icon-refresh-3"></i>重置密码</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 
@@ -209,6 +210,26 @@
                         success: function () {
                             obj.del();
                             layer.close(index);
+                        }
+                    });
+                });
+            }
+
+            // 重置密码
+            if (obj.event === 'resetPassword') {
+                layer.prompt({
+                    formType: 1,
+                    value: '',
+                    title: '请输入新密码',
+                    area: ['300px', '100px']
+                }, function (newPassword, index) {
+                    layer.close(index);
+                    spUtil.ajax({
+                        url: '${request.contextPath}/admin/sys/user/reset-password',
+                        type: 'POST',
+                        data: {userId: data.id, newPassword: newPassword},
+                        success: function (result) {
+                            layer.msg('重置密码成功', {icon: 1});
                         }
                     });
                 });

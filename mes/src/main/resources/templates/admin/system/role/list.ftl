@@ -127,11 +127,24 @@
 
             // 批量删除
             if (obj.event === 'deleteBatch') {
-                var checkStatus = table.checkStatus('record-table'),
+                var checkStatus = table.checkStatus('js-record-table'),
                     data = checkStatus.data;
                 if (data.length > 0) {
                     layer.confirm('确认要删除吗？', function (index) {
-
+                        var ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i].id);
+                        }
+                        spUtil.ajax({
+                            url: '${request.contextPath}/admin/sys/role/delete-batch',
+                            type: 'POST',
+                            data: {ids: ids.join(',')},
+                            success: function () {
+                                layer.close(index);
+                                layer.msg('删除成功', {icon: 1});
+                                table.reload('js-record-table');
+                            }
+                        });
                     });
                 } else {
                     layer.msg("请先选择需要删除的数据！");
@@ -167,8 +180,15 @@
             // 删除
             if (obj.event === 'delete') {
                 layer.confirm('确认要删除吗？', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    spUtil.ajax({
+                        url: '${request.contextPath}/admin/sys/role/delete',
+                        type: 'POST',
+                        data: {id: data.id},
+                        success: function () {
+                            obj.del();
+                            layer.close(index);
+                        }
+                    });
                 });
             }
         });

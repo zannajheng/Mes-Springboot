@@ -57,6 +57,7 @@ public class SpOperController extends BaseController {
     @ResponseBody
     public Result page(SpOperReq req) {
         QueryWrapper<SpOper> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
         if (StringUtils.isNotEmpty(req.getOperLike())) {
             qw.like("oper", req.getOperLike());
         }
@@ -88,6 +89,22 @@ public class SpOperController extends BaseController {
     @ResponseBody
     public Result delete(SpOper req) throws Exception {
         iSpOperService.removeById(req.getId());
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除工序")
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(String ids) throws Exception {
+        if (StringUtils.isNotEmpty(ids)) {
+            for (String id : ids.split(",")) {
+                SpOper oper = iSpOperService.getById(id);
+                if (oper != null) {
+                    oper.setIsDeleted("1");
+                    iSpOperService.updateById(oper);
+                }
+            }
+        }
         return Result.success();
     }
 }

@@ -8,6 +8,7 @@ import com.wangziyang.mes.technology.service.ISpBomItemService;
 import com.wangziyang.mes.technology.service.ISpBomOperRelationService;
 import com.wangziyang.mes.technology.service.ISpBomService;
 import com.wangziyang.mes.technology.service.ISpOperService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wangziyang.mes.common.BaseController;
 import com.wangziyang.mes.common.Result;
 import io.swagger.annotations.ApiImplicitParam;
@@ -52,7 +53,9 @@ public class SpBomOperRelationController extends BaseController {
      */
     @GetMapping("/list-ui")
     public String listUi(Model model) {
-        List<SpBom> bomList = iSpBomService.list();
+        QueryWrapper<SpBom> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
+        List<SpBom> bomList = iSpBomService.list(qw);
         model.addAttribute("bomList", bomList);
         return "technology/bomoperrelation/list";
     }
@@ -66,15 +69,15 @@ public class SpBomOperRelationController extends BaseController {
         List<SpBomItem> bomItems = iSpBomItemService.listByBomId(bomId);
         List<SpOper> operList = iSpOperService.list();
         List<SpBomOperRelation> relations = iSpBomOperRelationService.listByBomId(bomId);
-        
+
         model.addAttribute("bom", bom);
         model.addAttribute("bomItems", bomItems);
         model.addAttribute("operList", operList);
         model.addAttribute("relations", relations);
-        
+
         boolean isLocked = iSpBomOperRelationService.isBomLocked(bomId);
         model.addAttribute("isLocked", isLocked);
-        
+
         return "technology/bomoperrelation/edit";
     }
 
@@ -85,10 +88,10 @@ public class SpBomOperRelationController extends BaseController {
     public String contentUi(@RequestParam("bomId") String bomId, Model model) {
         SpBom bom = iSpBomService.getById(bomId);
         List<SpBomOperRelation> relations = iSpBomOperRelationService.listByBomId(bomId);
-        
+
         model.addAttribute("bom", bom);
         model.addAttribute("relations", relations);
-        
+
         return "technology/bomoperrelation/content";
     }
 
@@ -99,7 +102,9 @@ public class SpBomOperRelationController extends BaseController {
     @GetMapping("/bom-list")
     @ResponseBody
     public Result getBomList() {
-        List<SpBom> list = iSpBomService.list();
+        QueryWrapper<SpBom> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
+        List<SpBom> list = iSpBomService.list(qw);
         return Result.success(list);
     }
 
@@ -107,7 +112,7 @@ public class SpBomOperRelationController extends BaseController {
      * 根据BOM头ID查询关系列表
      */
     @ApiOperation("根据BOM头ID查询关系列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true) })
     @PostMapping("/list-by-bom")
     @ResponseBody
     public Result listByBomId(@RequestParam("bomId") String bomId) {
@@ -122,7 +127,7 @@ public class SpBomOperRelationController extends BaseController {
      * 根据BOM编号查询关系列表
      */
     @ApiOperation("根据BOM编号查询关系列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomCode", value = "BOM编号", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomCode", value = "BOM编号", required = true) })
     @GetMapping("/list-by-bom-code")
     @ResponseBody
     public Result listByBomCode(@RequestParam("bomCode") String bomCode) {
@@ -134,7 +139,7 @@ public class SpBomOperRelationController extends BaseController {
      * 保存BOM与工序关系（批量）
      */
     @ApiOperation("保存BOM与工序关系")
-    @ApiImplicitParams({@ApiImplicitParam(name = "relations", value = "关系列表", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "relations", value = "关系列表", required = true) })
     @PostMapping("/save-batch")
     @ResponseBody
     public Result saveBatch(@RequestBody List<SpBomOperRelation> relations) {
@@ -145,7 +150,7 @@ public class SpBomOperRelationController extends BaseController {
      * 更新BOM与工序关系
      */
     @ApiOperation("更新BOM与工序关系")
-    @ApiImplicitParams({@ApiImplicitParam(name = "relation", value = "关系实体", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "relation", value = "关系实体", required = true) })
     @PostMapping("/update")
     @ResponseBody
     public Result update(@RequestBody SpBomOperRelation relation) {
@@ -156,7 +161,7 @@ public class SpBomOperRelationController extends BaseController {
      * 删除BOM与工序关系
      */
     @ApiOperation("删除BOM与工序关系")
-    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "主键ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "主键ID", required = true) })
     @PostMapping("/delete")
     @ResponseBody
     public Result delete(@RequestParam("id") String id) {
@@ -167,7 +172,7 @@ public class SpBomOperRelationController extends BaseController {
      * 根据BOM头ID删除所有关系
      */
     @ApiOperation("根据BOM头ID删除所有关系")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true) })
     @PostMapping("/delete-by-bom")
     @ResponseBody
     public Result deleteByBomId(@RequestParam("bomId") String bomId) {
@@ -178,29 +183,33 @@ public class SpBomOperRelationController extends BaseController {
      * 锁定产品工艺
      */
     @ApiOperation("锁定产品工艺")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true),
+            @ApiImplicitParam(name = "ids", value = "勾选的节点ID，多个以逗号分隔", required = true)
+    })
     @PostMapping("/lock")
     @ResponseBody
-    public Result lockBomProcess(@RequestParam("bomId") String bomId) {
-        return iSpBomOperRelationService.lockBomProcess(bomId);
+    public Result lockBomProcess(@RequestParam("bomId") String bomId,
+            @RequestParam("ids") List<String> ids) {
+        return iSpBomOperRelationService.lockBomProcess(bomId, ids);
     }
 
     /**
      * 解锁产品工艺
      */
     @ApiOperation("解锁产品工艺")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true) })
     @PostMapping("/unlock")
     @ResponseBody
-    public Result unlockBomProcess(@RequestParam("bomId") String bomId) {
-        return iSpBomOperRelationService.unlockBomProcess(bomId);
+    public Result unlockBomProcess(@RequestParam("bomId") String bomId, @RequestParam("ids") List<String> ids) {
+        return iSpBomOperRelationService.unlockBomProcess(bomId, ids);
     }
 
     /**
      * 检查BOM工艺是否已锁定
      */
     @ApiOperation("检查BOM工艺是否已锁定")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true) })
     @GetMapping("/is-locked")
     @ResponseBody
     public Result isBomLocked(@RequestParam("bomId") String bomId) {
@@ -223,7 +232,7 @@ public class SpBomOperRelationController extends BaseController {
      * 初始化BOM工艺关系（根据BOM子项创建默认关系）
      */
     @ApiOperation("初始化BOM工艺关系")
-    @ApiImplicitParams({@ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true)})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "bomId", value = "BOM头ID", required = true) })
     @PostMapping("/init")
     @ResponseBody
     public Result initRelation(@RequestParam("bomId") String bomId) {

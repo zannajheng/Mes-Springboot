@@ -10,6 +10,7 @@ import com.wangziyang.mes.system.service.ISysMenuService;
 import com.wangziyang.mes.system.service.ISysRoleService;
 import com.wangziyang.mes.system.service.ISysUserService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,8 +63,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void update(SysUserDTO record) throws Exception {
+        if (StringUtils.isNotBlank(record.getPassword())) {
+            if (!isEncryptedPassword(record.getPassword())) {
+                String encryptedPassword = new Md5Hash(record.getPassword(), record.getUsername(), 3).toString();
+                record.setPassword(encryptedPassword);
+            }
+        }
         sysUserMapper.updateById(record);
         sysRoleService.rebuild(record);
+    }
+
+    private boolean isEncryptedPassword(String password) {
+        return password != null && password.length() == 32 && password.matches("^[a-f0-9]+$");
     }
 
     /**

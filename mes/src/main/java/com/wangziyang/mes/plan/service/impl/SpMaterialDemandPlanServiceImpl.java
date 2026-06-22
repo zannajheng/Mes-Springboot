@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class SpMaterialDemandPlanServiceImpl extends ServiceImpl<SpMaterialDemandPlanMapper, SpMaterialDemandPlan> implements ISpMaterialDemandPlanService {
+public class SpMaterialDemandPlanServiceImpl extends ServiceImpl<SpMaterialDemandPlanMapper, SpMaterialDemandPlan>
+        implements ISpMaterialDemandPlanService {
 
     private static final AtomicInteger sequence = new AtomicInteger(0);
 

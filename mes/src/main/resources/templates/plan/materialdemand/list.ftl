@@ -87,9 +87,16 @@
 
 <script type="text/html" id="js-record-table-toolbar-top">
     <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="deleteBatch"><i class="layui-icon">&#xe640;</i>批量删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
         <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="generateStockIn"><i class="layui-icon">&#xe610;</i>生成入库单</button>
         <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="export"><i class="layui-icon">&#xe60e;</i>导出</button>
     </div>
+</script>
+
+<script type="text/html" id="js-record-table-toolbar-right">
+    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 
 <script type="text/html" id="js-delivery-status-tpl">
@@ -138,7 +145,8 @@
                 {field: 'netRequireQty', title: '净需求数量', width: 100},
                 {field: 'stockInStatus', title: '生成入库单状态', width: 120, templet: '#js-stock-status-tpl'},
                 {field: 'stockInOrderNo', title: '入库单单号', width: 180},
-                {field: 'remark', title: '备注', minWidth: 120}
+                {field: 'remark', title: '备注', minWidth: 120},
+                {fixed: 'right', field: 'operate', title: '操作', toolbar: '#js-record-table-toolbar-right', unresize: true, width: 150}
             ]],
             done: function (res, curr, count) {
                 form.render();
@@ -153,38 +161,24 @@
         };
 
         form.on('submit(js-search-filter)', function (data) {
-            var where = {};
-            if (data.field.orderCodeLike) {
-                where.orderCodeLike = data.field.orderCodeLike;
-            }
-            if (data.field.productSerialNoLike) {
-                where.productSerialNoLike = data.field.productSerialNoLike;
-            }
-            if (data.field.taskSerialNoLike) {
-                where.taskSerialNoLike = data.field.taskSerialNoLike;
-            }
-            if (data.field.materielCodeLike) {
-                where.materielCodeLike = data.field.materielCodeLike;
-            }
-            if (data.field.materielNameLike) {
-                where.materielNameLike = data.field.materielNameLike;
-            }
-            if (data.field.stockInStatus) {
-                where.stockInStatus = data.field.stockInStatus;
-            }
-            if (data.field.deliveryStatus) {
-                where.deliveryStatus = data.field.deliveryStatus;
-            }
             tableIns.reload({
-                where: where,
+                where: data.field,
                 page: {curr: 1}
             });
             return false;
         });
 
         $('#js-reset-btn').click(function () {
-            $('form')[0].reset();
-            form.render();
+            form.val('js-q-form-filter', {
+                orderCodeLike: '',
+                productSerialNoLike: '',
+                taskSerialNoLike: '',
+                materielCodeLike: '',
+                materielNameLike: '',
+                stockInStatus: '',
+                deliveryStatus: ''
+            });
+            form.render('select');
             tableIns.reload({
                 where: {},
                 page: {curr: 1}
@@ -194,6 +188,39 @@
         table.on('toolbar(js-record-table-filter)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             var data = checkStatus.data;
+
+            if (obj.event === 'deleteBatch') {
+                if (data.length === 0) {
+                    layer.msg('请先选择需要删除的数据！');
+                    return;
+                }
+                layer.confirm('确认要删除选中的 ' + data.length + ' 条记录吗？', function (index) {
+                    var ids = [];
+                    for (var i = 0; i < data.length; i++) {
+                        ids.push(data[i].id);
+                    }
+                    spUtil.ajax({
+                        url: '${request.contextPath}/plan/material-demand/delete-batch',
+                        type: 'POST',
+                        data: {ids: ids.join(',')},
+                        success: function () {
+                            layer.close(index);
+                            layer.msg('删除成功', {icon: 1});
+                            tableIns.reload({
+                                page: {curr: 1}
+                            });
+                        }
+                    });
+                });
+            }
+
+            if (obj.event === 'add') {
+                var index = spLayer.open({
+                    title: '新增物料需求计划',
+                    area: ['90%', '90%'],
+                    content: '${request.contextPath}/plan/material-demand/add-or-update-ui'
+                });
+            }
 
             if (obj.event === 'generateStockIn') {
                 if (data.length === 0) {
@@ -239,6 +266,38 @@
                 });
                 var queryStr = $.param(params);
                 window.open('${request.contextPath}/plan/material-demand/export?' + queryStr, '_blank');
+            }
+        });
+
+        table.on('tool(js-record-table-filter)', function (obj) {
+            var data = obj.data;
+
+            if (obj.event === 'edit') {
+                spLayer.open({
+                    title: '编辑物料需求计划',
+                    area: ['90%', '90%'],
+                    spWhere: {id: data.id},
+                    content: '${request.contextPath}/plan/material-demand/add-or-update-ui'
+                });
+            }
+
+            if (obj.event === 'delete') {
+                layer.confirm('确认要删除吗？', function (index) {
+                    spUtil.ajax({
+                        url: '${request.contextPath}/plan/material-demand/delete',
+                        async: false,
+                        type: 'POST',
+                        showLoading: true,
+                        serializable: false,
+                        data: {
+                            id: data.id
+                        },
+                        success: function () {
+                            tableIns.reload();
+                            layer.close(index);
+                        }
+                    });
+                });
             }
         });
 

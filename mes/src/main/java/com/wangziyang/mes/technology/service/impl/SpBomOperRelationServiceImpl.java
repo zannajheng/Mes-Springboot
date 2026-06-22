@@ -120,9 +120,13 @@ public class SpBomOperRelationServiceImpl extends ServiceImpl<SpBomOperRelationM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result lockBomProcess(String bomId) {
+    public Result lockBomProcess(String bomId, List<String> ids) {
         if (bomId == null || bomId.isEmpty()) {
             return Result.fail("参数无效");
+        }
+
+        if (ids == null || ids.isEmpty()) {
+            return Result.fail("请先勾选要锁定的节点");
         }
 
         List<SpBomOperRelation> relations = listByBomId(bomId);
@@ -130,13 +134,15 @@ public class SpBomOperRelationServiceImpl extends ServiceImpl<SpBomOperRelationM
             return Result.fail("未找到相关工艺数据");
         }
 
-        // 检查是否已全部锁定
-        boolean allLocked = relations.stream().allMatch(r -> "1".equals(r.getIsLocked()));
-        if (allLocked) {
-            return Result.fail("该产品工艺已处于锁定状态，无需重复锁定");
+        List<SpBomOperRelation> toLock = relations.stream()
+                .filter(r -> ids.contains(r.getId()) && "0".equals(r.getIsLocked()))
+                .collect(java.util.stream.Collectors.toList());
+
+        if (toLock.isEmpty()) {
+            return Result.fail("勾选的节点中不存在未锁定数据，无需锁定");
         }
 
-        for (SpBomOperRelation relation : relations) {
+        for (SpBomOperRelation relation : toLock) {
             relation.setIsLocked("1");
             updateById(relation);
         }
@@ -146,9 +152,13 @@ public class SpBomOperRelationServiceImpl extends ServiceImpl<SpBomOperRelationM
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result unlockBomProcess(String bomId) {
+    public Result unlockBomProcess(String bomId, List<String> ids) {
         if (bomId == null || bomId.isEmpty()) {
             return Result.fail("参数无效");
+        }
+
+        if (ids == null || ids.isEmpty()) {
+            return Result.fail("请先勾选要解锁的节点");
         }
 
         List<SpBomOperRelation> relations = listByBomId(bomId);
@@ -156,13 +166,15 @@ public class SpBomOperRelationServiceImpl extends ServiceImpl<SpBomOperRelationM
             return Result.fail("未找到相关工艺数据");
         }
 
-        // 检查是否已全部解锁
-        boolean allUnlocked = relations.stream().allMatch(r -> "0".equals(r.getIsLocked()));
-        if (allUnlocked) {
-            return Result.fail("该产品工艺已处于未锁定状态，无需重复解锁");
+        List<SpBomOperRelation> toUnlock = relations.stream()
+                .filter(r -> ids.contains(r.getId()) && "1".equals(r.getIsLocked()))
+                .collect(java.util.stream.Collectors.toList());
+
+        if (toUnlock.isEmpty()) {
+            return Result.fail("勾选的节点中不存在已锁定数据，无需解锁");
         }
 
-        for (SpBomOperRelation relation : relations) {
+        for (SpBomOperRelation relation : toUnlock) {
             relation.setIsLocked("0");
             updateById(relation);
         }

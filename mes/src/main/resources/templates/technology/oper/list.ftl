@@ -38,8 +38,10 @@
 
 <script type="text/html" id="js-record-table-toolbar-top">
     <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="deleteBatch"><i
+                    class="layui-icon">&#xe640;</i>批量删除
+        </button>
         <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>新增</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
     </div>
 </script>
 
@@ -60,8 +62,8 @@
             url: '${request.contextPath}/technology/oper/page',
             cols: [
                 [{
-                    type: 'radio'
-                }, {
+                type: 'checkbox'
+            }, {
                     field: 'oper', title: '工序编号', width: 120
                 }, {
                     field: 'operDesc', title: '工序名称', minWidth: 100
@@ -109,10 +111,30 @@
         });
 
         table.on('toolbar(js-record-table-filter)', function (obj) {
-            if (obj.event === 'getCheckData') {
-                var checkStatus = table.checkStatus(obj.config.id);
-                var data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+            // 批量删除
+            if (obj.event === 'deleteBatch') {
+                var checkStatus = table.checkStatus('js-record-table'),
+                    data = checkStatus.data;
+                if (data.length > 0) {
+                    layer.confirm('确认要删除吗？', function (index) {
+                        var ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i].id);
+                        }
+                        spUtil.ajax({
+                            url: '${request.contextPath}/technology/oper/delete-batch',
+                            type: 'POST',
+                            data: {ids: ids.join(',')},
+                            success: function () {
+                                layer.close(index);
+                                layer.msg('删除成功', {icon: 1});
+                                table.reload('js-record-table');
+                            }
+                        });
+                    });
+                } else {
+                    layer.msg("请先选择需要删除的数据！");
+                }
             }
 
             if (obj.event === 'add') {

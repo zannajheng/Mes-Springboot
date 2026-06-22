@@ -68,17 +68,19 @@ public interface ISpBomOperRelationService extends IService<SpBomOperRelation> {
      * 锁定产品工艺
      *
      * @param bomId BOM头ID
+     * @param ids   勾选的节点ID列表
      * @return 执行结果
      */
-    Result lockBomProcess(String bomId);
+    Result lockBomProcess(String bomId, List<String> ids);
 
     /**
      * 解锁产品工艺
      *
      * @param bomId BOM头ID
+     * @param ids   勾选的节点ID列表
      * @return 执行结果
      */
-    Result unlockBomProcess(String bomId);
+    Result unlockBomProcess(String bomId, List<String> ids);
 
     /**
      * 检查BOM工艺是否已锁定

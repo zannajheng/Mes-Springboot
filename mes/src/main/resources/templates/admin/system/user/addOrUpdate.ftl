@@ -32,18 +32,18 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-password" class="layui-form-label sp-required">密码
+                        <label for="js-password" class="layui-form-label <#if result??>sp-optional<#else>sp-required</#if>">密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="js-password" name="password" lay-verify="required" autocomplete="off" class="layui-input" value="${result.password}">
+                            <input type="password" id="js-password" name="password" lay-verify="<#if result??>optional<#else>required</#if>" autocomplete="off" class="layui-input" placeholder="<#if result??>不修改密码请留空</#if>">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="js-repassword" class="layui-form-label sp-required">确认密码
+                        <label for="js-repassword" class="layui-form-label <#if result??>sp-optional<#else>sp-required</#if>">确认密码
                         </label>
                         <div class="layui-input-inline">
-                            <input type="password" id="js-repassword" name="repassword" lay-verify="required" autocomplete="off" class="layui-input" value="${result.password}">
+                            <input type="password" id="js-repassword" name="repassword" lay-verify="<#if result??>optional<#else>required</#if>" autocomplete="off" class="layui-input">
                         </div>
                     </div>
 
@@ -164,7 +164,8 @@
 
         laydate.render({
             elem: '#js-birthday',
-            format: 'yyyy-MM-dd'
+            format: 'yyyy-MM-dd',
+            trigger: 'click'
         });
 
         upload.render({

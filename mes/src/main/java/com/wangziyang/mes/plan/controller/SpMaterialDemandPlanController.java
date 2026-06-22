@@ -4,6 +4,7 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wangziyang.mes.common.BaseController;
 import com.wangziyang.mes.common.Result;
 import com.wangziyang.mes.plan.entity.SpMaterialDemandPlan;
@@ -67,7 +68,8 @@ public class SpMaterialDemandPlanController extends BaseController {
             qw.like("materiel_name", req.getMaterielNameLike());
         }
         qw.orderByAsc("order_code", "work_center_code", "materiel_code");
-        IPage result = iSpMaterialDemandPlanService.page(req, qw);
+        Page<SpMaterialDemandPlan> page = new Page<>(req.getCurrent(), req.getSize());
+        IPage result = iSpMaterialDemandPlanService.page(page, qw);
         return Result.success(result);
     }
 
@@ -106,8 +108,20 @@ public class SpMaterialDemandPlanController extends BaseController {
     @ApiOperation("删除物料需求计划")
     @PostMapping("/delete")
     @ResponseBody
-    public Result delete(@RequestBody SpMaterialDemandPlan req) {
+    public Result delete(SpMaterialDemandPlan req) {
         iSpMaterialDemandPlanService.removeById(req.getId());
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除物料需求计划")
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(String ids) {
+        if (StringUtils.isNotEmpty(ids)) {
+            for (String id : ids.split(",")) {
+                iSpMaterialDemandPlanService.removeById(id);
+            }
+        }
         return Result.success();
     }
 
@@ -117,6 +131,16 @@ public class SpMaterialDemandPlanController extends BaseController {
     public Result get(@RequestParam("id") String id) {
         SpMaterialDemandPlan plan = iSpMaterialDemandPlanService.getById(id);
         return Result.success(plan);
+    }
+
+    @ApiOperation("物料需求计划新增/修改界面")
+    @GetMapping("/add-or-update-ui")
+    public String addOrUpdateUI(@RequestParam(required = false) String id, Model model) {
+        if (StringUtils.isNotEmpty(id)) {
+            SpMaterialDemandPlan plan = iSpMaterialDemandPlanService.getById(id);
+            model.addAttribute("result", plan);
+        }
+        return "plan/materialdemand/addOrUpdate";
     }
 
     @ApiOperation("导出物料需求计划")
@@ -159,11 +183,15 @@ public class SpMaterialDemandPlanController extends BaseController {
             row.put("加工单元名称", plan.getWorkCenterName());
             row.put("物料编码", plan.getMaterielCode());
             row.put("物料名称", plan.getMaterielName());
-            row.put("需求数量", plan.getRequireQty() != null ? plan.getRequireQty().stripTrailingZeros().toPlainString() : "");
+            row.put("需求数量",
+                    plan.getRequireQty() != null ? plan.getRequireQty().stripTrailingZeros().toPlainString() : "");
             row.put("计量单位", plan.getUnit());
             row.put("配送状态", "delivered".equals(plan.getDeliveryStatus()) ? "已下发" : "未下发");
-            row.put("出库数量", plan.getStockOutQty() != null ? plan.getStockOutQty().stripTrailingZeros().toPlainString() : "");
-            row.put("净需求数量", plan.getNetRequireQty() != null ? plan.getNetRequireQty().stripTrailingZeros().toPlainString() : "");
+            row.put("出库数量",
+                    plan.getStockOutQty() != null ? plan.getStockOutQty().stripTrailingZeros().toPlainString() : "");
+            row.put("净需求数量",
+                    plan.getNetRequireQty() != null ? plan.getNetRequireQty().stripTrailingZeros().toPlainString()
+                            : "");
             row.put("生成入库单状态", "generated".equals(plan.getStockInStatus()) ? "已生成" : "未生成");
             row.put("入库单单号", plan.getStockInOrderNo());
             row.put("备注", plan.getRemark());
@@ -181,8 +209,10 @@ public class SpMaterialDemandPlanController extends BaseController {
 
         byte[] bytes = baos.toByteArray();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + URLEncoder.encode("物料需求计划.xlsx", "UTF-8"));
+        headers.setContentType(
+                MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment;filename=" + URLEncoder.encode("物料需求计划.xlsx", "UTF-8"));
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 }

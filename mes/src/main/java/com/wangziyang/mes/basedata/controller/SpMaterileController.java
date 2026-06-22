@@ -172,4 +172,17 @@ public class SpMaterileController extends BaseController {
         iSpMaterileService.removeById(req.getId());
         return Result.success();
     }
+
+    @ApiOperation("批量删除物料信息")
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(String ids) throws Exception {
+        if (StrUtil.isNotBlank(ids)) {
+            java.util.List<String> idList = java.util.Arrays.asList(ids.split(","));
+            for (String id : idList) {
+                iSpMaterileService.removeById(id);
+            }
+        }
+        return Result.success();
+    }
 }

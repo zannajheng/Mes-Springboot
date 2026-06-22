@@ -1,6 +1,5 @@
 package com.wangziyang.mes.system.controller.admin;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wangziyang.mes.common.BaseController;
@@ -41,14 +40,14 @@ public class SysDepartmentController extends BaseController {
     private ISysDepartmentService sysDepartmentService;
 
     @ApiOperation("系统部门信息列表UI")
-    @ApiImplicitParams({@ApiImplicitParam(name = "model", value = "模型", defaultValue = "模型")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "model", value = "模型", defaultValue = "模型") })
     @GetMapping("/list-ui")
     public String listUI(Model model) {
         return "admin/system/department/list";
     }
 
     @ApiOperation("系统部门信息分页列表")
-    @ApiImplicitParams({@ApiImplicitParam(name = "page", value = "模型", defaultValue = "模型")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "page", value = "模型", defaultValue = "模型") })
     @PostMapping("/page")
     @ResponseBody
     public Result page(SysDepartmentPageReq req) {
@@ -56,8 +55,11 @@ public class SysDepartmentController extends BaseController {
         if (StringUtils.isNotEmpty(req.getNameLike())) {
             qw.like("name", req.getNameLike());
         }
-        qw.orderByDesc("create_time");
-        IPage result = sysDepartmentService.page(req, qw);
+        qw.eq("is_deleted", "0");
+        qw.orderByAsc("sort_num");
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<SysDepartment> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(
+                req.getCurrent(), req.getSize());
+        IPage result = sysDepartmentService.page(page, qw);
         return Result.success(result);
     }
 

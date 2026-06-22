@@ -176,6 +176,28 @@ public class SysUserController extends BaseController {
         return Result.success();
     }
 
+    @PostMapping("/reset-password")
+    @ResponseBody
+    public Result resetPassword(String userId, String newPassword) throws Exception {
+        if (!isAdmin()) {
+            return Result.failure("只有管理员才能重置密码");
+        }
+        if (StringUtils.isBlank(userId)) {
+            return Result.failure("用户ID不能为空");
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            return Result.failure("新密码不能为空");
+        }
+        SysUser user = sysUserService.getById(userId);
+        if (user == null) {
+            return Result.failure("用户不存在");
+        }
+        String encryptedPassword = new Md5Hash(newPassword, user.getUsername(), 3).toString();
+        user.setPassword(encryptedPassword);
+        sysUserService.updateById(user);
+        return Result.success();
+    }
+
     @GetMapping("/current")
     @ResponseBody
     public Result current() throws Exception {

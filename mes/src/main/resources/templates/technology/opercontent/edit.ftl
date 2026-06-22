@@ -1237,6 +1237,23 @@
         window.submitComplete = function () {
             layer.confirm('确认完成编制吗？完成后状态将标记为已完成。', function (index) {
                 layer.close(index);
+                if (!contentId) {
+                    var allData = collectAllFormData();
+                    saveData(allData, 0, function (success) {
+                        if (success && contentId) {
+                            saveTechDocAndComplete();
+                        } else {
+                            layer.msg('保存失败，无法完成编制');
+                        }
+                    });
+                } else {
+                    saveTechDocAndComplete();
+                }
+            });
+        };
+
+        function saveTechDocAndComplete() {
+            doSaveTechDocWithCallback(function () {
                 var allData = collectAllFormData();
                 saveData(allData, 0, function (success) {
                     if (success && contentId) {
@@ -1246,7 +1263,42 @@
                     }
                 });
             });
-        };
+        }
+
+        function doSaveTechDocWithCallback(callback) {
+            var docDesc = $('input[name="docDesc"]').val();
+            var techDoc = {
+                id: techDocId || null,
+                operContentId: contentId,
+                bomOperRelationId: bomOperRelationId,
+                docDesc: docDesc,
+                docImages: JSON.stringify(docImages),
+                docFiles: JSON.stringify(docFiles)
+            };
+            spUtil.ajax({
+                url: '${request.contextPath}/technology/oper-content/tech-doc/save',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(techDoc),
+                success: function (res) {
+                    if (res.code === 200 || res.code === 0) {
+                        if (res.data && res.data.id) {
+                            techDocId = res.data.id;
+                        }
+                        if (callback) {
+                            callback();
+                        }
+                    } else {
+                        layer.msg(res.message || '保存技术文档失败');
+                    }
+                },
+                error: function () {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
+        }
 
         function doComplete(id) {
             spUtil.ajax({

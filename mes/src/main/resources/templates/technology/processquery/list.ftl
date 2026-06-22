@@ -369,12 +369,56 @@
             html += '<div class="detail-content-box">';
             html += content.operContent || '<span class="text-gray">暂无数据</span>';
             html += '</div>';
+            
+            if (content.operImages) {
+                try {
+                    var operImages = JSON.parse(content.operImages);
+                    if (operImages && operImages.length > 0) {
+                        html += '<div style="margin-top: 20px;">';
+                        html += '<h4 style="margin-bottom: 8px; font-size: 14px; color: #666;">工序图片</h4>';
+                        html += '<div style="display: flex; flex-wrap: wrap;">';
+                        for (var j = 0; j < operImages.length; j++) {
+                            var imgUrl = operImages[j];
+                            html += '<div style="margin: 5px; border: 1px solid #eee; border-radius: 4px; padding: 5px; position: relative;">';
+                            html += '<img src="' + imgUrl + '" onclick="viewImage(\'' + imgUrl + '\')" style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;">';
+                            html += '<a href="' + imgUrl + '" download style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 3px; font-size: 12px;">下载</a>';
+                            html += '</div>';
+                        }
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                } catch (e) {}
+            }
             html += '</div>';
 
             html += '<div id="panel-3" class="detail-panel">';
             html += '<div class="detail-content-box">';
             html += content.operRequirement || '<span class="text-gray">暂无数据</span>';
             html += '</div>';
+            
+            html += '<div style="margin-top: 10px;">';
+            html += '<div><strong style="color: #666;">是否需要检验：</strong>' + (content.isNeedInspect || '否') + '</div>';
+            html += '</div>';
+            
+            if (content.inspectImages) {
+                try {
+                    var inspectImages = JSON.parse(content.inspectImages);
+                    if (inspectImages && inspectImages.length > 0) {
+                        html += '<div style="margin-top: 20px;">';
+                        html += '<h4 style="margin-bottom: 8px; font-size: 14px; color: #666;">检验标准图片</h4>';
+                        html += '<div style="display: flex; flex-wrap: wrap;">';
+                        for (var j = 0; j < inspectImages.length; j++) {
+                            var imgUrl = inspectImages[j];
+                            html += '<div style="margin: 5px; border: 1px solid #eee; border-radius: 4px; padding: 5px; position: relative;">';
+                            html += '<img src="' + imgUrl + '" onclick="viewImage(\'' + imgUrl + '\')" style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;">';
+                            html += '<a href="' + imgUrl + '" download style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 3px; font-size: 12px;">下载</a>';
+                            html += '</div>';
+                        }
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                } catch (e) {}
+            }
             html += '</div>';
 
             html += '<div id="panel-4" class="detail-panel">';
@@ -447,14 +491,71 @@
                     if (res.code === 0 || res.code === 200) {
                         var list = res.data || [];
                         if (list.length > 0) {
-                            var html = '<table class="layui-table"><thead><tr><th>文档编号</th><th>文档描述</th><th>文档版本</th></tr></thead><tbody>';
+                            var html = '';
                             for (var i = 0; i < list.length; i++) {
                                 var item = list[i];
-                                html += '<tr><td>' + (item.docCode || '-') + '</td>';
-                                html += '<td>' + (item.docDesc || '-') + '</td>';
-                                html += '<td>' + (item.docVersion || '-') + '</td></tr>';
+                                html += '<div class="layui-card" style="margin-bottom: 15px;">';
+                                html += '<div class="layui-card-header">';
+                                html += '<strong>' + (item.docDesc || '技术文档') + '</strong>';
+                                html += '</div>';
+                                html += '<div class="layui-card-body">';
+                                
+                                if (item.docImages) {
+                                    try {
+                                        var images = JSON.parse(item.docImages);
+                                        if (images && images.length > 0) {
+                                            html += '<div style="margin-bottom: 15px;">';
+                                            html += '<h4 style="margin-bottom: 8px; font-size: 14px; color: #666;">文档图片</h4>';
+                                            html += '<div style="display: flex; flex-wrap: wrap;">';
+                                            for (var j = 0; j < images.length; j++) {
+                                                var imgUrl = images[j];
+                                                html += '<div style="margin: 5px; border: 1px solid #eee; border-radius: 4px; padding: 5px; position: relative;">';
+                                                html += '<img src="' + imgUrl + '" onclick="viewImage(\'' + imgUrl + '\')" style="width: 120px; height: 120px; object-fit: cover; cursor: pointer;">';
+                                                html += '<a href="' + imgUrl + '" download style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; padding: 2px 8px; border-radius: 3px; font-size: 12px;">下载</a>';
+                                                html += '</div>';
+                                            }
+                                            html += '</div>';
+                                            html += '</div>';
+                                        }
+                                    } catch (e) {}
+                                }
+                                
+                                if (item.docFiles) {
+                                    try {
+                                        var files = JSON.parse(item.docFiles);
+                                        if (files && files.length > 0) {
+                                            html += '<div>';
+                                            html += '<h4 style="margin-bottom: 8px; font-size: 14px; color: #666;">附件文件</h4>';
+                                            html += '<div style="display: flex; flex-wrap: wrap;">';
+                                            for (var j = 0; j < files.length; j++) {
+                                                var file = files[j];
+                                                var ext = (file.name || '').substring((file.name || '').lastIndexOf('.') + 1).toLowerCase();
+                                                var iconClass = 'fa-file-o';
+                                                var colorClass = '#7f8c8d';
+                                                if (ext === 'pdf') { iconClass = 'fa-file-pdf-o'; colorClass = '#e74c3c'; }
+                                                else if (ext === 'doc' || ext === 'docx') { iconClass = 'fa-file-word-o'; colorClass = '#2980b9'; }
+                                                else if (ext === 'xls' || ext === 'xlsx') { iconClass = 'fa-file-excel-o'; colorClass = '#27ae60'; }
+                                                else if (ext === 'ppt' || ext === 'pptx') { iconClass = 'fa-file-powerpoint-o'; colorClass = '#e67e22'; }
+                                                else if (ext === 'zip' || ext === 'rar') { iconClass = 'fa-file-archive-o'; colorClass = '#f39c12'; }
+                                                else if (ext === 'txt') { iconClass = 'fa-file-text-o'; colorClass = '#95a5a6'; }
+                                                html += '<a href="' + file.url + '" target="_blank" style="display: inline-block; padding: 10px 15px; border: 1px solid #eee; border-radius: 4px; margin: 5px; background: #f8f8f8; min-width: 120px; text-align: center; text-decoration: none;">';
+                                                html += '<i class="fa ' + iconClass + '" style="font-size: 32px; display: block; margin-bottom: 6px; color: ' + colorClass + ';"></i>';
+                                                html += '<span style="display: block; font-size: 12px; word-break: break-all; max-width: 150px; line-height: 1.4; color: #333;">' + (file.name || '文件') + '</span>';
+                                                html += '</a>';
+                                            }
+                                            html += '</div>';
+                                            html += '</div>';
+                                        }
+                                    } catch (e) {}
+                                }
+                                
+                                if (!item.docImages && !item.docFiles) {
+                                    html += '<div class="empty-tip" style="padding: 20px 0;"><i class="layui-icon">&#xe612;</i><p>暂无图片和附件</p></div>';
+                                }
+                                
+                                html += '</div>';
+                                html += '</div>';
                             }
-                            html += '</tbody></table>';
                             $('#js-tech-doc-content').html(html);
                         } else {
                             $('#js-tech-doc-content').html('<div class="empty-tip"><i class="layui-icon">&#xe612;</i><p>暂无技术文档数据</p></div>');
@@ -491,6 +592,30 @@
                 }
             });
         }
+
+        window.viewImage = function(imgUrl) {
+            layer.open({
+                type: 1,
+                title: '查看大图',
+                area: ['80%', '80%'],
+                shadeClose: true,
+                content: '<div style="text-align: center; padding: 20px; background: #000;">' +
+                    '<img src="' + imgUrl + '" style="max-width: 100%; max-height: 100%;" />' +
+                    '</div>',
+                btn: ['下载图片', '关闭'],
+                yes: function(index) {
+                    var a = document.createElement('a');
+                    a.href = imgUrl;
+                    a.download = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                },
+                btn2: function(index) {
+                    layer.close(index);
+                }
+            });
+        };
 
         form.render();
     });

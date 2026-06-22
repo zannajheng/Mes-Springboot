@@ -51,11 +51,12 @@ public class SpPartController extends BaseController {
     }
 
     @ApiOperation("零部件分页查询")
-    @ApiImplicitParams({@ApiImplicitParam(name = "req", value = "请求参数", defaultValue = "请求参数")})
+    @ApiImplicitParams({ @ApiImplicitParam(name = "req", value = "请求参数", defaultValue = "请求参数") })
     @PostMapping("/page")
     @ResponseBody
     public Result page(SpPartReq req) {
         QueryWrapper<SpPart> qw = new QueryWrapper<>();
+        qw.eq("is_deleted", "0");
         if (StringUtils.isNotEmpty(req.getPartNoLike())) {
             qw.like("part_no", req.getPartNoLike());
         }
@@ -86,6 +87,22 @@ public class SpPartController extends BaseController {
     @ResponseBody
     public Result delete(SpPart req) throws Exception {
         iSpPartService.removeById(req.getId());
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除零部件")
+    @PostMapping("/delete-batch")
+    @ResponseBody
+    public Result deleteBatch(String ids) throws Exception {
+        if (StringUtils.isNotEmpty(ids)) {
+            for (String id : ids.split(",")) {
+                SpPart part = iSpPartService.getById(id);
+                if (part != null) {
+                    part.setDeleted("1");
+                    iSpPartService.updateById(part);
+                }
+            }
+        }
         return Result.success();
     }
 }

@@ -15,9 +15,9 @@
         <form id="js-search-form" class="layui-form" lay-filter="js-q-form-filter">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">姓名</label>
+                    <label class="layui-form-label">流程</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="nameLike" autocomplete="off" class="layui-input">
+                        <input type="text" name="flowLike" placeholder="请输入流程名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -115,11 +115,24 @@
 
             // 批量删除
             if (obj.event === 'deleteBatch') {
-                var checkStatus = table.checkStatus('record-table'),
+                var checkStatus = table.checkStatus('js-record-table'),
                     data = checkStatus.data;
                 if (data.length > 0) {
                     layer.confirm('确认要删除吗？', function (index) {
-
+                        var ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            ids.push(data[i].id);
+                        }
+                        spUtil.ajax({
+                            url: '${request.contextPath}/basedata/flow/delete',
+                            type: 'POST',
+                            data: {ids: ids.join(',')},
+                            success: function () {
+                                layer.close(index);
+                                layer.msg('删除成功', {icon: 1});
+                                table.reload('js-record-table');
+                            }
+                        });
                     });
                 } else {
                     layer.msg("请先选择需要删除的数据！");

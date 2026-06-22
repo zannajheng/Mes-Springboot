@@ -153,10 +153,19 @@
                     layer.msg('请先选择产品BOM');
                     return;
                 }
-                layer.confirm('确认要锁定该产品工艺吗？锁定后将无法再对工艺路线进行编辑修改。', function (index) {
+                var checkStatus = table.checkStatus('js-record-table');
+                if (checkStatus.data.length === 0) {
+                    layer.msg('请先勾选要锁定的节点');
+                    return;
+                }
+                var ids = checkStatus.data.map(function (item) {
+                    return item.id;
+                }).join(',');
+                layer.confirm('确认要锁定选中的节点吗？锁定后将无法再对工艺路线进行编辑修改。', function (index) {
                     spUtil.ajax({
                         url: '${request.contextPath}/technology/bom-oper-relation/lock?bomId=' + currentBomId,
                         type: 'POST',
+                        data: {ids: ids},
                         showLoading: true,
                         success: function (data) {
                             tableIns.reload({
@@ -172,10 +181,19 @@
                     layer.msg('请先选择产品BOM');
                     return;
                 }
-                layer.confirm('确认要解锁该产品工艺吗？', function (index) {
+                var checkStatus = table.checkStatus('js-record-table');
+                if (checkStatus.data.length === 0) {
+                    layer.msg('请先勾选要解锁的节点');
+                    return;
+                }
+                var ids = checkStatus.data.map(function (item) {
+                    return item.id;
+                }).join(',');
+                layer.confirm('确认要解锁选中的节点吗？', function (index) {
                     spUtil.ajax({
                         url: '${request.contextPath}/technology/bom-oper-relation/unlock?bomId=' + currentBomId,
                         type: 'POST',
+                        data: {ids: ids},
                         showLoading: true,
                         success: function (data) {
                             tableIns.reload({
