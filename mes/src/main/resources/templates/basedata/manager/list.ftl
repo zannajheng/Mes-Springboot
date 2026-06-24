@@ -32,30 +32,13 @@
     </div>
 </div>
 
-<!--表格头操作模板-->
-<script type="text/html" id="js-record-table-toolbar-top">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="deleteBatch"><i
-                    class="layui-icon">&#xe640;</i>批量删除
-        </button>
-        <@shiro.hasPermission name="user:add">
-            <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
-        </@shiro.hasPermission>
-    </div>
-</script>
 
-<!--行操作模板-->
-<script type="text/html" id="js-record-table-toolbar-right">
-    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i class="layui-icon layui-icon-delete"></i>删除</a>
-</script>
 
 <!--js逻辑-->
 <script>
-    layui.use(['form', 'table', 'spLayer', 'spTable'], function () {
+    layui.use(['form', 'table', 'spTable'], function () {
         var form = layui.form,
             table = layui.table,
-            spLayer = layui.spLayer,
             spTable = layui.spTable;
 
         // 表格及数据初始化
@@ -63,9 +46,6 @@
             url: '${request.contextPath}/basedata/manager/page',
             cols: [
                 [{
-                    type: 'checkbox'
-                }, {
-
                     field: 'tableName', title: '表名称', minWidth: 120
                 }, {
                     field: 'tableDesc', title: '业务描述', minWidth: 130
@@ -81,13 +61,6 @@
                     field: 'isDeleted', title: '状态', width: 90, templet: function (records) {
                         return spConfig.isDeletedDict[records.isDeleted];
                     }
-                }, {
-                    fixed: 'right',
-                    field: 'operate',
-                    title: '操作',
-                    toolbar: '#js-record-table-toolbar-right',
-                    unresize: true,
-                    width: 150
                 }]
             ],
             done: function (res, curr, count) {
@@ -118,76 +91,7 @@
             return false;
         });
 
-        /**
-         * 头工具栏事件
-         */
-        table.on('toolbar(js-record-table-filter)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-
-            // 批量删除
-            if (obj.event === 'deleteBatch') {
-                var checkStatus = table.checkStatus('js-record-table'),
-                    data = checkStatus.data;
-                if (data.length > 0) {
-                    layer.confirm('确认要删除吗？', function (index) {
-
-                    });
-                } else {
-                    layer.msg("请先选择需要删除的数据！");
-                }
-            }
-
-            // 添加
-            if (obj.event === 'add') {
-                var index = spLayer.open({
-                    title: '添加',
-                    area: ['60%', '90%'],
-                    content: '${request.contextPath}/basedata/manager/add-or-update-ui'
-                });
-            }
-        });
-
-        /**
-         * 监听行工具事件
-         */
-        table.on('tool(js-record-table-filter)', function (obj) {
-            var data = obj.data;
-
-            // 编辑
-            if (obj.event === 'edit') {
-                spLayer.open({
-                    title: '编辑',
-                    area: ['60%', '90%'],
-                    // 请求url参数
-                    spWhere: {id: data.id},
-                    content: '${request.contextPath}/basedata/manager/add-or-update-ui'
-                });
-            }
-            // 删除
-            if (obj.event === 'delete') {
-                layer.confirm('确认要删除吗？', function (index) {
-                    spUtil.ajax({
-                        url: '${request.contextPath}/basedata/manager/delete/by/tableNameId',
-                        async: false,
-                        type: 'POST',
-                        // 是否显示 loading
-                        showLoading: true,
-                        // 是否序列化参数
-                        serializable: false,
-                        // 参数
-                        data: {
-                            id : data.id
-                        },
-                        success: function (data) {
-                            tableIns.reload();
-                            layer.close(index);
-                        },
-                        error: function () {
-                        }
-                    });
-                });
-            }
-        });
+        
     });
 </script>
 </body>

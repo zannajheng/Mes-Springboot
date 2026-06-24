@@ -40,31 +40,13 @@
 
 </div>
 
-<!--表格头操作模板-->
-<script type="text/html" id="js-record-table-toolbar-top">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="deleteBatch"><i
-                    class="layui-icon">&#xe640;</i>批量删除
-        </button>
-        <@shiro.hasPermission name="user:add">
-            <button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
-        </@shiro.hasPermission>
-    </div>
-</script>
 
-<!--行操作模板-->
-<script type="text/html" id="js-record-table-toolbar-right">
-    <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><i
-                class="layui-icon layui-icon-delete"></i>删除</a>
-</script>
 
 <!--js逻辑-->
 <script>
-    layui.use(['form', 'table', 'spLayer', 'spTable'], function () {
+    layui.use(['form', 'table', 'spTable'], function () {
         var form = layui.form,
             table = layui.table,
-            spLayer = layui.spLayer,
             spTable = layui.spTable;
         colsArr = [];
         ruleDetailRows = {};
@@ -141,14 +123,6 @@
                     field: item.field, title: item.fieldDesc
                 })
             });
-            colsArr.push({
-                fixed: 'right',
-                field: 'operate',
-                title: '操作',
-                toolbar: '#js-record-table-toolbar-right',
-                unresize: true,
-                width: 150
-            });
         }
 
         /*
@@ -177,91 +151,7 @@
             return false;
         });
 
-        /**
-         * 头工具栏事件
-         */
-        table.on('toolbar(js-record-table-filter)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
-
-            // 批量删除
-            if (obj.event === 'deleteBatch') {
-                var checkStatus = table.checkStatus('js-record-table'),
-                    data = checkStatus.data;
-                if (data.length > 0) {
-                    layer.confirm('确认要删除吗？', function (index) {
-
-                    });
-                } else {
-                    layer.msg("请先选择需要删除的数据！");
-                }
-            }
-
-            // 添加
-            if (obj.event === 'add') {
-                var index = spLayer.open({
-                    title: '添加',
-                    area: ['60%', '90%'],
-                    reload: false,
-                    spWhere: {tableNameId: tableNameId, tableName: tableName},
-                    content: '${request.contextPath}/basedata/common/add-or-update-ui',
-                    spCallback: function (result) {
-                        if (result.code === 0) {
-                            // 手动刷新表格
-                            rightInit(tableNameId, tableName);
-                        }
-                    }
-                });
-            }
-        });
-
-        /**
-         * 监听行工具事件
-         */
-        table.on('tool(js-record-table-filter)', function (obj) {
-            var data = obj.data;
-            // 编辑
-            if (obj.event === 'edit') {
-                spLayer.open({
-                    title: '编辑',
-                    area: ['60%', '90%'],
-                    reload: false,
-                    // 请求url参数
-                    spWhere: {id: data.id, tableName: tableName, tableNameId: tableNameId},
-                    content: '${request.contextPath}/basedata/common/add-or-update-ui',
-                    spCallback: function (result) {
-                        if (result.code === 0) {
-                            // 手动刷新表格
-                            rightInit(tableNameId, tableName);
-                        }
-                    }
-                });
-            }
-            // 删除
-            if (obj.event === 'delete') {
-                layer.confirm('确认要删除吗？', function (index) {
-                    spUtil.ajax({
-                        url: '${request.contextPath}/basedata/common/delete',
-                        async: false,
-                        type: 'POST',
-                        // 是否显示 loading
-                        showLoading: true,
-                        // 是否序列化参数
-                        serializable: false,
-                        // 参数
-                        data: {
-                            id: data.id,
-                            tableName: tableName
-                        },
-                        success: function (data) {
-                            tableIns.reload();
-                            layer.close(index);
-                        },
-                        error: function () {
-                        }
-                    });
-                });
-            }
-        });
+        
     })
     ;
 </script>

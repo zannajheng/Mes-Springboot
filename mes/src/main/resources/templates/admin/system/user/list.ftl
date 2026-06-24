@@ -110,7 +110,7 @@
                     title: '操作',
                     toolbar: '#js-record-table-toolbar-right',
                     unresize: true,
-                    width: 160
+                    width: 280
                 }]
             ],
             done: function (res, curr, count) {
